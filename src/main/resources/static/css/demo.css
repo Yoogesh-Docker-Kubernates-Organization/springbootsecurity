@@ -1,0 +1,144 @@
+
+
+         /*----------------------------*/		 
+         /* Regular Stuff we need to do */
+         /*-----------------------------*/
+		 
+         *, *::after, *::before 
+         {
+           padding: 0;
+           margin: 0;
+           box-sizing: inherit;
+         }	
+		 
+         html 
+         {
+           font-size: 62.5%;                                           /* i.e. 62.5% of 16px = 10px */
+         }		 
+		 
+         *, *::after, *::before 
+         {
+           padding: 0;
+           margin: 0;
+           box-sizing: inherit;
+         }
+		 
+         body
+         {
+           font-family: 'lato', 'Arial', 'sans-serif';
+           font-weight: 400;
+           line-height: 1.7;                                            /* 1.7 times bigger than the predefined which would have without this */
+           color: #777;
+           background-color: #fff;
+           overflow-x: hidden;                                          /* do not show the horizontal scroll bar when texts are overflowed */
+           text-rendering: optimizeLegibility;
+           padding: 3rem;                                               /* optional...It makes 30px space into all THREE sides except BUTTOM.If we want for For Buttom too , we need to do height:95vh which we have done in .header class */
+           box-sizing: border-box;                                      /* box-sizing is not inherited by-default. to to make it inherit, we need to define it as inherit on universal selector */
+         }
+		 
+		 
+         /*----------------*/		 
+         /* Header Section */
+         /*----------------*/		 
+	 
+         .header
+         {
+           height: 95vh;                                                                                                                      /* Giving space at the bottom i.e. viewport height*/
+           background-image: linear-gradient(to right bottom, rgba(126, 213, 111, 0.8), rgba(22, 119, 87, 0.8)), url(../images/demo/hero.jpg);        /* specied color below will go towards right bottom from probably left top */
+           background-size: cover;                                                                                                            /* it always tries to fit the element inside of the box */
+           background-position: center;                                                                                                       /* Center of the image will not get croped when the window is re-sized */
+           background-attachment:fixed;
+           clip-path: polygon(0 0, 100% 0, 100% 75vh, 0% 100%);
+           position: relative;
+         }
+		 
+         .header__logo-box
+         {
+           position: absolute;
+           top: 4rem;
+           left: 4rem;
+         }
+		 
+         .header__logo
+         {
+           height: 3.5rem;                                           /* width will be automatically adjust by the browser. so we don't need to specify */
+         }
+		 
+         .header__middle-section-box
+         {
+           position: absolute;
+           top: 40%;
+           left: 50%;
+           transform: translate(-50%, -50%);
+           text-align: center;
+         }
+		 
+		 
+		 
+         /*--------------*/		 
+         /* Use of Grid */
+         /*--------------*/
+		 
+         .Container
+         {
+           display: grid;
+           grid-template-columns: 1fr 1fr;
+           grid-template-areas: 'firstField' 'secondField';
+         } 
+		 
+         .columnOne
+         {
+           grid-area:firstField;
+           border:solid gray 1px;
+         }
+	 
+         .columnTwo
+         {
+           grid-area:secondField;
+           border:solid gray 1px;
+         }
+		 
+         /*if IPAD (768px) or above i.e. Desktop then do this*/
+         @media screen and (min-width: 768px) 
+         {
+             .Container
+             {
+               grid-template-columns: 1fr 1fr;
+               grid-template-areas: 'firstField secondField';
+             }      
+         }
+		 
+         /*----------------*/		 
+         /* Other Sections */
+         /*----------------*/
+		 
+         .section-about
+         {
+           background-color: #f7f7f7;
+           padding: 25rem 0;
+           margin-top: -20vh;
+         }
+		 
+         .section-feature
+         {
+           background-image: linear-gradient(to right bottom, rgba(126, 213, 111, 0.8), rgba(22, 119, 87, 0.8)), url(../images/demo/nat-4.jpg);
+           padding: 20rem 0;
+           margin-top: -10rem;
+           background-size: cover;
+           transform: skewY(-7deg);
+         }
+         .section-feature > *
+         {
+           transform: skewY(7deg);
+         }
+    
+         .mediumFont
+         {
+           color: #fff;
+           text-transform: uppercase;
+           letter-spacing: 3.5rem;
+           font-size: 1.5rem;
+           font-weight: 400;
+           background-color:black;
+         }
+	

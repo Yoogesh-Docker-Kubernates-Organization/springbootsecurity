@@ -1,0 +1,42 @@
+#What do we want
+apiVersion: v1
+kind: PersistentVolumeClaim
+
+metadata:
+  name: yoogesh-pvc
+    
+spec:
+  storageClassName: myLocalStorage
+  accessMode:
+    - readWriteOnce
+  resources:
+    requests:
+      storage: 20Gi                     # This tells how many storage we are expecting. it should be always equal or less then the below storage
+    
+    
+    
+---    
+
+#What do we want it to be implemneted
+apiVersion: v1
+kind: PersistentVolume
+
+metadata:
+  name: local-storage
+    
+spec:
+  storageClassName: myLocalStorage
+  capacity:
+    storage: 20Gi                        # This tells how many actual physical storage we want to seperate for it. we can put 100 Gi also
+  accessMode:
+    - readWriteOnce
+  hostPath:
+    path: "/etc/db/mysql"
+    type: DirectoryOrCreate
+    
+    
+    
+    
+#Mysql says hey i need 20Gi storage. hey kubernates can you please fulfill it please.
+#Kubernates says no problem here you go. i am giving you exactly 20Gi or more but i will not give you less ok.
+#Make sure the otherway will not work.

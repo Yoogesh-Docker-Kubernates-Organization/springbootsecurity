@@ -1,0 +1,29 @@
+	/*----------------------------*/		 
+	/* Regular Stuff we need to do */
+	/*-----------------------------*/
+	
+	*, *::after, *::before 
+	{
+	  padding: 0;
+	  margin: 0;
+	  box-sizing: inherit;
+	}	
+	
+	html 
+	{
+	  font-size: 62.5%;     /* i.e. 62.5% of 16px = 10px */
+	}		 
+	
+	body
+	{
+	  font-family: 'lato', 'Arial', 'sans-serif';
+	  font-weight: 400;
+	  line-height: 1.7;                      /* 1.7 times bigger than the predefined which would have without this */
+	  color: #777;
+	  background-color: #fff;
+	  overflow-x: hidden;                    /* do not show the horizontal scroll bar when texts are overflowed */
+	  text-rendering: optimizeLegibility;
+	  padding: 3rem;                        /* optional...It makes 30px space into all THREE sides except BUTTOM.If we want for For Buttom too , we need to do height:95vh which we have done in .header class */
+	  box-sizing: border-box;               /* box-sizing is not inherited by-default. to to make it inherit, we need to define it as inherit on universal selector */
+	}
+	

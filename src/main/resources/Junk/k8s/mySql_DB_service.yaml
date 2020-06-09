@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: pod
+
+metadata:
+  name: mysql
+  labels:
+    mylabelName: yoogeshmysql
+    
+spec:
+  containers:
+  - name: webapp
+    image: mysql:5
+    env:
+     - name: MYSQL_ROOT_PASSWORD
+       value: password
+     - name: MYSQL_DATABASE
+       value: myDatabase
+    volumeMounts:
+     - name: yooesh-mysql-persistence
+       mounthPath: /var/lib/mysql
+  volums:
+    - name: yooesh-mysql-persistence
+      hostpath:
+        path: /etc/db/mysql
+        type: DirectoryOrCreate
+       
+---
+
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: yoogesh-database
+  
+spec:
+  selector:
+    mylabelName: yoogeshmysql
+   
+  ports:
+  - port: 3306 
+  type: ClusterIp
+  
+  
+  
+  
+  

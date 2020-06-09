@@ -1,0 +1,32 @@
+#What do we want
+apiVersion: v1
+kind: PersistentVolumeClaim
+
+metadata:
+  name: yoogesh-pvc
+    
+spec:
+  storageClassName: cloud-ssd
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      #Mysql says hey i need 20Gi storage. hey kubernates can you please fulfill it please.
+      #Kubernates will dynamically allocated the storage with not less than 20Gi
+      storage: 20Gi
+  
+---    
+
+#What do we want it to be implemneted
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+
+metadata:
+  name: cloud-ssd
+  
+provisioner: kubernetes.io/aws-ebs
+    
+parameters:
+  type: io1
+  iopsPerGB: "10"
+  fsType: ext4

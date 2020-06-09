@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  name: webapp
+  
+spec:
+  minReadySeconds: 30      #changing the default value to 30 for finetune
+  selector:
+    matchLabels:
+      mylabelName: yoogeshWebapp
+      
+  replicas: 2
+  
+  template:
+    metadata:
+      name: webapp
+      labels:
+        mylabelName: yoogeshWebapp
+    spec:
+      containers:
+      - name: webapp
+        image: yoogesh1983/springbootsecurity:release0-5       #here the version is release0-5
+        
