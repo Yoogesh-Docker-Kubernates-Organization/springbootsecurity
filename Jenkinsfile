@@ -2,12 +2,8 @@ pipeline {
    agent any
 
    environment {
-     // You must set the following environment variables
-     // ORGANIZATION_NAME
-     // YOUR_DOCKERHUB_USERNAME (it doesn't matter if you don't have one)
-
-     SERVICE_NAME = "fleetman-position-tracker"
-     REPOSITORY_TAG="${YOUR_DOCKERHUB_USERNAME}/${ORGANIZATION_NAME}-${SERVICE_NAME}:${BUILD_ID}"
+     SERVICE_NAME = "springbootsecurity"
+     REPOSITORY_TAG="${DOCKERHUB_USERNAME}/${SERVICE_NAME}:version_${BUILD_ID}"
    }
 
    stages {
@@ -19,7 +15,7 @@ pipeline {
       }
       stage('Build') {
          steps {
-            sh '''mvn clean package'''
+            sh "mvn clean package"
          }
       }
 
@@ -27,12 +23,6 @@ pipeline {
          steps {
            sh 'docker image build -t ${REPOSITORY_TAG} .'
          }
-      }
-
-      stage('Deploy to Cluster') {
-          steps {
-                    sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f -'
-          }
       }
    }
 }
