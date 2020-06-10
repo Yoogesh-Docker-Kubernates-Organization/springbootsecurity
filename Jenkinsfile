@@ -3,7 +3,7 @@ pipeline {
 
    environment {
      SERVICE_NAME = "springbootsecurity"
-     REPOSITORY_TAG="${DOCKERHUB_USERNAME}/${SERVICE_NAME}:version_${BUILD_ID}"
+     REPOSITORY_TAG="${DOCKERHUB_USERNAME}/${SERVICE_NAME}:latest"
    }
 
    stages {
