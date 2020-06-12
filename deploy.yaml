@@ -1,0 +1,147 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  name: webapp
+  
+spec:
+  selector:
+    matchLabels:
+      mylabelName: yoogeshWebapp
+      
+  replicas: 1
+  
+  template:
+    metadata:
+      name: webapp
+      labels:
+        mylabelName: yoogeshWebapp
+    spec:
+      containers:
+      - name: webapp
+        image: yoogesh1983/springbootsecurity:latest
+        env:
+        - name: envTarget 
+          value: dev
+        
+---
+
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: twm-webapp
+  
+spec:
+ selector:
+   mylabelName: yoogeshWebapp
+   
+ ports:
+   - name: http
+     port: 80
+     targetPort: 8080
+     
+ type: LoadBalancer
+ 
+ 
+ 
+ 
+ 
+ 
+---
+
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: yoogeshmysql
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      labels:
+        app: yoogeshmysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8.0
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: password
+        - name: MYSQL_DATABASE
+          value: myDatabase
+        volumeMounts:
+          - name: yoogesh-mysql-persistence
+            mountPath: /var/lib/mysql
+      volumes:
+        - name: yoogesh-mysql-persistence
+          # pointer to the configuration of HOW we want the mount to be implemented
+          persistentVolumeClaim:
+            claimName: yoogesh-pvc
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: yoogesh-database
+spec:
+  selector:
+    app: yoogeshmysql
+  ports:
+  - port: 3306
+  type: ClusterIP
+
+  
+  
+---
+
+
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  name: webapp
+  
+spec:
+  selector:
+    matchLabels:
+      mylabelName: yoogeshWebapp
+      
+  replicas: 1
+  
+  template:
+    metadata:
+      name: webapp
+      labels:
+        mylabelName: yoogeshWebapp
+    spec:
+      containers:
+      - name: webapp
+        image: yoogesh1983/springbootsecurity:latest
+        env:
+        - name: envTarget 
+          value: dev
+        
+---
+
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: twm-webapp
+  
+spec:
+ selector:
+   mylabelName: yoogeshWebapp
+   
+ ports:
+   - name: http
+     port: 80
+     targetPort: 8080
+     
+ type: LoadBalancer
