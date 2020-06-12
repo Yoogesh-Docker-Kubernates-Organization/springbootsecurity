@@ -1,56 +1,37 @@
-apiVersion: apps/v1
-
-kind: Deployment
-
-metadata:
-  name: webapp
-  
-spec:
-  selector:
-    matchLabels:
-      mylabelName: yoogeshWebapp
-      
-  replicas: 1
-  
-  template:
-    metadata:
-      name: webapp
-      labels:
-        mylabelName: yoogeshWebapp
-    spec:
-      containers:
-      - name: webapp
-        image: yoogesh1983/springbootsecurity:latest
-        env:
-        - name: envTarget 
-          value: dev
-        
----
-
+#What do we want
 apiVersion: v1
-kind: Service
+kind: PersistentVolumeClaim
 
 metadata:
-  name: twm-webapp
-  
+  name: yoogesh-pvc
+    
 spec:
- selector:
-   mylabelName: yoogeshWebapp
-   
- ports:
-   - name: http
-     port: 80
-     targetPort: 8080
-     
- type: LoadBalancer
- 
- 
- 
- 
- 
- 
----
+  storageClassName: cloud-ssd
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      #Mysql says hey i need 20Gi storage. hey kubernates can you please fulfill it please.
+      #Kubernates will dynamically allocated the storage with not less than 20Gi
+      storage: 20Gi
+  
+---    
 
+#What do we want it to be implemneted
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+
+metadata:
+  name: cloud-ssd
+  
+provisioner: kubernetes.io/aws-ebs
+    
+parameters:
+  type: io1
+  iopsPerGB: "10"
+  fsType: ext4
+  
+---
 
 
 apiVersion: apps/v1
