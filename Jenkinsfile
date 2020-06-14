@@ -42,7 +42,7 @@ pipeline {
 					sh 'kubectl apply -f deploy.yaml'
 					
 					echo 'Sleeping for 5 second before starting webApp....'
-					sleep(time:3,unit:"SECONDS")
+					sleep(time:30,unit:"SECONDS")
 					
 					sh 'kubectl apply -f webApp.yaml'
 			}
