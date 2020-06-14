@@ -39,7 +39,11 @@ pipeline {
 		
 		stage('Deploy to Cluster') {
 			steps {
-					sh 'kubectl apply -f deploy.yaml'
+					sh 'kubectl apply -f /resources/devops/k8s_aws/deploy.yaml'
+					
+					echo 'Sleeping for 5 second before starting webApp....'
+					
+					//sleep(time:3,unit:"SECONDS")
 			}
 		}
 		
