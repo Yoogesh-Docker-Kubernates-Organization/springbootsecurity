@@ -36,10 +36,12 @@ pipeline {
             	}
 		}
 		
+		/*
 		stage('Deploy to Cluster') {
 			steps {
 					sh 'kubectl apply -f deploy.yaml'
 			}
 		}
+		*/
 	}
 }
