@@ -96,7 +96,7 @@ kind: Role
 
 metadata: 
   name: new-joiner
-  namespace: playGround
+  namespace: playground
   
 rules:
 
@@ -111,7 +111,7 @@ kind: RoleBinding
 
 metadata:
   name: ROLE_BINDING_NEW_JOINER
-  namespace: playGround
+  namespace: playground
 
 subjects:
 
