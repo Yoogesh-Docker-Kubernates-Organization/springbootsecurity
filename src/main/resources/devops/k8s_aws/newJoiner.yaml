@@ -1,0 +1,36 @@
+apiVersion: rbac.authorization.k8s.io/v1
+
+kind: Role
+
+metadata: 
+  name: new-joiner
+  namespace: playGround
+  
+rules:
+
+- apiGroups: ["", "apps"]
+  resources: ["*"] 
+  verbs: ["get", "list", "watch"]
+  
+  
+---
+
+kind: RoleBinding
+
+metadata:
+  name: ROLE_BINDING_NEW_JOINER
+  namespace: playGround
+
+subjects:
+
+- kind: User
+  name: ysharma@kksoftware.com
+  
+- kind: User
+  name: sushila@kksoftware.com
+
+roleRef:
+  kind: Role
+  name: new-joiner
+  apiGroup: rbac.authorization.k8s.io
+  
