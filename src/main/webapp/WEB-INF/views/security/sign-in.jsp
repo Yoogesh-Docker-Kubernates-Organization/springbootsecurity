@@ -13,7 +13,7 @@
  <!-- Display the image -->
 <img src="<c:url value="/static/images/Spring1.png"/>" style="max-height:60px;"/>
 
-<h3>Login with Username and Password</h3> </br>
+<h3>Login with Username and Password_testing</h3> </br>
 
 <c:if test="${param.error != null}">
 	<p class="error">Login failed. Check that your username and password are correct.</p>
