@@ -8,3 +8,4 @@ metadata:
   
 data:
   refreshScope.message.on.the.fly: This is Origial message
+  envTarget: local

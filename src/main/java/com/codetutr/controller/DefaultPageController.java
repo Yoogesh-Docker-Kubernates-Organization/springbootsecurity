@@ -20,6 +20,9 @@ public class DefaultPageController
 	@Value("${refreshScope.message.on.the.fly}")
 	private String message;
 	
+	@Value("${envTarget}")
+	private String currentProile;
+	
 	@GetMapping(value="/")
 	public String homePage(ModelMap model, HttpServletRequest request, HttpServletResponse response) 
 	{
@@ -28,7 +31,7 @@ public class DefaultPageController
 	
 	@GetMapping(value="/forwardRequestViaFilter")
 	public String forwardRequest() {
-		logger.info("refreshScope.message.on.the.fly = {}", message);
+		logger.info("refreshScope.message.on.the.fly = {} and current Profile =  {}", message, currentProile);
 		return "forward:/v2/api-docs";
 	}
 }
