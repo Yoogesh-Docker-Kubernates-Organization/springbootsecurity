@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 
 metadata: 
-  name: Spring-Security-Global-Config-Map
+  name: spring-security-global-config-map
   namespace: default
   
 data:
