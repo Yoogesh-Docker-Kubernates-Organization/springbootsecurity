@@ -39,6 +39,7 @@ pipeline {
 		
 		stage('Deploy to Cluster') {
 			steps {
+					sh 'kubectl apply -f configMap.yaml'
 					sh 'kubectl apply -f deploy.yaml'
 					
 					echo 'Sleeping for 60 second before starting webApp....'

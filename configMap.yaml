@@ -1,0 +1,10 @@
+apiVersion: v1
+
+kind: ConfigMap
+
+metadata: 
+  name: Spring-Security-Global-Config-Map
+  namespace: default
+  
+data:
+  refreshScope.message.on.the.fly: This is Origial message
