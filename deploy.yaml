@@ -68,7 +68,9 @@ spec:
           # pointer to the configuration of HOW we want the mount to be implemented
           persistentVolumeClaim:
             claimName: yoogesh-pvc
+                  
 ---
+
 kind: Service
 apiVersion: v1
 metadata:
@@ -79,3 +81,50 @@ spec:
   ports:
   - port: 3306
   type: ClusterIP
+  
+---
+
+
+
+
+
+
+########################################################################################################
+# This is Cluster Based Authentication (CBAC) to privide an access for Spring cloud kubernetes
+######################################################################################################## 
+
+apiVersion: rbac.authorization.k8s.io/v1
+
+kind: ClusterRole
+
+metadata: 
+  namespace: default
+  name: spring-roles
+  
+rules:
+
+- apiGroups: [""] # Indicates the core API Group
+  resources: ["pods","configmaps"]
+  verbs: ["get", "list", "watch"]
+
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+
+kind: ClusterRoleBinding
+
+metadata:
+  name: ALLOW_SPRING_TO_ACCESS_CLUSTER
+
+subjects:
+
+- kind: ServiceAccount
+  name: default
+  namespace: default
+  
+roleRef:
+  kind: ClusterRole
+  name: spring-roles
+  apiGroup: rbac.authorization.k8s.io
+  
