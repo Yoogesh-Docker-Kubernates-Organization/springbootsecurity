@@ -83,13 +83,60 @@ spec:
   
   
   
-  
+---  
   
 ########################################################################################################
-#Role Based Authentication (RBAC)
+# This is Cluster Based Authentication (CBAC)
+
+# Normally a Role Based Authentication (RBAC) is for only one namespace. so if you want to give an access to the user who can move around the cluster
+# and has an access to create and deploy the application to any namespace he wants then go for CBAC.
 ######################################################################################################## 
- 
+
+apiVersion: rbac.authorization.k8s.io/v1
+
+kind: ClusterRole
+
+metadata: 
+  name: new-joiner
+  
+rules:
+
+- apiGroups: ["", "apps", "autoscaling", "extensions"]
+  resources: ["*"]                                         # pods, services, deployments...
+  verbs: ["get", "list", "watch"]                          # User is get Only a read acess i.e. get call, listout calls and watch for change
+
+
 ---
+
+apiVersion: rbac.authorization.k8s.io/v1
+
+kind: ClusterRoleBinding
+
+metadata:
+  name: CLUSTER_ROLE_BINDING_NEW_JOINER
+
+subjects:
+
+- kind: User
+  name: ysharma@kksoftware.com
+  
+- kind: User
+  name: sushila@kksoftware.com
+
+roleRef:
+  kind: ClusterRole
+  name: new-joiner
+  apiGroup: rbac.authorization.k8s.io
+  
+  
+---
+
+########################################################################################################
+#Role Based Authentication (RBAC)
+
+# Here we want to give a user to ALL access at "playground" namespace But only a READ access to other namespaces
+######################################################################################################## 
+
 apiVersion: rbac.authorization.k8s.io/v1
 
 kind: Role
@@ -100,9 +147,9 @@ metadata:
   
 rules:
 
-- apiGroups: ["", "apps"]
+- apiGroups: ["", "apps", "extensions"]
   resources: ["*"] 
-  verbs: ["get", "list", "watch"]
+  verbs: ["*"]                             #"get", "list", "watch", "patch", "batch" etc...
   
   
 ---
@@ -126,4 +173,5 @@ roleRef:
   kind: Role
   name: new-joiner
   apiGroup: rbac.authorization.k8s.io
+ 
   
