@@ -8,7 +8,7 @@ import com.nimbusds.oauth2.sdk.util.StringUtils;
 
 public class MyJob {
 	
-	private static final String defaultMessage = "Your application is currently Running on a Local server.Don't forget to include \'spring-cloud-starter-kubernetes-config\' in a Pom.xml file to enable ConfigMap settings when running on Kubernetes Cluster.";
+	private static final String defaultMessage = "ConfigMap is currently disabled in this application. Don't forget to include \'spring-cloud-starter-kubernetes-config\' in a Pom.xml file to enable ConfigMap settings if you are running on Kubernetes Cluster.";
 	private static final String configMap_Message = "kubernetes.message.on.the.fly";
 	
 	@Autowired
