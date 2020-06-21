@@ -43,6 +43,15 @@ The application can now be browsed at http://localhost:8888/springbootsecurity/d
 
 	#Modify the [appName] with your WAS application name and un-comment the line below.
 	log4j.appender.file.File=\\usr\\local\\opt\\logs\\SpringBootSecurity_prod.log
+	
+<b>Do the following changes for log if you are running On a Kubernetes Cluster and want to enable ConfigMap: </b> </br>
+> In logback-spring.xml, comment out the Windows specific line and include below snippet:
+
+	<dependency>
+		  <groupId>org.springframework.cloud</groupId>
+		   <artifactId>spring-cloud-starter-kubernetes-config</artifactId>
+		   <version>${spring.cloud.kubernetes.version}</version>
+	</dependency>
 
 The application can now be browsed at http://localhost:8080/springbootsecurity/ </br>
 Remember you are not providing <b>/dispatcher</b> here</br>
