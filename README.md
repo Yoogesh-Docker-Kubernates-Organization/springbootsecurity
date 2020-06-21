@@ -45,7 +45,7 @@ The application can now be browsed at http://localhost:8888/springbootsecurity/d
 	log4j.appender.file.File=\\usr\\local\\opt\\logs\\SpringBootSecurity_prod.log
 	
 <b>If you are running on a Kubernetes Cluster and want to enable ConfigMap: </b> </br>
-> In pom.xml, include below dependency which is currently commented out:
+> In pom.xml, enable below dependency which is disabled currently:
 
 	<dependency>
 		  <groupId>org.springframework.cloud</groupId>
