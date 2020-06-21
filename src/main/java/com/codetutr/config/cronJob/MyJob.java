@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import com.nimbusds.oauth2.sdk.util.StringUtils;
+
 public class MyJob {
 	
+	private static final String configMap_Message = "kubernetes.message.on.the.fly";
 	@Autowired
 	private Environment env;
 	
@@ -15,6 +18,7 @@ public class MyJob {
 	 */
 	@Scheduled(fixedRate=100000)
 	public void sendMessage() {
-		System.out.println("Sending Messages in every 100 second............." + env.getProperty("refreshScope.message.on.the.fly") + "   Environment: " + env.getProperty("envTarget"));
+		String message = StringUtils.isBlank(env.getProperty(configMap_Message)) ? "Your application is currently Running on a Local server.Don't forget to Enable the Spring-cloud-kubernetes properties for ConfigMap settings when running in a Kubernetes Cluster." : env.getProperty(configMap_Message);
+		System.out.println("Sending Messages in every 100 second............." + message);
 	}
 }
