@@ -21,6 +21,9 @@ spec:
       containers:
       - name: webapp
         image: yoogesh1983/springbootsecurity:latest
+        env:
+        - name: envTarget 
+          value: dev
         
 ---
 
