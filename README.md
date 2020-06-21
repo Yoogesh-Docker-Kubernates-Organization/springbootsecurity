@@ -44,8 +44,10 @@ The application can now be browsed at http://localhost:8888/springbootsecurity/d
 	#Modify the [appName] with your WAS application name and un-comment the line below.
 	log4j.appender.file.File=\\usr\\local\\opt\\logs\\SpringBootSecurity_prod.log
 	
-<b>Enable below dependency at pom.xml if you are running on a Kubernetes Cluster and want to enable ConfigMap: </b> </br>
+<b>If you are running on a Kubernetes Cluster and want to enable ConfigMap: </b> </br>
+> In pom.xml, include below dependency which is currently commented out:
 
+        #Enable below dependency which is disalbed currently
 	<dependency>
 		  <groupId>org.springframework.cloud</groupId>
 		   <artifactId>spring-cloud-starter-kubernetes-config</artifactId>
