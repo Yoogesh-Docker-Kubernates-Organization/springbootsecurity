@@ -5,10 +5,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +20,6 @@ public class DefaultPageController
 	@Value("${refreshScope.message.on.the.fly}")
 	private String message;
 	
-	@Autowired
-	private Environment env;
-	
 	@GetMapping(value="/")
 	public String homePage(ModelMap model, HttpServletRequest request, HttpServletResponse response) 
 	{
@@ -33,7 +28,7 @@ public class DefaultPageController
 	
 	@GetMapping(value="/forwardRequestViaFilter")
 	public String forwardRequest() {
-		logger.info("refreshScope.message.on.the.fly = {} and current Profile =  {}", message, env.getProperty("envTarget"));
+		logger.info("refreshScope.message.on.the.fly = {}", message);
 		return "forward:/v2/api-docs";
 	}
 }
