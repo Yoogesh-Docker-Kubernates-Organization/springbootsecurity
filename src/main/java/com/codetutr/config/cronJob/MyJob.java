@@ -8,7 +8,9 @@ import com.nimbusds.oauth2.sdk.util.StringUtils;
 
 public class MyJob {
 	
+	private static final String defaultMessage = "Your application is currently Running on a Local server.Don't forget to include \'spring-cloud-starter-kubernetes-config\' in a Pom.xml file to enable ConfigMap settings when running on Kubernetes Cluster.";
 	private static final String configMap_Message = "kubernetes.message.on.the.fly";
+	
 	@Autowired
 	private Environment env;
 	
@@ -18,7 +20,7 @@ public class MyJob {
 	 */
 	@Scheduled(fixedRate=100000)
 	public void sendMessage() {
-		String message = StringUtils.isBlank(env.getProperty(configMap_Message)) ? "Your application is currently Running on a Local server.Don't forget to Enable the Spring-cloud-kubernetes properties for ConfigMap settings when running in a Kubernetes Cluster." : env.getProperty(configMap_Message);
+		String message = StringUtils.isBlank(env.getProperty(configMap_Message)) ? defaultMessage : env.getProperty(configMap_Message);
 		System.out.println("Sending Messages in every 100 second............." + message);
 	}
 }

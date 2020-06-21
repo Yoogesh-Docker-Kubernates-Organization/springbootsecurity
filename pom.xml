@@ -283,19 +283,19 @@
 			<version>${swagger.version}</version>
 		</dependency>
 		
-		<!-- For RefreshScope -->
+		<!-- For Spring cloud config 
 		<dependency>
 		    <groupId>org.springframework.cloud</groupId>
 		    <artifactId>spring-cloud-config-client</artifactId>
 		    <version>${spring.cloud.config.client.version}</version>
-		</dependency>
+		</dependency> -->
 		
-		<!-- For Spring Cloud Kubernetes -->
+		<!-- For Spring Cloud Kubernetes
 		<dependency>
 		    <groupId>org.springframework.cloud</groupId>
 		    <artifactId>spring-cloud-starter-kubernetes-config</artifactId>
 		    <version>${spring.cloud.kubernetes.version}</version>
-		</dependency>
+		</dependency> -->
 		
 		<!-- For @ConfigurationProperties annotation -->
 		<dependency>
