@@ -44,7 +44,7 @@
 		<html2pdf.version>[2.1.6,)</html2pdf.version>
 		
 		<!-- Swagger version -->
-		<swagger.version>[2.9.2,)</swagger.version>
+		<swagger.version>2.9.2</swagger.version>
 		
 		<!-- JsonWebToken version -->
 		<jsonwebtoken.version>0.9.1</jsonwebtoken.version>
