@@ -47,6 +47,11 @@ pipeline {
 					sleep(time:60,unit:"SECONDS")
 					
 					sh 'kubectl apply -f webApp.yaml'
+
+					echo 'Sleeping for 15 second before starting ingress....'
+					sleep(time:15,unit:"SECONDS")
+
+					sh 'kubectl apply -f ingress.yaml'
 			}
 		}
 		

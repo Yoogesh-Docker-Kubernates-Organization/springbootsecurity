@@ -1,0 +1,21 @@
+##################################################################################################
+# This is Ingress Controller Configuration
+# from version 2.24 of k8s [You can check the current version using 'kubectl version']
+##################################################################################################  
+
+apiVersion: networking.k8s.io/v1beta1
+
+kind: Ingress
+
+metadata:
+  name: basic-routing
+    
+spec:
+  rules:
+    - host: springbootsecurity.com
+      http:
+        paths:
+          - path: /springbootsecurity/dispatcher
+            backend:
+              serviceName: twm-webapp
+              servicePort: 80
