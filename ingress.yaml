@@ -19,3 +19,4 @@ spec:
             backend:
               serviceName: twm-webapp
               servicePort: 80
+              
