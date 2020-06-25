@@ -4,6 +4,7 @@
 
 const openChatWindow = () => {
 	
+	let baseUrl = document.getElementById('base_url').value;
 	let username = document.getElementById('firststep_receiverUsername').value;
 	let currentUser = document.getElementById('secondstep_senderUsername').value;
 	let response = {};
@@ -32,7 +33,7 @@ const openChatWindow = () => {
 	    	}, 1000);
 	  }
 	});
-	xhr.open("GET", "http://localhost:8888/springbootsecurity/dispatcher/api/user/" + username.split("@")[0]);
+	xhr.open("GET", baseUrl + "/springbootsecurity/dispatcher/api/user/" + username.split("@")[0]);
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.send();		
 };

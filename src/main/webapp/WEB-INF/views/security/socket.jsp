@@ -1,11 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <link href="${pageContext.request.contextPath}/static/css/socket.css" rel="stylesheet" type="text/css">
 
 <script src="${pageContext.request.contextPath}/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
 <script src="${pageContext.request.contextPath}/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
 
+<!-- This is just to get  -->
+<c:set var="currentRequestURL" value="${pageContext.request.requestURL}"/>
+<c:set var="baseURL" value="${fn:substringBefore(currentRequestURL, '/springbootsecurity')}"/>
+<input type="hidden" value="${baseURL}"  id="base_url"/>
+    
 <!-- First pop-up -->
  <div class="mySocket_firstStep">
     <input type="text" name="username" placeholder="Enter the Username you want to message to .........." id="firststep_receiverUsername"/>
