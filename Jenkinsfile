@@ -39,6 +39,7 @@ pipeline {
 		
 		stage('Deploy to Cluster') {
 			steps {
+					sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/aws/deploy.yaml'
 					sh 'kubectl apply -f configMap.yaml'
 					sh 'kubectl apply -f deploy.yaml'
 					
