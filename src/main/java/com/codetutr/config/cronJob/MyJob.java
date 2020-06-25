@@ -21,6 +21,6 @@ public class MyJob {
 	@Scheduled(fixedRate=100000)
 	public void sendMessage() {
 		String message = StringUtils.isBlank(env.getProperty(configMap_Message)) ? defaultMessage : env.getProperty(configMap_Message);
-		System.out.println("Sending Messages in every 100 second............." + message);
+		System.err.println("Sending Messages in every 100 second............." + message);
 	}
 }
