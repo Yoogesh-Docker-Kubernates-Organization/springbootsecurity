@@ -35,9 +35,11 @@ const openChatWindow = () => {
 	});
 	
 	if(baseUrl.includes("localhost")){
+		console.log("BaseUrl is local.....");
 		xhr.open("GET", "http://localhost:8888/springbootsecurity/dispatcher/api/user/" + username.split("@")[0]);
 	}
 	else{
+		console.log("BaseUrl is AWS Cloud.....");
 		xhr.open("GET", baseUrl + "/springbootsecurity/api/user/" + username.split("@")[0]);
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
