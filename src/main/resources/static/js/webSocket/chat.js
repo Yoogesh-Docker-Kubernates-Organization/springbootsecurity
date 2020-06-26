@@ -33,6 +33,14 @@ const openChatWindow = () => {
 	    	}, 1000);
 	  }
 	});
+	
+	if(baseUrl.includes("localhost")){
+		xhr.open("GET", "http://localhost:8888/springbootsecurity/dispatcher/api/user/" + username.split("@")[0]);
+	}
+	else{
+		xhr.open("GET", baseUrl + "/springbootsecurity/api/user/" + username.split("@")[0]);
+	}
+	
 	xhr.open("GET", baseUrl + "/springbootsecurity/dispatcher/api/user/" + username.split("@")[0]);
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.send();		
