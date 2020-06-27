@@ -17,7 +17,7 @@ spec:
         paths:
           - path: /
             backend:
-              serviceName: fleetman-httpd-cluster
+              serviceName: yoogesh-httpd-cluster
               servicePort: 80
 
                             
