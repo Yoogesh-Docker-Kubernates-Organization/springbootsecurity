@@ -9,14 +9,15 @@ kind: Ingress
 
 metadata:
   name: basic-routing
-    
+
 spec:
   rules:
-    - host: springbootsecurity.com
+    - host: fleetman.com
       http:
         paths:
-          - path: /springbootsecurity/dispatcher
+          - path: /
             backend:
-              serviceName: twm-webapp
+              serviceName: fleetman-httpd-cluster
               servicePort: 80
-              
+
+                            
