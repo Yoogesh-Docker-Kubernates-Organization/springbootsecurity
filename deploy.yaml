@@ -142,7 +142,7 @@ apiVersion: apps/v1
 kind: Deployment
 
 metadata:
-  name: httpServer
+  name: http-server
   
 spec:
   selector:
@@ -158,7 +158,7 @@ spec:
         
     spec:
       containers:
-      - name: httpServer
+      - name: http-server
         image: httpd
 
 ---
