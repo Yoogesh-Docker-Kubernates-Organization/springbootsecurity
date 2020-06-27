@@ -1,0 +1,46 @@
+########################################################################################################
+# This is to test whether the Ingress controller is working or not. we are using httpd service here.
+######################################################################################################## 
+
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  name: http-server
+  
+spec:
+  selector:
+    matchLabels:
+      mylabelName: yoogeshHttpd
+      
+  replicas: 1
+  
+  template:
+    metadata:
+      labels:
+        mylabelName: yoogeshHttpd
+        
+    spec:
+      containers:
+      - name: http-server
+        image: httpd
+
+---
+
+apiVersion: v1
+
+kind: Service
+
+metadata:
+  name: yoogesh-httpd-cluster
+  
+spec:
+  selector:
+    mylabelName: yoogeshHttpd
+    
+  ports:
+    - name: http
+      port: 80
+
+  type: ClusterIP

@@ -17,7 +17,6 @@ spec:
         paths:
           - path: /
             backend:
-              serviceName: yoogesh-httpd-cluster
+              serviceName: twm-webapp
               servicePort: 80
-
                             
