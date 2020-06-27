@@ -1,7 +1,7 @@
 # What is the Application about? </br>
 - This is a Spring-Boot application that uses Spring-Security</br>
 - This application can be run from a <b>commandLine</b> or from <b>eclipse</b> using embedded server at Port <b>8888</b> and can also be run at external webServer like <b>tomcat</b> at port <b>8080</b> </br>
-- This project is created on a java version 11, so the version of java to run this project must be java 11 or more
+- This project is created on a java version 11, so the version of java to run this project must be java 11 or higher
 
 # How to run the Application? </br>
 Do the following once the compile is done and war is created inside a target folder:</br>
