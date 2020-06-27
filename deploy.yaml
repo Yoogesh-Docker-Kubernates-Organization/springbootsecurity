@@ -138,32 +138,42 @@ roleRef:
 ######################################################################################################## 
 
 apiVersion: apps/v1
+
 kind: Deployment
+
 metadata:
-  name: httpd1
+  name: httpServer
+  
 spec:
   selector:
     matchLabels:
-      app: httpd1
+      mylabelName: yoogeshHttpd
+      
   replicas: 1
+  
   template:
     metadata:
       labels:
-        app: httpd1
+        mylabelName: yoogeshHttpd
+        
     spec:
       containers:
-      - name: httpd1
+      - name: httpServer
         image: httpd
 
 ---
 
-kind: Service
 apiVersion: v1
+
+kind: Service
+
 metadata:
   name: fleetman-httpd-cluster
+  
 spec:
   selector:
-    app: httpd1
+    mylabelName: yoogeshHttpd
+    
   ports:
     - name: http
       port: 80
