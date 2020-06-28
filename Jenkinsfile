@@ -53,9 +53,7 @@ pipeline {
 					sleep(time:15,unit:"SECONDS")
 
 					sh 'kubectl create secret generic yoogeshcredential --from-file auth'
-					sh 'kubectl apply -f ingress_kibana.yaml'
-					sh 'kubectl apply -f ingress_private.yaml'
-					sh 'kubectl apply -f ingress_public.yaml'
+					sh 'kubectl apply -f ingress.yaml'
 			}
 		}
 		
