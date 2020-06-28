@@ -13,10 +13,10 @@ metadata:
 
 spec:
   rules:
-    - host: kibana.fleetman.com
+    - host: fleetman.com
       http:
         paths:
-          - path: /
+          - path: /kibana
             backend:
               serviceName: kibana-logging
               servicePort: 5601

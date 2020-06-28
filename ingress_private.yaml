@@ -16,10 +16,10 @@ metadata:
 
 spec:
   rules:
-    - host: admin.fleetman.com
+    - host: fleetman.com
       http:
         paths:
-          - path: /
+          - path: /httpd
             backend:
               serviceName: yoogesh-httpd-server
               servicePort: 80
