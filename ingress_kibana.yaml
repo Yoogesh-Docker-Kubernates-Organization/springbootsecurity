@@ -1,0 +1,23 @@
+##################################################################################################
+# This is Ingress Controller Configuration
+# from version 2.24 of k8s [You can check the current version using 'kubectl version']
+##################################################################################################  
+
+apiVersion: networking.k8s.io/v1beta1
+
+kind: Ingress
+
+metadata:
+  name: kibana-routing
+  namespace: kube-system
+
+spec:
+  rules:
+    - host: kibana.fleetman.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: kibana-logging
+              servicePort: 5601
+                            
