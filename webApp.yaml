@@ -23,7 +23,7 @@ spec:
         image: yoogesh1983/springbootsecurity:latest
         env:
         - name: envTarget 
-          value: dev
+          value: prod
         
 ---
 

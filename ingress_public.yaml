@@ -19,8 +19,12 @@ spec:
             backend:
               serviceName: twm-webapp
               servicePort: 80
-          - path: /httpd
+    - host: admin.fleetman.com
+      http:
+        paths:
+          - path: /
             backend:
               serviceName: yoogesh-httpd-server
               servicePort: 80
+
                             
