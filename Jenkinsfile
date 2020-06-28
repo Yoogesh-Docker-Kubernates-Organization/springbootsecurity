@@ -51,7 +51,7 @@ pipeline {
 					echo 'Sleeping for 15 second before starting ingress....'
 					sleep(time:15,unit:"SECONDS")
 
-					sh 'kubectl apply -f ingress_public'
+					sh 'kubectl apply -f ingress_public.yaml'
 			}
 		}
 		
