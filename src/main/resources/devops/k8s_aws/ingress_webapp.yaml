@@ -8,16 +8,15 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 
 metadata:
-  name: kibana-routing
-  namespace: kube-system
+  name: webapp-routing
 
 spec:
   rules:
     - host: fleetman.com
       http:
         paths:
-          - path: /kibana
+          - path: /
             backend:
-              serviceName: kibana-logging
-              servicePort: 5601
+              serviceName: twm-webapp
+              servicePort: 80
                             

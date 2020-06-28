@@ -8,15 +8,15 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 
 metadata:
-  name: public-routing
+  name: webapp-routing
 
 spec:
   rules:
-    - host: fleetman.com
+    - host: httpd.fleetman.com
       http:
         paths:
           - path: /
             backend:
-              serviceName: twm-webapp
+              serviceName: yoogesh-httpd-server
               servicePort: 80
                             
