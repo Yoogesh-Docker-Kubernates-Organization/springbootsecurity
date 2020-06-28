@@ -12,13 +12,7 @@ metadata:
 
 spec:
   rules:
-    - host: fleetman.com
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: twm-webapp
-              servicePort: 80
+  
     - host: admin.fleetman.com
       http:
         paths:
@@ -26,12 +20,12 @@ spec:
             backend:
               serviceName: yoogesh-httpd-server
               servicePort: 80
-    - host: kibana.fleetman.com
+              
+    - host: fleetman.com
       http:
         paths:
           - path: /
             backend:
-              serviceName: kibana-logging
-              servicePort: 5601
-
+              serviceName: twm-webapp
+              servicePort: 80
                             
