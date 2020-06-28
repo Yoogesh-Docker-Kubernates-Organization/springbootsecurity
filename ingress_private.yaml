@@ -8,15 +8,18 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 
 metadata:
-  name: public-routing
+  name: private-routing
+  annotations:
+     nginx.ingress.kubernetes.io/auth-type: basic
+     nginx.ingress.kubernetes.io/auth-secret: yoogeshcredential
+     nginx.ingress.kubernetes.io/auth-realm: "***** WARNING:ONLY THE ADMINISTRATOR CAN OPEN THIS WEBSITE *****"
 
 spec:
   rules:
-    - host: fleetman.com
+    - host: admin.fleetman.com
       http:
         paths:
           - path: /
             backend:
-              serviceName: twm-webapp
+              serviceName: yoogesh-httpd-server
               servicePort: 80
-                            
