@@ -52,8 +52,9 @@ pipeline {
 					echo 'Sleeping for 15 second before starting ingress....'
 					sleep(time:15,unit:"SECONDS")
 
-					sh 'kubectl create secret generic yoogeshcredential --from-file auth'
-					sh 'kubectl apply -f ingress.yaml'
+					sh 'kubectl create secret generic yoogeshcredential --from-file auth -n kube-system'
+					sh 'kubectl apply -f ingress_kibana.yaml'
+					sh 'kubectl apply -f ingress_webapp.yaml'
 			}
 		}
 		
