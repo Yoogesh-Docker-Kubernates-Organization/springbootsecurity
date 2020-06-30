@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+
+metadata:
+  name: python-job
+
+#Job specification starts from here
+spec:
+  template:
+    
+    #pod specifiction starts from here  
+    spec:
+      containers:
+      - name: long-job
+        image: python:rc-slim
+        command: ["python"]
+        args: ["-c", "import time; print('Job started.....'); time.sleep(30); print('Job completed.....')"]
+      restartPolicy: Never
+      
+  backoffLimit: 2
+  
