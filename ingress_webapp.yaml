@@ -19,4 +19,20 @@ spec:
             backend:
               serviceName: twm-webapp
               servicePort: 80
+              
+    - host: prometheus.fleetman.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: monitoring-prometheus-oper-prometheus
+              servicePort: 9090
+              
+    - host: grafana.fleetman.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: monitoring-grafana
+              servicePort: 80
                             
