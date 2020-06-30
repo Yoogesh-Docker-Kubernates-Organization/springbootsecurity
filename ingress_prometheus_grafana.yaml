@@ -8,15 +8,24 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 
 metadata:
-  name: webapp-routing
+  name: monitoring-routing
+  namespace: monitoring
 
 spec:
   rules:
-    - host: fleetman.com
+    - host: prometheus.fleetman.com
       http:
         paths:
           - path: /
             backend:
-              serviceName: twm-webapp
+              serviceName: monitoring-prometheus-oper-prometheus
+              servicePort: 9090
+              
+    - host: grafana.fleetman.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: monitoring-grafana
               servicePort: 80
                             
