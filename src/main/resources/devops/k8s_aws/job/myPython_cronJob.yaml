@@ -7,7 +7,7 @@ metadata:
 #CronJob specification starts from here
 spec:
   #Runs every 5 min
-  schedule: "5 * * * *"
+  schedule: "*/1 * * * *"
   jobTemplate: 
   
      #Job specification starts from here
