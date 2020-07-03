@@ -52,12 +52,15 @@ pipeline {
 					echo 'Sleeping for 15 second before starting ingress....'
 					sleep(time:15,unit:"SECONDS")
 
+					sh 'kubectl apply -f ingress_webapp.yaml'
+
 					/* Commenting out this one since we are not using basic-authentication for ingress_kibana.yaml currently
 					sh 'kubectl create secret generic yoogeshcredential --from-file auth -n kube-system' */
-
+					
+					/* If you need the Kibana, Grafana and Premetheus feature enable below lines
 					sh 'kubectl apply -f ingress_kibana.yaml'
-					sh 'kubectl apply -f ingress_webapp.yaml'
-					sh 'kubectl apply -f ingress_prometheus_grafana.yaml'
+					sh 'kubectl apply -f ingress_prometheus_grafana.yaml' 
+					*/
 			}
 		}
 		
