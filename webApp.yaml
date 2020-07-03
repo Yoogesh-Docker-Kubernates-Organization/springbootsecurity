@@ -24,6 +24,16 @@ spec:
         env:
         - name: envTarget 
           value: prod
+          
+        readinessProbe:
+          httpGet:
+            path: /springbootsecurity
+            port: 8080
+            
+        resources:
+          requests:
+            memory: 50Mi
+            cpu: 20m
         
 ---
 
