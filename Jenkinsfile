@@ -33,7 +33,6 @@ pipeline {
 						sh "docker login -u yoogesh1983 -p ${DOCKER_HUB_CREDENTIALS}"
 					}
             		sh 'docker push ${REPOSITORY_TAG}'
-					cleanWs()
             	}
 		}
 		
