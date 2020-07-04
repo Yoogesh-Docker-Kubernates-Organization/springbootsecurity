@@ -33,6 +33,7 @@ pipeline {
 						sh "docker login -u yoogesh1983 -p ${DOCKER_HUB_CREDENTIALS}"
 					}
             		sh 'docker push ${REPOSITORY_TAG}'
+					cleanWs()
             	}
 		}
 		
@@ -61,7 +62,6 @@ pipeline {
 					sh 'kubectl apply -f ingress_kibana.yaml'
 					sh 'kubectl apply -f ingress_prometheus_grafana.yaml' 
 					*/
-					cleanWs()
 			}
 		}
 		
