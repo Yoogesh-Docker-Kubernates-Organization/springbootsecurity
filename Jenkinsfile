@@ -40,7 +40,7 @@ pipeline {
 		stage('Deploy to Cluster') {
 			steps {
 					sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/aws/deploy.yaml'
-					sh 'kubectl apply -f configMap.yaml'
+					sh 'kubectl apply -f devops/k8s_aws/configMap.yaml'
 					sh 'kubectl apply -f deploy.yaml'
 					
 					echo 'Sleeping for 60 second before starting webApp....'
