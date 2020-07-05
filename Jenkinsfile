@@ -3,6 +3,7 @@ pipeline {
 	
 	environment {
 		SERVICE_NAME = "springbootsecurity"
+		YAML_PATH = "src/main/resources/devops/k8s_aws"
 		REPOSITORY_TAG="${DOCKERHUB_USERNAME}/${SERVICE_NAME}:latest"
 	}
 	
@@ -39,28 +40,32 @@ pipeline {
 		
 		stage('Deploy to Cluster') {
 			steps {
+					/* Ingress controller configuration */
 					sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/aws/deploy.yaml'
-					sh 'kubectl apply -f src/main/resources/devops/k8s_aws/configMap.yaml'
-					sh 'kubectl apply -f deploy.yaml'
-					
+					sh "kubectl create secret generic yoogeshcredential --from-file ${YAML_PATH}/auth/auth -n kube-system"
+
+					/* configMap configuration */
+					sh "kubectl apply -f ${YAML_PATH}/configmap/configMap.yaml"
+					sh "kubectl apply -f ${YAML_PATH}/rbac/service-account-for-fabric8-access.yaml"
+
+					/* Database configuration */
+					sh "kubectl apply -f ${YAML_PATH}/pvc/storage.yaml"
+					sh "kubectl apply -f ${YAML_PATH}/mysql/mysql.yaml"
+
 					echo 'Sleeping for 60 second before starting webApp....'
 					sleep(time:60,unit:"SECONDS")
 					
-					sh 'kubectl apply -f webApp.yaml'
-					sh 'kubectl apply -f thirdParty.yaml'
+					/* Webapp configuration */
+					sh "kubectl apply -f ${YAML_PATH}/webapp/webApp.yaml"
+					sh "kubectl apply -f ${YAML_PATH}/webapp/ingress_webapp.yaml"
 
-					echo 'Sleeping for 15 second before starting ingress....'
-					sleep(time:15,unit:"SECONDS")
+					/* Kibana configuration */
+					sh "kubectl apply -f ${YAML_PATH}/kibana/fluentd-config.yaml"
+					sh "kubectl apply -f ${YAML_PATH}/kibana/elastic-stack.yaml"
+					sh "kubectl apply -f ${YAML_PATH}/kibana/ingress_kibana.yaml"
 
-					sh 'kubectl apply -f ingress_webapp.yaml'
-
-					/* Commenting out this one since we are not using basic-authentication for ingress_kibana.yaml currently
-					sh 'kubectl create secret generic yoogeshcredential --from-file auth -n kube-system' */
-					
-					/* If you need the Kibana, Grafana and Premetheus feature enable below lines
-					sh 'kubectl apply -f ingress_kibana.yaml'
-					sh 'kubectl apply -f ingress_prometheus_grafana.yaml' 
-					*/
+					/* If you need the Grafana and Premetheus feature enable below lines */
+					sh "kubectl apply -f ${YAML_PATH}/prometheus/ingress_prometheus_grafana.yaml"
 			}
 		}
 		
