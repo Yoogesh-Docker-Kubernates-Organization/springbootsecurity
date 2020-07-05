@@ -40,9 +40,9 @@ pipeline {
 		
 		stage('Deploy to Cluster') {
 			steps {
-					/* Ingress controller configuration */
+					/* Ingress controller configuration 
+					sh "kubectl create secret generic yoogeshcredential --from-file ${YAML_PATH}/auth/auth -n kube-system" */
 					sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/aws/deploy.yaml'
-					sh "kubectl create secret generic yoogeshcredential --from-file ${YAML_PATH}/auth/auth -n kube-system"
 
 					/* configMap configuration */
 					sh "kubectl apply -f ${YAML_PATH}/configmap/configMap.yaml"
@@ -59,13 +59,11 @@ pipeline {
 					sh "kubectl apply -f ${YAML_PATH}/webapp/webApp.yaml"
 					sh "kubectl apply -f ${YAML_PATH}/webapp/ingress_webapp.yaml"
 
-					/* Kibana configuration */
+					/* If you need the Kibana, Grafana and Premetheus feature enable below lines 
 					sh "kubectl apply -f ${YAML_PATH}/kibana/fluentd-config.yaml"
 					sh "kubectl apply -f ${YAML_PATH}/kibana/elastic-stack.yaml"
 					sh "kubectl apply -f ${YAML_PATH}/kibana/ingress_kibana.yaml"
-
-					/* If you need the Grafana and Premetheus feature enable below lines */
-					sh "kubectl apply -f ${YAML_PATH}/prometheus/ingress_prometheus_grafana.yaml"
+					sh "kubectl apply -f ${YAML_PATH}/prometheus/ingress_prometheus_grafana.yaml" */
 			}
 		}
 		
