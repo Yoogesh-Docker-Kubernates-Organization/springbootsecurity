@@ -1,0 +1,47 @@
+##################################################################################################
+# This is Ingress Controller Configuration
+# from version 2.24 of k8s [You can check the current version using 'kubectl version']
+##################################################################################################  
+
+apiVersion: networking.k8s.io/v1beta1
+
+kind: Ingress
+
+metadata:
+  name: istio-monitoring-routing
+  namespace: istio-system
+
+spec:
+  rules:
+    - host: prometheus.fleetman.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: prometheus
+              servicePort: 9090
+              
+    - host: grafana.fleetman.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: grafana
+              servicePort: 3000
+              
+    - host: kiali.fleetman.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: kiali
+              servicePort: 20001
+              
+    - host: jaeger.fleetman.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: jaeger
+              servicePort: 14267
+                            
