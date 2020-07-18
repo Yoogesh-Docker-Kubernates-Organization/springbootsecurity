@@ -44,9 +44,12 @@ pipeline {
 					sh "kubectl create secret generic yoogeshcredential --from-file ${YAML_PATH}/auth/auth -n kube-system" */
 					sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/aws/deploy.yaml'
 
-					/* configMap configuration */
+					/* ConfigMap configuration */
 					sh "kubectl apply -f ${YAML_PATH}/configmap/configMap.yaml"
 					sh "kubectl apply -f ${YAML_PATH}/rbac/service-account-for-fabric8-access.yaml"
+					
+					/* Istio Configuration */
+					sh "istioctl manifest apply --set profile=demo"
 
 					/* Database configuration */
 					sh "kubectl apply -f ${YAML_PATH}/pvc/storage.yaml"
