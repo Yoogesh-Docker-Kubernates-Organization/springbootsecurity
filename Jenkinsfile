@@ -49,7 +49,8 @@ pipeline {
 					sh "kubectl apply -f ${YAML_PATH}/rbac/service-account-for-fabric8-access.yaml"
 					
 					/* Istio Configuration */
-					sh "istioctl manifest apply --set profile=demo"
+					sh "kubectl label namespace default istio-injection=enabled"
+					sh "istioctl manifest apply --set profile=demo"					
 
 					/* Database configuration */
 					sh "kubectl apply -f ${YAML_PATH}/pvc/storage.yaml"
