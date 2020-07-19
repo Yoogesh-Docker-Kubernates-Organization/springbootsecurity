@@ -50,7 +50,8 @@ pipeline {
 					
 					/* Istio Configuration */
 					sh "istioctl manifest apply --set profile=demo"
-					sh "kubectl label namespace default istio-injection=enabled"					
+					sh "kubectl apply -f ${YAML_PATH}/istio/istio_ingress.yaml"
+					sh "kubectl label namespace default istio-injection=enabled"				
 
 					/* Database configuration */
 					sh "kubectl apply -f ${YAML_PATH}/pvc/storage.yaml"
@@ -68,9 +69,6 @@ pipeline {
 					sh "kubectl apply -f ${YAML_PATH}/kibana/elastic-stack.yaml"
 					sh "kubectl apply -f ${YAML_PATH}/kibana/ingress_kibana.yaml"
 					sh "kubectl apply -f ${YAML_PATH}/prometheus/ingress_prometheus_grafana.yaml" */
-					
-					/* Enable below if using Istio with Demo Profile*/
-					sh "kubectl apply -f ${YAML_PATH}/istio/istio_ingress.yaml"
 			}
 		}
 		
