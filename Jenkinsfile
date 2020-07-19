@@ -51,7 +51,15 @@ pipeline {
 					/* Istio Configuration */
 					sh "istioctl manifest apply --set profile=demo"
 					sh "kubectl apply -f ${YAML_PATH}/istio/istio_ingress.yaml"
-					sh "kubectl label namespace default istio-injection=enabled"				
+					sh "kubectl label namespace default istio-injection=enabled"
+
+					/* Kibana configuration */
+					sh "kubectl apply -f ${YAML_PATH}/kibana/fluentd-config.yaml"
+					sh "kubectl apply -f ${YAML_PATH}/kibana/elastic-stack.yaml"
+					sh "kubectl apply -f ${YAML_PATH}/kibana/ingress_kibana.yaml"
+
+					/* If you need Grafana and Premetheus feature without using Istio, enable below lines 
+					sh "kubectl apply -f ${YAML_PATH}/prometheus/ingress_prometheus_grafana.yaml" */			
 
 					/* Database configuration */
 					sh "kubectl apply -f ${YAML_PATH}/pvc/storage.yaml"
@@ -63,12 +71,6 @@ pipeline {
 					/* Webapp configuration */
 					sh "kubectl apply -f ${YAML_PATH}/webapp/webApp.yaml"
 					sh "kubectl apply -f ${YAML_PATH}/webapp/ingress_webapp.yaml"
-
-					/* If you need the Kibana, Grafana and Premetheus feature without using Istio, enable below lines 
-					sh "kubectl apply -f ${YAML_PATH}/kibana/fluentd-config.yaml"
-					sh "kubectl apply -f ${YAML_PATH}/kibana/elastic-stack.yaml"
-					sh "kubectl apply -f ${YAML_PATH}/kibana/ingress_kibana.yaml"
-					sh "kubectl apply -f ${YAML_PATH}/prometheus/ingress_prometheus_grafana.yaml" */
 			}
 		}
 		
