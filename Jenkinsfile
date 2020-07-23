@@ -64,7 +64,7 @@ pipeline {
 					sleep(time:60,unit:"SECONDS")
 					
 					/* Webapp configuration */
-					sh "kubectl apply -f ${YAML_PATH}/webapp/webApp.yaml"
+					sh "kubectl apply -f ${YAML_PATH}/istio/canery/webApp.yaml"
 					sh "kubectl apply -f ${YAML_PATH}/webapp/ingress_webapp.yaml"
 
 					/* Kibana configuration */
