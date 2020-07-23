@@ -17,6 +17,7 @@ spec:
       name: webapp
       labels:
         app: yoogeshWebapp
+        version: safe
     spec:
       containers:
       - name: webapp
@@ -56,6 +57,7 @@ spec:
       name: webapp-risky-version
       labels:
         app: yoogeshWebapp
+        version: risky
     spec:
       containers:
       - name: webapp-risky-version
