@@ -4,7 +4,7 @@ pipeline {
 	environment {
 		SERVICE_NAME = "springbootsecurity"
 		YAML_PATH = "src/main/resources/devops/k8s_aws"
-		REPOSITORY_TAG="${DOCKERHUB_USERNAME}/${SERVICE_NAME}:latest"
+		REPOSITORY_TAG="${DOCKERHUB_USERNAME}/${SERVICE_NAME}:istio-risky"
 	}
 	
 	stages {
