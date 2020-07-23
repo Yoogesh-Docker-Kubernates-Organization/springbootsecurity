@@ -49,9 +49,9 @@ pipeline {
 					sh "kubectl apply -f ${YAML_PATH}/rbac/service-account-for-fabric8-access.yaml"
 					
 					/* Istio Configuration */
-					sh "istioctl manifest apply --set profile=demo"
-					sh "kubectl apply -f ${YAML_PATH}/istio/istio_ingress.yaml"
-					sh "kubectl label namespace default istio-injection=enabled"
+					//sh "istioctl manifest apply --set profile=demo"
+					//sh "kubectl apply -f ${YAML_PATH}/istio/istio_ingress.yaml"
+					//sh "kubectl label namespace default istio-injection=enabled"
 
 					/* If you need Grafana and Premetheus feature without using Istio, enable below lines 
 					sh "kubectl apply -f ${YAML_PATH}/prometheus/ingress_prometheus_grafana.yaml" */				
