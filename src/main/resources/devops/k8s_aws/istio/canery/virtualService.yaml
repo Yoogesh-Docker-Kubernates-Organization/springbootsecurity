@@ -11,11 +11,11 @@ spec:
         - destination:
             host: twm-webapp.default.svc.cluster.local
             subset: safe
-          weight: 100
+          weight: 90
         - destination:
             host: twm-webapp.default.svc.cluster.local
             subset: risky
-          weight: 0
+          weight: 10
 
 ---
 
