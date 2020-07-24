@@ -64,7 +64,7 @@ spec:
         image: yoogesh1983/springbootsecurity:istio-risky
         env:
         - name: envTarget 
-          value: prod
+          value: local
           
         readinessProbe:
           httpGet:
