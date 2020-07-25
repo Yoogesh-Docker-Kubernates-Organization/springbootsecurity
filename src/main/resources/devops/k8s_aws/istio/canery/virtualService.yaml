@@ -22,7 +22,7 @@ spec:
 kind: DestinationRule
 apiVersion: networking.istio.io/v1alpha3
 metadata:
-  name: twm-webapp
+  name: twm-webapp-istio-canery-destination-configuration
   namespace: default
 spec:
   host: twm-webapp.default.svc.cluster.local
