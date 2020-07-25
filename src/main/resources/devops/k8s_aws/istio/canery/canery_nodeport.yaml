@@ -8,7 +8,7 @@ metadata:
   namespace: default
 spec:
   hosts:
-    - "fleetman.com"
+    - fleetman.com
   gateways:
     - istio-ingress-firewall-yoogesh
   http:
