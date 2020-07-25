@@ -40,9 +40,9 @@ pipeline {
 		
 		stage('Deploy to Cluster') {
 			steps {
-					/* Ingress controller configuration 
-					sh "kubectl create secret generic yoogeshcredential --from-file ${YAML_PATH}/auth/auth -n kube-system" */
-					sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/aws/deploy.yaml'
+					/* Kubernetes Ingress controller configuration 
+					sh "kubectl create secret generic yoogeshcredential --from-file ${YAML_PATH}/auth/auth -n kube-system" 
+					sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/aws/deploy.yaml' */
 
 					/* ConfigMap configuration */
 					sh "kubectl apply -f ${YAML_PATH}/configmap/configMap.yaml"
@@ -50,8 +50,8 @@ pipeline {
 					
 					/* Istio Configuration */
 					sh "istioctl manifest apply --set profile=demo"
-					sh "kubectl apply -f ${YAML_PATH}/istio/istio_ingress.yaml"
 					sh "kubectl label namespace default istio-injection=enabled --overwrite"
+					sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-ingress-gateway.yaml"
 
 					/* If you need Grafana and Premetheus feature without using Istio, enable below lines 
 					sh "kubectl apply -f ${YAML_PATH}/prometheus/ingress_prometheus_grafana.yaml" */				
@@ -65,17 +65,20 @@ pipeline {
 					
 					/* Webapp configuration */
 					sh "kubectl apply -f ${YAML_PATH}/webapp/webApp.yaml"
-					sh "kubectl apply -f ${YAML_PATH}/webapp/ingress_webapp.yaml"
-
-					/* Canery Deployment  */
-					sh "kubectl apply -f ${YAML_PATH}/istio/canery/webapp.yaml"
-					//sh "kubectl apply -f ${YAML_PATH}/istio/canery/virtualService.yaml"
-					sh "kubectl apply -f ${YAML_PATH}/istio/gateway/ingress-gateway.yaml"
 
 					/* Kibana configuration */
 					sh "kubectl apply -f ${YAML_PATH}/kibana/fluentd-config.yaml"
 					sh "kubectl apply -f ${YAML_PATH}/kibana/elastic-stack.yaml"
-					sh "kubectl apply -f ${YAML_PATH}/kibana/ingress_kibana.yaml"
+
+					/* Canery Deployment (if you want to experiment canery with 10% traffic) */
+					sh "kubectl apply -f ${YAML_PATH}/istio/canery/webapp.yaml"
+					sh "kubectl apply -f ${YAML_PATH}/istio/canery/destinationRule.yaml"
+					sh "kubectl apply -f ${YAML_PATH}/istio/canery/canery_nodeport.yaml"
+
+					/* Apply ingress rule if using kubernetes ingress controller 
+					sh "kubectl apply -f ${YAML_PATH}/webapp/ingress_webapp.yaml"
+					sh "kubectl apply -f ${YAML_PATH}/istio/ingress/istio_ingress.yaml"
+					sh "kubectl apply -f ${YAML_PATH}/kibana/ingress_kibana.yaml" */
 			}
 		}
 		
