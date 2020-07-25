@@ -10,7 +10,7 @@ spec:
   hosts:
     - "fleetman.com"
   gateways:
-    - istio-ingress-gateway-configuration
+    - istio-ingress-firewall-yoogesh
   http:
     - route:
         - destination:
