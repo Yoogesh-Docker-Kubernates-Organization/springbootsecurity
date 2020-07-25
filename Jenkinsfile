@@ -67,8 +67,9 @@ pipeline {
 					sh "kubectl apply -f ${YAML_PATH}/webapp/webApp.yaml"
 					sh "kubectl apply -f ${YAML_PATH}/webapp/ingress_webapp.yaml"
 
-					/* Canery Deployment 
-					sh "kubectl apply -f ${YAML_PATH}/istio/canery/webapp.yaml" */
+					/* Canery Deployment  */
+					sh "kubectl apply -f ${YAML_PATH}/istio/canery/webapp.yaml"
+					sh "kubectl apply -f ${YAML_PATH}/istio/canery/virtualService.yaml"
 
 					/* Kibana configuration */
 					sh "kubectl apply -f ${YAML_PATH}/kibana/fluentd-config.yaml"
