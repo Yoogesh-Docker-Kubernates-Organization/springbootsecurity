@@ -40,9 +40,9 @@ pipeline {
 		
 		stage('Deploy to Cluster') {
 			steps {
-					/* Installing traditional kubernetes ingress */
+					/* Installing traditional kubernetes ingress
 					// sh "kubectl create secret generic yoogeshcredential --from-file ${YAML_PATH}/auth/auth -n kube-system" 
-					sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/aws/deploy.yaml'
+					sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/aws/deploy.yaml' */
 
 					/* ConfigMap configuration */
 					sh "kubectl apply -f ${YAML_PATH}/configmap/configMap.yaml"
@@ -72,10 +72,10 @@ pipeline {
 					sh "kubectl apply -f ${YAML_PATH}/istio/canery/destinationRule.yaml"
 					sh "kubectl apply -f ${YAML_PATH}/istio/canery/canery_virtual_service_nodeport.yaml"	
 
-					/* Traditional Kubernetes Ingress routing configuration */
+					/* Traditional Kubernetes Ingress routing configuration 
 					sh "kubectl apply -f ${YAML_PATH}/webapp/ingress_webapp.yaml"
 					sh "kubectl apply -f ${YAML_PATH}/kibana/ingress_kibana.yaml"
-					sh "kubectl apply -f ${YAML_PATH}/istio/ingress/kubernetes_ingress.yaml"
+					sh "kubectl apply -f ${YAML_PATH}/istio/ingress/kubernetes_ingress.yaml" */
 
 					/* If you need Grafana and Premetheus feature without using Istio, enable below lines by commenting out "kubernetes_ingress.yaml" above
 					sh "kubectl apply -f ${YAML_PATH}/prometheus/ingress_prometheus_grafana.yaml" */
