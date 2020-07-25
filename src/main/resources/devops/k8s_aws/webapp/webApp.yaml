@@ -8,7 +8,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      mylabelName: yoogeshWebapp
+      app: yoogeshWebapp
       
   replicas: 1
   
@@ -16,7 +16,8 @@ spec:
     metadata:
       name: webapp
       labels:
-        mylabelName: yoogeshWebapp
+        app: yoogeshWebapp
+        version: safe
     spec:
       containers:
       - name: webapp
