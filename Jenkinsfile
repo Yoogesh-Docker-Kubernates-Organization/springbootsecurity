@@ -47,10 +47,7 @@ pipeline {
 					/* Istio Configuration */
 					sh "istioctl manifest apply --set profile=demo"
 					sh "kubectl label namespace default istio-injection=enabled --overwrite"
-					sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-gateway.yaml"
-
-					/* If you need Grafana and Premetheus feature without using Istio, enable below lines 
-					sh "kubectl apply -f ${YAML_PATH}/prometheus/ingress_prometheus_grafana.yaml" */				
+					sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-gateway.yaml"			
 
 					/* Database configuration */
 					sh "kubectl apply -f ${YAML_PATH}/pvc/storage.yaml"
@@ -69,14 +66,17 @@ pipeline {
 					/* Canery Deployment (if you want to experiment canery with 10% traffic) */
 					sh "kubectl apply -f ${YAML_PATH}/istio/canery/webapp.yaml"
 					sh "kubectl apply -f ${YAML_PATH}/istio/canery/destinationRule.yaml"
-					sh "kubectl apply -f ${YAML_PATH}/istio/canery/canery_nodeport.yaml"
+					sh "kubectl apply -f ${YAML_PATH}/istio/canery/canery_nodeport.yaml"	
 
-					/* Kubernetes Ingress controller configuration */
-					//sh "kubectl create secret generic yoogeshcredential --from-file ${YAML_PATH}/auth/auth -n kube-system" 
+					/* Kubernetes Ingress controller configuration
+					// sh "kubectl create secret generic yoogeshcredential --from-file ${YAML_PATH}/auth/auth -n kube-system" 
 					sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/aws/deploy.yaml'
 					sh "kubectl apply -f ${YAML_PATH}/webapp/ingress_webapp.yaml"
 					sh "kubectl apply -f ${YAML_PATH}/kibana/ingress_kibana.yaml"
-					sh "kubectl apply -f ${YAML_PATH}/istio/ingress/kubernetes_ingress.yaml"
+					sh "kubectl apply -f ${YAML_PATH}/istio/ingress/kubernetes_ingress.yaml" */
+
+					/* If you need Grafana and Premetheus feature without using Istio, enable below lines by commenting out "kubernetes_ingress.yaml" above
+					sh "kubectl apply -f ${YAML_PATH}/prometheus/ingress_prometheus_grafana.yaml" */
 			}
 		}
 		
