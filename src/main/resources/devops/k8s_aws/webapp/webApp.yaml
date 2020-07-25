@@ -46,7 +46,7 @@ metadata:
   
 spec:
  selector:
-   mylabelName: yoogeshWebapp
+   app: yoogeshWebapp
    
  ports:
    - name: http
