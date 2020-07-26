@@ -6,7 +6,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 
 metadata:
-  name: istio-ingress-canery-virtual-service-configuration-loadbalancer
+  name: istio-stickey-pod-configuration
   namespace: default
   
 spec:
