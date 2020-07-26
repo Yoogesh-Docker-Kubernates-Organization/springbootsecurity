@@ -71,7 +71,8 @@ pipeline {
 					sh "kubectl apply -f ${YAML_PATH}/istio/canery/webapp.yaml"
 					sh "kubectl apply -f ${YAML_PATH}/istio/canery/destinationRule.yaml"
 					//sh "kubectl apply -f ${YAML_PATH}/istio/canery/canery_virtual_service_nodeport.yaml"	
-					sh "kubectl apply -f ${YAML_PATH}/istio/ingress/istio-ingress.yaml"
+					sh "kubectl apply -f ${YAML_PATH}/istio/ingress/istio-ingress-webapp.yaml"
+					sh "kubectl apply -f ${YAML_PATH}/istio/ingress/other.yaml"
 
 					/* Traditional Kubernetes Ingress routing configuration 
 					sh "kubectl apply -f ${YAML_PATH}/webapp/ingress_webapp.yaml"
