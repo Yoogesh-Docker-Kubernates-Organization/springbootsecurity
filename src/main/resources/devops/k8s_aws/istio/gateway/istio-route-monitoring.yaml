@@ -16,18 +16,18 @@ spec:
   
     - match:
       - uri:
-          prefix: /prometheus
+          prefix: /
       route:
       - destination:
-          host: prometheus
+          host: prometheus.istio-system.svc.cluster.local
           port:
             number: 9090
             
-    - match:
-      - uri:
-          prefix: /kiali
-      route:
-      - destination:
-          host: kiali
-          port:
-            number: 20001
+#    - match:
+#      - uri:
+#          prefix: /kiali
+#      route:
+#      - destination:
+#          host: kiali.istio-system.svc.cluster.local
+#          port:
+#            number: 20001
