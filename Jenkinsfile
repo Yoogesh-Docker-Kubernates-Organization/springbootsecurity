@@ -43,9 +43,9 @@ pipeline {
 
 			environment {
                 enableKubernetesIngress = "false"
-				enableIstioCanery = "true"
+				enableIstioCanery = "false"
 				enableKubernetesStickey = "false"
-				enableGrafanaAnddPrometheusAtIstio = "true"
+				enableGrafanaAndPrometheusAtIstio = "true"
 				grafanaPrometheusInstalledManually = "false"
             }
 
@@ -109,7 +109,7 @@ pipeline {
 						if(env.enableKubernetesIngress == 'true'){
 							sh "kubectl apply -f ${YAML_PATH}/webapp/ingress_webapp.yaml"
 							sh "kubectl apply -f ${YAML_PATH}/kibana/ingress_kibana.yaml"
-							if(env.enableGrafanaAnddPrometheusAtIstio == 'true'){
+							if(env.enableGrafanaAndPrometheusAtIstio == 'true'){
 								sh "kubectl apply -f ${YAML_PATH}/istio/ingress/kubernetes_ingress.yaml"
 							}
 							else if(env.grafanaPrometheusInstalledManually == 'true'){
