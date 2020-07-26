@@ -1,0 +1,25 @@
+apiVersion: networking.istio.io/v1alpha3
+
+kind: VirtualService
+
+metadata:
+  name: istio-ingress-virtual-service-configuration
+  namespace: default
+  
+spec:
+  hosts:
+    - fleetman.com
+  gateways:
+    - istio-ingress-firewall-yoogesh
+    
+  http:
+  
+    - match:
+      - uri:
+          prefix: /
+          
+      route:
+      - destination:
+          host: twm-webapp.default.svc.cluster.local
+          port:
+            number: 80
