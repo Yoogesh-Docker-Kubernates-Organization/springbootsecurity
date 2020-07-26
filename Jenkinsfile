@@ -5,6 +5,7 @@ pipeline {
 		SERVICE_NAME = "springbootsecurity"
 		YAML_PATH = "src/main/resources/devops/k8s_aws"
 		REPOSITORY_TAG="${DOCKERHUB_USERNAME}/${SERVICE_NAME}:latest"
+
 	}
 	
 	stages {
@@ -39,10 +40,22 @@ pipeline {
 		
 		
 		stage('Deploy to Cluster') {
+
+			environment {
+                enableKubernetesIngress = "false"
+				enableIstioCanery = "false"
+				enableKubernetesStickey = "true"
+            }
+
 			steps {
-					/* Installing traditional kubernetes ingress
-					// sh "kubectl create secret generic yoogeshcredential --from-file ${YAML_PATH}/auth/auth -n kube-system" 
-					sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/aws/deploy.yaml' */
+
+                   /* Installing traditional kubernetes ingress */
+				   script {
+					   if (env.enableKubernetesIngress == 'true') {
+						   sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/aws/deploy.yaml'
+						   sh "kubectl create secret generic yoogeshcredential --from-file ${YAML_PATH}/auth/auth -n kube-system" 
+					   }
+				   }
 
 					/* ConfigMap configuration */
 					sh "kubectl apply -f ${YAML_PATH}/configmap/configMap.yaml"
@@ -62,6 +75,11 @@ pipeline {
 					
 					/* Webapp configuration */
 					sh "kubectl apply -f ${YAML_PATH}/webapp/webApp.yaml"
+					script {
+						if(env.enableIstioCanery == 'true' || env.enableKubernetesStickey == 'true'){
+							sh "kubectl apply -f ${YAML_PATH}/istio/canery/webapp.yaml"
+						}
+					}
 
 					/* Kibana configuration */
 					sh "kubectl apply -f ${YAML_PATH}/kibana/fluentd-config.yaml"
@@ -71,19 +89,39 @@ pipeline {
 					sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-route.yaml"
 
 					/* Canery Deployment (if you want to experiment canery with 10% traffic) */
-					sh "kubectl apply -f ${YAML_PATH}/istio/canery/webapp.yaml"
-					sh "kubectl apply -f ${YAML_PATH}/istio/canery/destinationRule.yaml"
-					sh "kubectl apply -f ${YAML_PATH}/istio/canery/vs_loadbalancer.yaml" 
+					script {
+						if(env.enableIstioCanery == 'true'){
+							sh "kubectl apply -f ${YAML_PATH}/istio/canery/destinationRule.yaml"
+							sh "kubectl apply -f ${YAML_PATH}/istio/canery/vs_loadbalancer.yaml" 
+						}
+					}
 
-					/* Traditional Kubernetes Ingress routing configuration 
-					sh "kubectl apply -f ${YAML_PATH}/webapp/ingress_webapp.yaml"
-					sh "kubectl apply -f ${YAML_PATH}/kibana/ingress_kibana.yaml"
-					sh "kubectl apply -f ${YAML_PATH}/istio/ingress/kubernetes_ingress.yaml" */
+					/* Kubernetes stickey pod deployment */
+					script {
+						if(env.enableKubernetesStickey == 'true'){
+							sh "kubectl apply -f ${YAML_PATH}/istio/stickey/webapp-stickey.yaml"
+						}
+					}
 
-					/* If you need Grafana and Premetheus feature without using Istio, enable below lines by commenting out "kubernetes_ingress.yaml" above
-					sh "kubectl apply -f ${YAML_PATH}/prometheus/ingress_prometheus_grafana.yaml" */
+					/* Traditional Kubernetes Ingress routing configuration */
+					script {
+						if(env.enableKubernetesIngress == 'true'){
+							sh "kubectl apply -f ${YAML_PATH}/webapp/ingress_webapp.yaml"
+							sh "kubectl apply -f ${YAML_PATH}/kibana/ingress_kibana.yaml"
+							sh "kubectl apply -f ${YAML_PATH}/istio/ingress/kubernetes_ingress.yaml"
+							/* If you need Grafana and Premetheus feature without using Istio, enable below lines by commenting out "kubernetes_ingress.yaml" above
+							sh "kubectl apply -f ${YAML_PATH}/prometheus/ingress_prometheus_grafana.yaml" */
+						}
+					}
 			}
 		}
-		
 	}
 }
+						
+					
+						
+			
+		
+		
+	
+

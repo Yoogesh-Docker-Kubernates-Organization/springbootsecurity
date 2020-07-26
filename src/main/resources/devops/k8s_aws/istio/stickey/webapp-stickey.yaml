@@ -1,0 +1,46 @@
+# This canery canbe applied where the service is exposed outiside from the cluster. 
+# Since twm-webapp is exposed outside from the cluster, this is a good candidate for this configuration if you want to pass 10% traffic on risky(canery) and 90% on the safe one
+
+apiVersion: networking.istio.io/v1alpha3
+
+kind: VirtualService
+
+metadata:
+  name: istio-ingress-canery-virtual-service-configuration-loadbalancer
+  namespace: default
+  
+spec:
+  hosts:
+    - fleetman.com
+  gateways:
+    - istio-ingress-firewall-yoogesh
+    
+  http:
+  
+    - match:
+      - uri:
+          prefix: /
+          
+      route:
+        - destination:
+            host: twm-webapp.default.svc.cluster.local
+            subset: all-web-app-pods
+          weight: 100
+          
+---
+          
+kind: DestinationRule
+apiVersion: networking.istio.io/v1alpha3
+metadata:
+  name: twm-webapp-istio-sticky-session-destination-configuration
+  namespace: default
+spec:
+  host: twm-webapp.default.svc.cluster.local
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        useSourceIp: true
+  subsets:
+    - labels:
+        app: yoogeshWebapp # Since We would want to select both versions, we use app instead of version here
+      name: all-web-app-pods
