@@ -45,6 +45,8 @@ pipeline {
                 enableKubernetesIngress = "false"
 				enableIstioCanery = "false"
 				enableKubernetesStickey = "true"
+				enableGrafanaAnddPrometheusAtIstio = "true"
+				grafanaPrometheusInstalledManually = "false"
             }
 
 			steps {
@@ -86,20 +88,18 @@ pipeline {
 					sh "kubectl apply -f ${YAML_PATH}/kibana/elastic-stack.yaml"
 
 					/* Istio Ingress-Gateway configuration*/
-					sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-route.yaml"
-
-					/* Canery Deployment (if you want to experiment canery with 10% traffic) */
 					script {
 						if(env.enableIstioCanery == 'true'){
+							/* Canery Deployment (if you want to experiment canery with 10% traffic) */
 							sh "kubectl apply -f ${YAML_PATH}/istio/canery/destinationRule.yaml"
 							sh "kubectl apply -f ${YAML_PATH}/istio/canery/vs_loadbalancer.yaml" 
 						}
-					}
-
-					/* Kubernetes stickey pod deployment */
-					script {
-						if(env.enableKubernetesStickey == 'true'){
+						else if(env.enableKubernetesStickey == 'true'){
+							/* Kubernetes stickey pod deployment */
 							sh "kubectl apply -f ${YAML_PATH}/istio/stickey/webapp-stickey.yaml"
+						}
+						else {
+							sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-route-webapp.yaml"
 						}
 					}
 
@@ -108,9 +108,13 @@ pipeline {
 						if(env.enableKubernetesIngress == 'true'){
 							sh "kubectl apply -f ${YAML_PATH}/webapp/ingress_webapp.yaml"
 							sh "kubectl apply -f ${YAML_PATH}/kibana/ingress_kibana.yaml"
-							sh "kubectl apply -f ${YAML_PATH}/istio/ingress/kubernetes_ingress.yaml"
-							/* If you need Grafana and Premetheus feature without using Istio, enable below lines by commenting out "kubernetes_ingress.yaml" above
-							sh "kubectl apply -f ${YAML_PATH}/prometheus/ingress_prometheus_grafana.yaml" */
+							if(env.enableGrafanaAnddPrometheusAtIstio == 'true'){
+								sh "kubectl apply -f ${YAML_PATH}/istio/ingress/kubernetes_ingress.yaml"
+							}
+							else if(env.grafanaPrometheusInstalledManually == 'true'){
+								/* If you need Grafana and Premetheus feature without using Istio the use this. But before this make sure Grafana and Prometheus installed manually using Helm */
+								sh "kubectl apply -f ${YAML_PATH}/prometheus/ingress_prometheus_grafana.yaml"
+							}
 						}
 					}
 			}
