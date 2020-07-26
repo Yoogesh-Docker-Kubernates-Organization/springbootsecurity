@@ -43,8 +43,8 @@ pipeline {
 
 			environment {
                 enableKubernetesIngress = "false"
-				enableIstioCanery = "false"
-				enableKubernetesStickey = "true"
+				enableIstioCanery = "true"
+				enableKubernetesStickey = "false"
 				enableGrafanaAnddPrometheusAtIstio = "true"
 				grafanaPrometheusInstalledManually = "false"
             }
