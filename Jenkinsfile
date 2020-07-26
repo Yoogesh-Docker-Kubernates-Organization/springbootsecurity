@@ -70,10 +70,10 @@ pipeline {
 					/* Istio Ingress-Gateway configuration*/
 					sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-route.yaml"
 
-					/* Canery Deployment (if you want to experiment canery with 10% traffic) 
+					/* Canery Deployment (if you want to experiment canery with 10% traffic) */
 					sh "kubectl apply -f ${YAML_PATH}/istio/canery/webapp.yaml"
 					sh "kubectl apply -f ${YAML_PATH}/istio/canery/destinationRule.yaml"
-					sh "kubectl apply -f ${YAML_PATH}/istio/canery/vs_loadbalancer.yaml" */
+					sh "kubectl apply -f ${YAML_PATH}/istio/canery/vs_loadbalancer.yaml" 
 
 					/* Traditional Kubernetes Ingress routing configuration 
 					sh "kubectl apply -f ${YAML_PATH}/webapp/ingress_webapp.yaml"
