@@ -36,7 +36,7 @@ spec:
   trafficPolicy:
     loadBalancer:
       consistentHash:
-        useSourceIp: true
+        httpHeaderName: x-access-token
   subsets:
     - labels:
         app: yoogeshWebapp # Since We would want to select both versions, we use app instead of version here
