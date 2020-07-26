@@ -8,8 +8,15 @@ spec:
     - fleetman.com
   gateways:
     - istio-ingress-firewall-yoogesh
+    
   http:
-    - route:
+  
+    - match:
+      - uri:
+          prefix: /experimental
+      - uri:
+          prefix: /canery
+      route:
         - destination:
             host: twm-webapp.default.svc.cluster.local
             subset: safe
@@ -17,4 +24,16 @@ spec:
         - destination:
             host: twm-webapp.default.svc.cluster.local
             subset: risky
-          weight: 10
+          weight: 10            
+            
+            
+            
+    - match:
+      - uri:
+          prefix: /
+      route:
+      - destination:
+          host: twm-webapp.default.svc.cluster.local
+          subset: risky 
+          port:
+            number: 80
