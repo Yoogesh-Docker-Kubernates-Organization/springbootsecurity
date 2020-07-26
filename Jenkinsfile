@@ -51,7 +51,7 @@ pipeline {
 					/* Istio Configuration */
 					sh "istioctl manifest apply --set profile=demo"
 					sh "kubectl label namespace default istio-injection=enabled --overwrite"
-					sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-gateway.yaml"			
+					sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-firewall.yaml"			
 
 					/* Database configuration */
 					sh "kubectl apply -f ${YAML_PATH}/pvc/storage.yaml"
@@ -68,7 +68,7 @@ pipeline {
 					sh "kubectl apply -f ${YAML_PATH}/kibana/elastic-stack.yaml"
 
 					/* Istio Ingress-Gateway configuration*/
-					sh "kubectl apply -f ${YAML_PATH}/istio/ingress/istio-ingress.yaml"
+					sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-route.yaml"
 
 					/* Canery Deployment (if you want to experiment canery with 10% traffic) 
 					sh "kubectl apply -f ${YAML_PATH}/istio/canery/webapp.yaml"
