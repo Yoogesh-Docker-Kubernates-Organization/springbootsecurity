@@ -3,12 +3,11 @@ apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 
 metadata:
-  name: istio-ingress-virtual-service-monitor-configuration
-  namespace: istio-system
+  name: istio-ingress-virtual-service-monitor-configuration-prometheus
   
 spec:
   hosts:
-    - monitor.fleetman.com
+    - prometheus.fleetman.com
   gateways:
     - istio-ingress-firewall-yoogesh
     
@@ -22,12 +21,107 @@ spec:
           host: prometheus.istio-system.svc.cluster.local
           port:
             number: 9090
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+
+kind: VirtualService
+
+metadata:
+  name: istio-ingress-virtual-service-monitor-configuration-grafana
+  
+spec:
+  hosts:
+    - grafana.fleetman.com
+  gateways:
+    - istio-ingress-firewall-yoogesh
+    
+  http:
+  
+    - match:
+      - uri:
+          prefix: /
+      route:
+      - destination:
+          host: grafana.istio-system.svc.cluster.local
+          port:
+            number: 3000
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+
+kind: VirtualService
+
+metadata:
+  name: istio-ingress-virtual-service-monitor-configuration-kiali
+  
+spec:
+  hosts:
+    - kiali.fleetman.com
+  gateways:
+    - istio-ingress-firewall-yoogesh
+    
+  http:
+  
+    - match:
+      - uri:
+          prefix: /
+      route:
+      - destination:
+          host: kiali.istio-system.svc.cluster.local
+          port:
+            number: 20001
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+
+kind: VirtualService
+
+metadata:
+  name: istio-ingress-virtual-service-monitor-configuration-jaeger
+  
+spec:
+  hosts:
+    - jaeger.fleetman.com
+  gateways:
+    - istio-ingress-firewall-yoogesh
+    
+  http:
+  
+    - match:
+      - uri:
+          prefix: /
+      route:
+      - destination:
+          host: jaeger-query.istio-system.svc.cluster.local
+          port:
+            number: 16686
             
-#    - match:
-#      - uri:
-#          prefix: /kiali
-#      route:
-#      - destination:
-#          host: kiali.istio-system.svc.cluster.local
-#          port:
-#            number: 20001
+---
+
+apiVersion: networking.istio.io/v1alpha3
+
+kind: VirtualService
+
+metadata:
+  name: istio-ingress-virtual-service-monitor-configuration-kibana
+  
+spec:
+  hosts:
+    - kibana.fleetman.com
+  gateways:
+    - istio-ingress-firewall-yoogesh
+    
+  http:
+  
+    - match:
+      - uri:
+          prefix: /
+      route:
+      - destination:
+          host: kibana-logging.kube-system.svc.cluster.local
+          port:
+            number: 5601

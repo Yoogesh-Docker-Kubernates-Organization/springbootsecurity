@@ -16,4 +16,8 @@ spec:
       protocol: HTTP
     hosts:
       - fleetman.com
-      - monitor.fleetman.com
+      - prometheus.fleetman.com
+      - grafana.fleetman.com
+      - kiali.fleetman.com
+      - kibana.fleetman.com
+      - jaeger.fleetman.com

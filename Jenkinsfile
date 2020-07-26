@@ -101,6 +101,7 @@ pipeline {
 						else {
 							sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-route-webapp.yaml"
 						}
+						sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-route-monitoring.yaml"
 					}
 
 					/* Traditional Kubernetes Ingress routing configuration */
