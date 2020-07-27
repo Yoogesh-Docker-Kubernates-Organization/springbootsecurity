@@ -43,7 +43,8 @@ pipeline {
 
 			environment {
                 enableKubernetesIngress = "false"
-				enableIstioCanery = "false"
+				enableIstioCanery = "true"
+				enableCaneryWithParams = "true";
 				enableKubernetesStickey = "false"
 				enableGrafanaAndPrometheusAtIstio = "true"
 				grafanaPrometheusInstalledManually = "false"
@@ -92,7 +93,12 @@ pipeline {
 						if(env.enableIstioCanery == 'true'){
 							/* Canery Deployment (if you want to experiment canery with 10% traffic) */
 							sh "kubectl apply -f ${YAML_PATH}/istio/canery/destinationRule.yaml"
-							sh "kubectl apply -f ${YAML_PATH}/istio/canery/vs_loadbalancer.yaml" 
+							if(env.enableCaneryWithParams == 'true'){
+								sh "kubectl apply -f ${YAML_PATH}/istio/canery/vs_canery_manual.yaml" 
+							}
+							else{
+								sh "kubectl apply -f ${YAML_PATH}/istio/canery/vs_canery_loadbalancer.yaml" 
+							}
 						}
 						else if(env.enableKubernetesStickey == 'true'){
 							/* Kubernetes stickey pod deployment */

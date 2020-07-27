@@ -1,0 +1,36 @@
+apiVersion: networking.istio.io/v1alpha3
+
+kind: VirtualService
+
+metadata:
+  name: istio-ingress-canery-virtual-service-configuration-with-passing-parameter
+  
+spec:
+  hosts:
+    - fleetman.com
+  gateways:
+    - istio-ingress-firewall-yoogesh
+  
+  http:
+  
+    - match:
+      - uri:
+          prefix: /canery
+      route:
+      - destination:
+          host: twm-webapp.default.svc.cluster.local
+          subset: risky
+          port:
+            number: 80
+        weight: 10
+        
+    - match:
+      - uri:
+          prefix: /original
+      route:
+      - destination:
+          host: twm-webapp.default.svc.cluster.local
+          subset: safe
+          port:
+            number: 80
+        weight: 90
