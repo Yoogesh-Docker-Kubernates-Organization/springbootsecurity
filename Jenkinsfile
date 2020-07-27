@@ -42,12 +42,14 @@ pipeline {
 		stage('Deploy to Cluster') {
 
 			environment {
+				// Traditional kubernetes ingress gateway related variables
                 enableKubernetesIngress = "false"
+				manuallyInstallGrafanaPrometheus = "false"
+
+				//canery deployment related variables
 				enableIstioCanery = "true"
+				enableCaneryWithStickey = "false"
 				enableCaneryWithParams = "true";
-				enableKubernetesStickey = "false"
-				enableGrafanaAndPrometheusAtIstio = "true"
-				grafanaPrometheusInstalledManually = "false"
             }
 
 			steps {
@@ -78,11 +80,6 @@ pipeline {
 					
 					/* Webapp configuration */
 					sh "kubectl apply -f ${YAML_PATH}/webapp/webApp.yaml"
-					script {
-						if(env.enableIstioCanery == 'true' || env.enableKubernetesStickey == 'true'){
-							sh "kubectl apply -f ${YAML_PATH}/istio/canery/webapp.yaml"
-						}
-					}
 
 					/* Kibana configuration */
 					sh "kubectl apply -f ${YAML_PATH}/kibana/fluentd-config.yaml"
@@ -90,21 +87,32 @@ pipeline {
 
 					/* Istio Ingress-Gateway configuration*/
 					script {
-						if(env.enableIstioCanery == 'true'){
-							/* Canery Deployment (if you want to experiment canery with 10% traffic) */
-							sh "kubectl apply -f ${YAML_PATH}/istio/canery/destinationRule.yaml"
-							if(env.enableCaneryWithParams == 'true'){
-								sh "kubectl apply -f ${YAML_PATH}/istio/canery/vs_canery_manual.yaml" 
+						if(env.enableIstioCanery == 'true')
+						{
+							sh "kubectl apply -f ${YAML_PATH}/istio/canery/webapp.yaml"
+
+							if(env.enableCaneryWithStickey == 'true')
+							{
+								/* Kubernetes stickey pod deployment */
+								sh "kubectl apply -f ${YAML_PATH}/istio/stickey/webapp-stickey.yaml"
 							}
-							else{
-								sh "kubectl apply -f ${YAML_PATH}/istio/canery/vs_canery_loadbalancer.yaml" 
+							else 
+							{
+								/* Canery Deployment (if you want to experiment canery with 10% traffic) */
+								sh "kubectl apply -f ${YAML_PATH}/istio/canery/destinationRule.yaml"
+
+								if(env.enableCaneryWithParams == 'true')
+								{
+									sh "kubectl apply -f ${YAML_PATH}/istio/canery/vs_canery_manual.yaml" 
+								}
+								else 
+								{
+									sh "kubectl apply -f ${YAML_PATH}/istio/canery/vs_canery_loadbalancer.yaml" 
+								}
 							}
 						}
-						else if(env.enableKubernetesStickey == 'true'){
-							/* Kubernetes stickey pod deployment */
-							sh "kubectl apply -f ${YAML_PATH}/istio/stickey/webapp-stickey.yaml"
-						}
-						else {
+						else 
+						{
 							sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-route-webapp.yaml"
 						}
 						sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-route-monitoring.yaml"
@@ -112,15 +120,18 @@ pipeline {
 
 					/* Traditional Kubernetes Ingress routing configuration */
 					script {
-						if(env.enableKubernetesIngress == 'true'){
+						if(env.enableKubernetesIngress == 'true')
+						{
 							sh "kubectl apply -f ${YAML_PATH}/webapp/ingress_webapp.yaml"
 							sh "kubectl apply -f ${YAML_PATH}/kibana/ingress_kibana.yaml"
-							if(env.enableGrafanaAndPrometheusAtIstio == 'true'){
-								sh "kubectl apply -f ${YAML_PATH}/istio/ingress/kubernetes_ingress.yaml"
-							}
-							else if(env.grafanaPrometheusInstalledManually == 'true'){
-								/* If you need Grafana and Premetheus feature without using Istio the use this. But before this make sure Grafana and Prometheus installed manually using Helm */
+							if(env.manuallyInstallGrafanaPrometheus == 'true')
+							{
+								echo 'You have choosen to install Grafana and Prometheus feature manually. Make sure Grafana and Prometheus are already installed in a cluster using Helm package manager....'
 								sh "kubectl apply -f ${YAML_PATH}/prometheus/ingress_prometheus_grafana.yaml"
+							}
+							else 
+							{
+								sh "kubectl apply -f ${YAML_PATH}/istio/ingress/kubernetes_ingress.yaml"
 							}
 						}
 					}
