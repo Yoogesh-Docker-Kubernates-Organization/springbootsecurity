@@ -1,3 +1,11 @@
+# This will show the riskey version and safe version of twm-webapp 50/50% if "x-istio-header = canery" is passed as a header param either via curl or via
+# ModHeader chrome extension. However if nothing is passed or different header is passed, then bydefault it will fallback into a default of safe virsion
+
+# If you are applied this in a middle microservices, then make sure You are propogating this header from the First front webapp all the way up to the microservices you are
+# going to apply this rule and this is VERY VERY important and if you don't do that it will not work.
+
+# To know how to propogate headers to all microservices, please Follow "20. Why you need to "Propagate Headers" of "Section 5: Telemetry" at Udemy course
+
 apiVersion: networking.istio.io/v1alpha3
 
 kind: VirtualService
@@ -18,9 +26,19 @@ spec:
           x-istio-header:
             exact: canery
       route:
-      - destination:
-          host: twm-webapp.default.svc.cluster.local
-          subset: risky
+        - destination:
+            host: twm-webapp.default.svc.cluster.local
+            subset: risky
+            port:
+              number: 80
+          weight: 50
+        
+        - destination:
+            host: twm-webapp.default.svc.cluster.local
+            subset: safe
+            port:
+              number: 80
+          weight: 50
         
     - route: # CATCH ALL
       - destination:

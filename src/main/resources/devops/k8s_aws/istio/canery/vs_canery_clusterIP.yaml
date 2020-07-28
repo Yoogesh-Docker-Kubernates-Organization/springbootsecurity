@@ -1,4 +1,4 @@
-# This canery canbe applied only for those services which are exposed inside the cluster i.e. ClusterIp
+# This canery cannot be applied only for those services which are exposed inside the cluster i.e. ClusterIp
 # Take the below code just as an example shake. it doesn't take and effect since twm-webapp is exposed outside using loadbalancer
 
 kind: VirtualService
