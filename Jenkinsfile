@@ -49,7 +49,7 @@ pipeline {
 				//canery deployment related variables
 				enableIstioCanery = "true"
 				enableCaneryWithStickey = "false"
-				enableCaneryWithParams = "true";
+				enableCaneryWithLoadBalancer = "false";
             }
 
 			steps {
@@ -98,16 +98,16 @@ pipeline {
 							}
 							else 
 							{
-								/* Canery Deployment (if you want to experiment canery with 10% traffic) */
 								sh "kubectl apply -f ${YAML_PATH}/istio/canery/destinationRule.yaml"
 
-								if(env.enableCaneryWithParams == 'true')
+								if(env.enableCaneryWithLoadBalancer == 'true')
 								{
-									sh "kubectl apply -f ${YAML_PATH}/istio/canery/vs_canery_manual.yaml" 
+									/* if you want to experiment canery with 10% traffic */
+									sh "kubectl apply -f ${YAML_PATH}/istio/canery/vs_canery_loadbalancer.yaml" 
 								}
 								else 
 								{
-									sh "kubectl apply -f ${YAML_PATH}/istio/canery/vs_canery_loadbalancer.yaml" 
+									sh "kubectl apply -f ${YAML_PATH}/istio/canery/vs_canery_headerParam.yaml" 
 								}
 							}
 						}
