@@ -1,5 +1,6 @@
 package com.codetutr.controller.api;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class UserController {
 	
 	@GetMapping(value="/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value="Get user by username", notes="This url is used to get the user informatio using the username", response=User.class )
-	public User getUserByUsername(HttpServletResponse response, @PathVariable("username") String username){
+	public User getUserByUsername(HttpServletRequest request, HttpServletResponse response, @PathVariable("username") String username){
 		return userService.getUserByUserName(username + "@gmail.com");
 	}
 
