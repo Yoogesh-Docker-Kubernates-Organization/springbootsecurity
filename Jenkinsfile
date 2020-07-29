@@ -95,7 +95,7 @@ pipeline {
 							if(env.enableCaneryWithStickey == 'true')
 							{
 								/* Kubernetes stickey pod deployment */
-								sh "kubectl apply -f ${YAML_PATH}/istio/stickey/webapp-stickey.yaml"
+								sh "kubectl apply -f ${YAML_PATH}/istio/canery/webapp-stickey.yaml"
 							}
 							else 
 							{
