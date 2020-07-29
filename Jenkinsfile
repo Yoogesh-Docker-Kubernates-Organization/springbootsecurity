@@ -47,10 +47,10 @@ pipeline {
 				manuallyInstallGrafanaPrometheus = "false"
 
 				//canery deployment related variables.enableIstioCanery must be set to true before you want to set the other canery experiments as true to work!!
-				enableIstioCanery = "true"
+				enableIstioCanery = "false"
 				enableCaneryWithStickey = "false"
 				enableCaneryWithLoadBalancer = "false";
-				enableFaultInjection = "true";
+				enableFaultInjection = "false";
             }
 
 			steps {
