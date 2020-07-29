@@ -46,10 +46,11 @@ pipeline {
                 enableKubernetesIngress = "false"
 				manuallyInstallGrafanaPrometheus = "false"
 
-				//canery deployment related variables
+				//canery deployment related variables.enableIstioCanery must be set to true before you want to set the other canery experiments as true to work!!
 				enableIstioCanery = "true"
 				enableCaneryWithStickey = "false"
 				enableCaneryWithLoadBalancer = "false";
+				enableFaultInjection = "true";
             }
 
 			steps {
@@ -104,6 +105,11 @@ pipeline {
 								{
 									/* if you want to experiment canery with 10% traffic */
 									sh "kubectl apply -f ${YAML_PATH}/istio/canery/vs_canery_loadbalancer.yaml" 
+								}
+								else if(env.enableFaultInjection == 'true')
+								{
+									/* Applying Fault Injection at the riskey version */
+									sh "kubectl apply -f ${YAML_PATH}/istio/canery/vs_fault_injection.yaml" 
 								}
 								else 
 								{

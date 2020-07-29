@@ -1,0 +1,35 @@
+apiVersion: networking.istio.io/v1alpha3
+
+kind: VirtualService
+
+metadata:
+  name: istio-ingress-canery-virtual-service-configuration-with-passing-parameter
+  
+spec:
+  hosts:
+    - fleetman.com
+  gateways:
+    - istio-ingress-firewall-yoogesh
+  
+  http:
+  
+    - match:
+      - headers:
+          x-istio-header:
+            exact: canery
+            
+      fault:
+        delay:
+          percentage:
+            value: 100.0      # It can be range from 0.1 to 100 which means 0.1% to 100%
+          fixedDelay: 20s     # setting 20 second delay
+          
+      route:
+        - destination:
+            host: twm-webapp.default.svc.cluster.local
+            subset: risky
+        
+    - route: # CATCH ALL
+      - destination:
+          host: twm-webapp.default.svc.cluster.local
+          subset: safe
