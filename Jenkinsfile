@@ -51,6 +51,9 @@ pipeline {
 				enableCaneryWithStickey = "false"
 				enableCaneryWithLoadBalancer = "false";
 				enableFaultInjection = "false";
+
+				//Circuit breaking feature
+				enableCircuitBreaker = "true";
             }
 
 			steps {
@@ -122,6 +125,11 @@ pipeline {
 							sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-route-webapp.yaml"
 						}
 						sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-route-monitoring.yaml"
+
+						/* If you want to enable Circuit breaker feature on twm-webapp */
+						if(env.enableCircuitBreaker == 'true'){
+							sh "kubectl apply -f ${YAML_PATH}/istio/circuitBreaking/istio_circuit_breaking.yaml"
+						}
 					}
 
 					/* Traditional Kubernetes Ingress routing configuration */

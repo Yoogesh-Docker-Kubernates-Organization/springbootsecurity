@@ -5,7 +5,7 @@ metadata:
   name: circuit-breaker-configuration
   namespace: default
 spec:
-  host: twm-webapp.default.svc.cluster.local
+  host: twm-webapp.default.svc.cluster.local  # If you have to versions of safe and riskey, this will handles both i.e. circuit breaker will be configured on a service
   trafficPolicy:
     outlierDetection:        # Circuit Breaker have to be switched ON
       consecutiveErrors: 3
