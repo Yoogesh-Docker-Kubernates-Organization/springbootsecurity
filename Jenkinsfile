@@ -53,7 +53,7 @@ pipeline {
 				enableFaultInjection = "false";
 
 				//Circuit breaking feature
-				enableCircuitBreaker = "true";
+				enableCircuitBreaker = "false";
             }
 
 			steps {
