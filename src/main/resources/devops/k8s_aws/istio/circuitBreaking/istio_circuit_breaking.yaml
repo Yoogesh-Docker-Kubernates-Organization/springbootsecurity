@@ -1,0 +1,14 @@
+# If there will be 3 consecutive errors with in a 20 second period, then the circuit breaker will Ejected
+kind: DestinationRule
+apiVersion: networking.istio.io/v1alpha3
+metadata:
+  name: circuit-breaker-configuration
+  namespace: default
+spec:
+  host: twm-webapp.default.svc.cluster.local
+  trafficPolicy:
+    outlierDetection:        # Circuit Breaker have to be switched ON
+      consecutiveErrors: 3
+      interval: 20s
+      baseEjectionTime: 30s  # After 30 second, the opened circuit will again close
+      maxEjectionPercent: 10
