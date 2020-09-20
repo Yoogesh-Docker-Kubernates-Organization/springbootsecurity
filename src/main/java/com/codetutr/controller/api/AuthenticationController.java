@@ -50,7 +50,10 @@ public class AuthenticationController {
 					new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 		}
 		catch (BadCredentialsException e) {
-			throw new Exception("Incorrect username or password", e);
+			throw new Exception("password invalid", e);
+		}
+		catch (Exception ex) {
+			throw new Exception("username not found", ex);
 		}
 	
 		
