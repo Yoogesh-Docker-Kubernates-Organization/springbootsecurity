@@ -21,3 +21,5 @@ spec:
       - kiali.fleetman.com
       - kibana.fleetman.com
       - jaeger.fleetman.com
+      - apigateway.fleetman.com
+      - mfe.fleetman.com
