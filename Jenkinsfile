@@ -19,7 +19,7 @@ pipeline {
 
 		stage('Trigger API Gateway') {
 			steps {
-				build job: '../go-microservice/master', wait: true
+				build job: '../../go-microservice/master', wait: true
 			}
 		}
 		
