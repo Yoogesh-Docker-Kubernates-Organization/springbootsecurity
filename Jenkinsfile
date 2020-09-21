@@ -16,6 +16,12 @@ pipeline {
 					git credentialsId: 'GitHub', url: "https://github.com/${ORGANIZATION_NAME}/${SERVICE_NAME}"
 				}
 		}
+
+		stage('Trigger API Gateway') {
+			steps {
+				build job: '../../Go-microservices-projects/master', wait: true
+			}
+		}
 		
 		stage('Maven Clean Install') {
 			steps {
