@@ -19,7 +19,7 @@ pipeline {
 
 		stage('Trigger API Gateway') {
 			steps {
-				build job: '../reactmfe/master', wait: true
+				build job: '../Go-microservices-projects/master', wait: true
 			}
 		}
 		
