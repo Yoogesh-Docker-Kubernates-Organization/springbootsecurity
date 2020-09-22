@@ -131,7 +131,7 @@ public class AppConfig_Security extends WebSecurityConfigurerAdapter{
 	}
 	
 	private void csrf(HttpSecurity http) throws Exception{
-		String [] ignoreCsrfForSpecificUrls = new String [] {"/api/**", "/springbootsecurity/**", "/h2-console/**"};
+		String [] ignoreCsrfForSpecificUrls = new String [] {"/api/**", "*", "/h2-console/**"};
 		
 		http
 		.csrf().ignoringAntMatchers(ignoreCsrfForSpecificUrls);
