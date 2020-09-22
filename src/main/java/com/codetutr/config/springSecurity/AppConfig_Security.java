@@ -22,6 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
 import org.springframework.security.web.csrf.CsrfFilter;
 
+import com.codetutr.feature.csrf.TWMCsrfFilter;
 import com.codetutr.feature.jwt.JwtRequestFilter;
 import com.codetutr.security.handler.CustomSuccessHandler;
 
@@ -42,13 +43,14 @@ public class AppConfig_Security extends WebSecurityConfigurerAdapter{
 	private AuthorizationRequestRepository<OAuth2AuthorizationRequest> authorizationRequestRepository;
 	private OAuth2AuthorizedClientRepository authorizedClientRepository;
 	private JwtRequestFilter jwtRequestFilter;
+	private TWMCsrfFilter twmCsrfFilter;
 	
 	@Autowired
 	public AppConfig_Security(ProviderManager providerManager, AccessDecisionManager accessDecisionManager, CustomSuccessHandler customSuccessHandler, 
 			UserDetailsService userDetailsService, SwitchUserFilter switchUserFilter,SessionRegistry sessionRegistry, 
 			ClientRegistrationRepository clientRegistrationRepository, OAuth2AuthorizedClientService oAuth2AuthorizedClientService,
 			OAuth2AuthorizationRequestResolver oAuth2AuthorizationRequestResolver, AuthorizationRequestRepository<OAuth2AuthorizationRequest> authorizationRequestRepository,
-			OAuth2AuthorizedClientRepository authorizedClientRepository, JwtRequestFilter jwtRequestFilter) {
+			OAuth2AuthorizedClientRepository authorizedClientRepository, JwtRequestFilter jwtRequestFilter,  TWMCsrfFilter twmCsrfFilter) {
 		this.providerManager = providerManager;
 		this.accessDecisionManager = accessDecisionManager;
 		this.customSuccessHandler= customSuccessHandler;
@@ -61,6 +63,7 @@ public class AppConfig_Security extends WebSecurityConfigurerAdapter{
 		this.authorizationRequestRepository = authorizationRequestRepository;
 		this.authorizedClientRepository = authorizedClientRepository;
 		this.jwtRequestFilter = jwtRequestFilter;
+		this.twmCsrfFilter = twmCsrfFilter;
 	}
 		
     public AppConfig_Security(){
@@ -131,12 +134,12 @@ public class AppConfig_Security extends WebSecurityConfigurerAdapter{
 	}
 	
 	private void csrf(HttpSecurity http) throws Exception{
-		String [] ignoreCsrfForSpecificUrls = new String [] {"/api/**", "*", "/h2-console/**"};
+		String [] ignoreCsrfForSpecificUrls = new String [] {"/api/**", "/h2-console/**"};
 		
 		http
 		.csrf().ignoringAntMatchers(ignoreCsrfForSpecificUrls);
 		
-		//csrfForKubernetesCluster(http);
+		csrfForKubernetesCluster(http);
 	}
 	
 
@@ -277,6 +280,11 @@ public class AppConfig_Security extends WebSecurityConfigurerAdapter{
 	
 	private void jwtLogin(HttpSecurity http) {
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);		
+	}
+	
+	private void csrfForKubernetesCluster(HttpSecurity http) {
+		http.addFilterBefore(twmCsrfFilter, CsrfFilter.class);	
+		
 	}
 	
 	protected void cors(HttpSecurity http) throws Exception {
