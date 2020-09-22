@@ -34,25 +34,25 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String username = null;
         String jwt = null;
 
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {System.out.println("i am here......Bearer is there");
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
             username = jwtService.extractUsername(jwt);
         }
 
 
-       // if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) { System.out.println("i am here......Bearer is Not there");
+         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername("admin@gmail.com");
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
-           // if (jwtService.validateToken(jwt, null, username)) {
+            if (jwtService.validateToken(jwt, null, username)) {
 
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken
                         .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-          //  }
-       //  }System.out.println("Going for next.....");
+            }
+         }
         chain.doFilter(request, response);
     }
 
