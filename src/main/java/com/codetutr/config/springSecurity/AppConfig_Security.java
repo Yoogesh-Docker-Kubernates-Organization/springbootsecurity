@@ -139,7 +139,7 @@ public class AppConfig_Security extends WebSecurityConfigurerAdapter{
 		http
 		.csrf().ignoringAntMatchers(ignoreCsrfForSpecificUrls);
 		
-		csrfForKubernetesCluster(http);
+		//csrfForKubernetesCluster(http);
 	}
 	
 
