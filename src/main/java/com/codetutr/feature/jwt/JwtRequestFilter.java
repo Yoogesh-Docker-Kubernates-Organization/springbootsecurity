@@ -34,13 +34,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String username = null;
         String jwt = null;
 
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {System.out.println("i am here......Bearer is there");
             jwt = authorizationHeader.substring(7);
             username = jwtService.extractUsername(jwt);
         }
 
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) { System.out.println("i am here......Bearer is Not there");
 
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
@@ -52,7 +52,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                         .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
-        }
+        }System.out.println("Going for next.....");
         chain.doFilter(request, response);
     }
 
