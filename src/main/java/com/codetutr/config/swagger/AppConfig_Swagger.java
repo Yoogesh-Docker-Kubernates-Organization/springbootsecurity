@@ -53,7 +53,7 @@ public class AppConfig_Swagger implements WebMvcConfigurer {
 	@Bean
 	public Docket swaggerCustomization() {
 		return new Docket(DocumentationType.SWAGGER_2).select()
-				.apis(RequestHandlerSelectors.basePackage("com.codetutr.controller"))
+				.apis(RequestHandlerSelectors.basePackage("com.codetutr.restAPI"))
 				.apis(RequestHandlerSelectors.withClassAnnotation(RestController.class)).paths(PathSelectors.any()) // .paths(PathSelectors.ant("/api/*"))
 				.build().apiInfo(apiDetails()).globalOperationParameters(showContentTypeParamater())
 				.tags(new Tag(LemonConstant.SWAGGER_AUTHENTICATION_DESCRIPTION, NO_DESCRIPTION))

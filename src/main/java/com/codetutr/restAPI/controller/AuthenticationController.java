@@ -1,4 +1,4 @@
-package com.codetutr.controller.api;
+package com.codetutr.restAPI.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codetutr.feature.jwt.JwtService;
-import com.codetutr.restApi.request.model.AuthenticationResponse;
-import com.codetutr.restApi.request.model.SigninRequest;
+import com.codetutr.restAPI.model.AuthenticationResponse;
+import com.codetutr.restAPI.model.SigninRequest;
 import com.codetutr.validationHelper.LemonConstant;
 
 import io.swagger.annotations.Api;

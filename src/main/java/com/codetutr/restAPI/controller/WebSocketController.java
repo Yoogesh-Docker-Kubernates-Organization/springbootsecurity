@@ -1,4 +1,4 @@
-package com.codetutr.controller.api;
+package com.codetutr.restAPI.controller;
 
 import java.util.ArrayList;
 import java.util.List;

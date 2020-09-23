@@ -1,4 +1,4 @@
-package com.codetutr.controller.api;
+package com.codetutr.restAPI.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
