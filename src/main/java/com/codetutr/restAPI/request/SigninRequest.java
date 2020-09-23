@@ -1,4 +1,4 @@
-package com.codetutr.restAPI.model;
+package com.codetutr.restAPI.request;
 
 import javax.validation.constraints.NotBlank;
 

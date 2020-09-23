@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codetutr.feature.jwt.JwtService;
-import com.codetutr.restAPI.model.AuthenticationResponse;
-import com.codetutr.restAPI.model.SigninRequest;
+import com.codetutr.restAPI.request.SigninRequest;
+import com.codetutr.restAPI.response.AuthenticationResponse;
 import com.codetutr.validationHelper.LemonConstant;
 
 import io.swagger.annotations.Api;
