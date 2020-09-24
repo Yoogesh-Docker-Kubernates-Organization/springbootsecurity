@@ -22,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
 import org.springframework.security.web.csrf.CsrfFilter;
 
-import com.codetutr.feature.jwt.JwtRequestFilter;
+import com.codetutr.filter.JwtRequestFilter;
 import com.codetutr.security.handler.CustomSuccessHandler;
 
 @EnableWebSecurity

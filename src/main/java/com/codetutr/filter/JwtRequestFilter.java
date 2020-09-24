@@ -1,4 +1,4 @@
-package com.codetutr.feature.jwt;
+package com.codetutr.filter;
 
 import java.io.IOException;
 
@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.codetutr.feature.jwt.JwtService;
 import com.codetutr.services.LemonUserDetailsService;
 
 

@@ -1,4 +1,4 @@
-package com.codetutr.config.logging;
+package com.codetutr.filter;
 
 import java.io.IOException;
 
@@ -8,7 +8,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import com.codetutr.utility.AbstractBaseFilter;
+import com.codetutr.config.wrapper.TWMRequestWrapper;
 
 //@WebFilter("/*")
 public class LogFilter extends AbstractBaseFilter  {
@@ -19,13 +19,13 @@ public class LogFilter extends AbstractBaseFilter  {
 		filterChain.doFilter(setCustomHeaders((HttpServletRequest) servletRequest), servletResponse);
 	}
 
-	private TWMHttpRequestWrapper setCustomHeaders(HttpServletRequest request) {
-		TWMHttpRequestWrapper requestWrapper = new TWMHttpRequestWrapper(request);
+	private TWMRequestWrapper setCustomHeaders(HttpServletRequest request) {
+		TWMRequestWrapper requestWrapper = new TWMRequestWrapper(request);
 		setCustomHeader(request, requestWrapper);
 		return requestWrapper;
 	}
 
-	private void setCustomHeader(HttpServletRequest request, TWMHttpRequestWrapper requestWrapper) {
+	private void setCustomHeader(HttpServletRequest request, TWMRequestWrapper requestWrapper) {
 		if(null != request.getParameter("deploy")) {
 			requestWrapper.setHeader("x-istio-header", request.getParameter("deploy"));
 		}

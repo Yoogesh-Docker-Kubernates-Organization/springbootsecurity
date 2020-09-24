@@ -1,4 +1,4 @@
-package com.codetutr.config.swagger;
+package com.codetutr.config.wrapper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -10,13 +10,13 @@ import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
-public class HtmlResponseWrapper extends HttpServletResponseWrapper{
+public class TWMResponseWrapper extends HttpServletResponseWrapper{
 
 	private final ByteArrayOutputStream capture;
 	private ServletOutputStream output;
 	private PrintWriter writer;
 
-	public HtmlResponseWrapper(HttpServletResponse response) {
+	public TWMResponseWrapper(HttpServletResponse response) {
 	    super(response);
 	    capture = new ByteArrayOutputStream(response.getBufferSize());
 	}

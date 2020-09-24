@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 
-import com.codetutr.config.logging.LogFilter;
-import com.codetutr.config.swagger.SwaggerResponseFilter;
+import com.codetutr.filter.LogFilter;
+import com.codetutr.filter.SwaggerResponseFilter;
 
 public class FilterConfig {
 

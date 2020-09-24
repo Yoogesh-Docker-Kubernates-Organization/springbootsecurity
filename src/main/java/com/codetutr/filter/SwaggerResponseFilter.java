@@ -1,4 +1,4 @@
-package com.codetutr.config.swagger;
+package com.codetutr.filter;
 
 import java.io.IOException;
 
@@ -13,7 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.codetutr.utility.AbstractBaseFilter;
+import com.codetutr.config.wrapper.TWMResponseWrapper;
 
 public class SwaggerResponseFilter extends AbstractBaseFilter {
 	
@@ -27,7 +27,7 @@ public class SwaggerResponseFilter extends AbstractBaseFilter {
 		   logger.info("Forwarded Request via {}", servletRequest.getRequestURL().toString());
 		   
 		   if(StringUtils.contains(servletRequest.getRequestURL().toString(), "/forwardRequestViaFilter")) {
-			   HtmlResponseWrapper capturingResponseWrapper = new HtmlResponseWrapper((HttpServletResponse) response);
+			   TWMResponseWrapper capturingResponseWrapper = new TWMResponseWrapper((HttpServletResponse) response);
 			   
 			   filterChain.doFilter(request, capturingResponseWrapper); 
 			   

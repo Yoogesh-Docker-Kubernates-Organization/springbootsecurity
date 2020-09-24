@@ -1,4 +1,4 @@
-package com.codetutr.config.logging;
+package com.codetutr.config.wrapper;
 
 import java.util.Collections;
 import java.util.Enumeration;
@@ -10,11 +10,11 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
-public class TWMHttpRequestWrapper extends HttpServletRequestWrapper {
+public class TWMRequestWrapper extends HttpServletRequestWrapper {
 
 	private final Map<String, String> customHeaders;
 	
-	public TWMHttpRequestWrapper(HttpServletRequest request) {
+	public TWMRequestWrapper(HttpServletRequest request) {
 		super(request);
 		this.customHeaders = new HashMap<String, String>();
 	}
