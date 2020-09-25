@@ -1,6 +1,5 @@
 package com.codetutr.restAPI.controller;
 
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,16 +72,5 @@ public class AuthenticationController {
 	public AuthenticationResponse logout(HttpServletResponse response, @Valid @RequestBody SigninRequest request) throws Exception {
 		
 		return new AuthenticationResponse("");
-	}
-	
-	private Map<String, String> getReqeustHeaderInfo(HttpServletRequest request) {
-		Map<String, String> map = new HashMap<String, String>();
-		Enumeration<String> headerNames = request.getHeaderNames();
-		while (headerNames.hasMoreElements()) {
-			String key = headerNames.nextElement();
-			String value = request.getHeader(key);
-			map.put(key, value);
-		}
-		return map;
 	}
 }

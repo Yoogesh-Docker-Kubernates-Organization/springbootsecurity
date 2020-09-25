@@ -12,8 +12,7 @@ import com.codetutr.utility.HostnameHelper;
 
 public class TWMResponseFactory {
 		
-	public static <T>TWMResponse<T> getResponse(T data, HttpServletRequest request)
-	{
+	public static <T>TWMResponse<T> getResponse(T data, HttpServletRequest request){
 		TWMResponse<T> response = new TWMResponse<>();
 		response.setData(data);
 		response.setTransactionId(RequestHelper.getTransactionId());
@@ -21,8 +20,7 @@ public class TWMResponseFactory {
 		return response;
 	}
 	
-	public static <Type> TWMResponse<Type> getResponse(Type data, ArrayList<ErrorResponse> error)
-	{
+	public static <Type> TWMResponse<Type> getResponse(Type data, ArrayList<ErrorResponse> error){
 		TWMResponse<Type> response = new TWMResponse<>();
 		response.setData(data);
 		response.setTransactionId(RequestHelper.getTransactionId());
@@ -31,18 +29,11 @@ public class TWMResponseFactory {
 		return response;
 	}
 	
-	
-	private static String getHostname()
-	{
+	private static String getHostname(){
 		HostnameHelper hostnameHelper = HostnameHelper.getInstance();
 		String hostname = hostnameHelper.getLocalHostname();
-		
-		if((hostname = StringUtils.trimToNull(hostname)) == null){
-			hostname = "N/A";
-		}
+		if(StringUtils.isBlank(hostname))
+			hostname = "SpringBootSecurity";
 		return hostname;
 	}
-	
-	
-
 }

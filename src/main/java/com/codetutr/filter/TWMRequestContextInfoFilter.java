@@ -43,23 +43,26 @@ public class TWMRequestContextInfoFilter extends AbstractBaseFilter implements F
 		TWMRequestContextInfo requestContextInfo = new TWMRequestContextInfo();
 		String requestContextInfoHeader = request.getHeader(LemonConstant.TWM_REQUEST_CONTEXT_INFO_HEADER_NAME);
 		
-		if (StringUtils.isBlank(requestContextInfoHeader)) {
-	    	requestContextInfo.setTransactionId(TrackingLogger.getTransactionIdforCurrentRequest());
-	    	requestContextInfo.setIpAddress(getClientIpAddress(request));
-	    	requestContextInfo.setBrowserAgent(StringUtils.trimToNull(request.getHeader("User-Agent")));
-	    	requestContextInfo.setTriggeredById("springBootSecurity");
-	    	
-	    } else {
-	    	try {
+		if (StringUtils.isNotBlank(requestContextInfoHeader)) {
+			try {
 				requestContextInfo = TransportAPI.decode(Base64.decode(requestContextInfoHeader), TWMRequestContextInfo.class);
 			} catch (Exception e) {
 				throw new RuntimeException("Could not parse the requestContext header: ", e);
 			}
-	    }
+		}
+		
+		if(StringUtils.isBlank(requestContextInfo.getTransactionId()))
+				requestContextInfo.setTransactionId(TrackingLogger.getTransactionIdforCurrentRequest());
+		if(StringUtils.isBlank(requestContextInfo.getIpAddress()))
+				requestContextInfo.setIpAddress(getClientIpAddress(request));
+		if(StringUtils.isBlank(requestContextInfo.getBrowserAgent()))
+				requestContextInfo.setBrowserAgent(StringUtils.trimToNull(request.getHeader("User-Agent")));
+		if(StringUtils.isBlank(requestContextInfo.getTriggeredById()))
+			requestContextInfo.setTriggeredById("springBootSecurity");
+
 		
 		TWMRequestWrapper wrapper = new TWMRequestWrapper(request);
 		wrapper.setAttribute(LemonConstant.TWM_REQUEST_CONTEXT_INFO_HEADER_NAME, requestContextInfo);
-		System.out.println("here is...." + requestContextInfo);
 	    return wrapper;
 	}
 
