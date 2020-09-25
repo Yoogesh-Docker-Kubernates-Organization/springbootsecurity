@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.codetutr.exception.model.ErrorResponse;
 import com.codetutr.exception.model.ErrorResponseComposer;
+import com.codetutr.restAPI.RequestHelper;
 
 
 /**
@@ -43,7 +44,7 @@ public class DefaultExceptionHandlerControllerAdvice<T extends Throwable> {
     	if (errorResponse.incomplete())
     		throw ex;
     	
-    	logger.warn("Handling exception", ex);
+    	logger.warn("Handling exception for transactionId:{}", RequestHelper.getTransactionId(),  ex);
         return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.valueOf(errorResponse.getStatus()));
     }
 }
