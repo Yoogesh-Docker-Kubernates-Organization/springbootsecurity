@@ -52,11 +52,6 @@ public class UtilityHelper {
 		return value;
 	}
 	
-	public static String generateFullUUIDWithOutDashes()
-	{
-		return UUID.randomUUID().toString().replace("-", "");
-	}
-	
 	public static List<Event> addEventsIntoList(List<Event> events) {
 		events.add(new Event("dba@gmail.com", ""));
 		events.add(new Event("admin@gmail.com", "dba@gmail.com"));
@@ -67,5 +62,9 @@ public class UtilityHelper {
 
 	public static String getMethodName(Object object) {
 		return object.getClass().getEnclosingMethod().getName();
+	}
+
+	public static String generateUUID() {
+		return UUID.randomUUID().toString(); //return UUID.randomUUID().toString().replace("-", "");
 	}
 }

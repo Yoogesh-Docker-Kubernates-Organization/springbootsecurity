@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 public class ErrorResponse {
 	
+	private String transactionId;
 	private String exceptionId;
 	private String error;
 	private String message;
@@ -22,6 +23,14 @@ public class ErrorResponse {
 		return message == null || status == null;
 	}
 
+	public String getTransactionId() {
+		return transactionId;
+	}
+
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+	}
+	
 	public String getExceptionId() {
 		return exceptionId;
 	}

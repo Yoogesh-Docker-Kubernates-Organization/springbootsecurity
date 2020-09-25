@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import com.codetutr.config.exception.MyExceptionUtils;
 import com.codetutr.exception.model.ErrorResponse;
 import com.codetutr.exception.model.LemonFieldError;
+import com.codetutr.restAPI.RequestHelper;
 
 /**
  * Extend this to code an exception handler
@@ -47,6 +48,7 @@ public abstract class AbstractExceptionHandler<T extends Throwable> {
     	
 		ErrorResponse errorResponse = new ErrorResponse();
 		
+		errorResponse.setTransactionId(RequestHelper.getTransactionId());
 		errorResponse.setExceptionId(getExceptionId(ex));
 		errorResponse.setMessage(getMessage(ex));
 		

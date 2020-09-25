@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codetutr.feature.jwt.JwtService;
 import com.codetutr.restAPI.request.SigninRequest;
 import com.codetutr.restAPI.response.AuthenticationResponse;
+import com.codetutr.restAPI.response.TWMResponse;
+import com.codetutr.restAPI.response.TWMResponseFactory;
 import com.codetutr.validationHelper.LemonConstant;
 
 import io.swagger.annotations.Api;
@@ -34,6 +38,8 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags = {LemonConstant.SWAGGER_AUTHENTICATION_DESCRIPTION})
 public class AuthenticationController {
 	
+	private final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
+	
 	/**
 	 * This will get the bean of {@link ProviderManager}
 	 */
@@ -42,7 +48,7 @@ public class AuthenticationController {
 		
 	@Autowired
 	private JwtService jwtService;
-	
+	/*
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value="Authenticate the user", notes="This url is used to get the JWT Token back which can be used for further call.", response=AuthenticationResponse.class )
 	public AuthenticationResponse login(HttpServletRequest request, HttpServletResponse response, @Valid @RequestBody SigninRequest signInRequest) throws Exception {
@@ -65,6 +71,20 @@ public class AuthenticationController {
 		final String jwt = jwtService.generateToken("auth", signInRequest.getUsername(), claimMap);
 
 		return new AuthenticationResponse(jwt);
+	}*/
+	
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value="Authenticate the user", notes="This url is used to get the JWT Token back which can be used for further call.", response=AuthenticationResponse.class )
+	public TWMResponse<AuthenticationResponse> login(HttpServletRequest request, HttpServletResponse response, @Valid @RequestBody SigninRequest signInRequest) throws Exception {
+		
+		try { authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword()));}
+		catch (BadCredentialsException e) {throw new Exception("password invalid", e);}
+		catch (Exception ex) {throw new Exception("username not found", ex);}
+		
+		Map<String, Object> claimMap = new HashMap<>();
+		claimMap.put("isApi", true);
+		final String jwt = jwtService.generateToken("auth", signInRequest.getUsername(), claimMap);
+		return TWMResponseFactory.getResponse(new AuthenticationResponse(jwt), request);
 	}
 	
 	@DeleteMapping(value="/{username}", produces=MediaType.APPLICATION_JSON_VALUE)

@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 
 import com.codetutr.config.exception.MyExceptionUtils;
 import com.codetutr.exception.handler.AbstractExceptionHandler;
+import com.codetutr.restAPI.RequestHelper;
 
 /**
  * Given an exception, builds a response.
@@ -66,10 +67,11 @@ public class ErrorResponseComposer<T extends Throwable> {
         
 		return Optional.of(getErrorResponseForHandlerAbsent(exception));
 	}
-
+	
 	private ErrorResponse getErrorResponseForHandlerAbsent(T ex) {
 		ErrorResponse errorResponse = new ErrorResponse();
 		
+		errorResponse.setTransactionId(RequestHelper.getTransactionId());
 		errorResponse.setExceptionId(MyExceptionUtils.getExceptionId(ex));
 		errorResponse.setMessage(ex.getMessage());
 		HttpStatus status = HttpStatus.BAD_REQUEST;

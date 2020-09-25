@@ -54,28 +54,22 @@ public class TrackingLogger
 		private static void setTransactionId(String id){
 			transactionId.set(id);
 		}
-
 		
 		private String getTrackingId() {
 			if (getTransactionIdForCurrentRequest() == null) {
-				transactionId.set(UtilityHelper.generateFullUUIDWithOutDashes());
+				transactionId.set(UtilityHelper.generateUUID());
 			}
 			return transactionId.get();
 		}
-		
 		
 		private static String getTransactionIdForCurrentRequest(){
 			return transactionId.get();
 		}
 		
-		
 		private Object addTrackingId(Object message) {
 			message = "[transactionID : " + getTrackingId() + "] " + message;
 			return message;
 		}
-		
-		
-		
 		
 		// Overriding parent Logger class method where replace 'message' by 'addTrackingId(message)' to all. Beyond that nothing
 

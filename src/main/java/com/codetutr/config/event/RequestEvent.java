@@ -3,7 +3,6 @@ package com.codetutr.config.event;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
 import javax.servlet.annotation.WebListener;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Component;
 
@@ -17,7 +16,8 @@ public class RequestEvent implements ServletRequestListener
 	@Override
     public void requestInitialized (ServletRequestEvent event) {
 		TrackingLogger.resetTransactionId();
-        TrackingLogger.setTransactionId(((HttpServletRequest) event.getServletRequest()).getSession().getId() + "  ::  " + UtilityHelper.generateFullUUIDWithOutDashes());
+        //TrackingLogger.setTransactionId(((HttpServletRequest) event.getServletRequest()).getSession().getId() + "  ::  " + UtilityHelper.generateUUID());
+        TrackingLogger.setTransactionId(UtilityHelper.generateUUID());
     }
 	
 	@Override
