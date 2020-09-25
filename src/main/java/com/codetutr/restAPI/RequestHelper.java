@@ -25,13 +25,13 @@ public class RequestHelper {
 	}
 
 	public static TWMRequestContextInfo getCurrentRequestBean() {
-		TWMRequestContextInfo twmRequestContextInfo = new TWMRequestContextInfo();
+		TWMRequestContextInfo requestContextInfo = null;
 		HttpServletRequest request = getCurrentRequest();
 		if (request != null) {
-			twmRequestContextInfo = (TWMRequestContextInfo) request
+			requestContextInfo = (TWMRequestContextInfo) request
 					.getAttribute(LemonConstant.TWM_REQUEST_CONTEXT_INFO_HEADER_NAME);
 		}
-		return twmRequestContextInfo;
+		return null != requestContextInfo ? requestContextInfo : new TWMRequestContextInfo();
 	}
 
 	public static String getTransactionId() {

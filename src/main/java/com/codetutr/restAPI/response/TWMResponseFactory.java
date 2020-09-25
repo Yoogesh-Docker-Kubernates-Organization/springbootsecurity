@@ -2,19 +2,21 @@ package com.codetutr.restAPI.response;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 
 import com.codetutr.exception.model.ErrorResponse;
+import com.codetutr.restAPI.RequestHelper;
 import com.codetutr.utility.HostnameHelper;
-import com.codetutr.utility.UtilityHelper;
 
 public class TWMResponseFactory {
-	
-	public static <T>TWMResponse<T> getResponse(T data)
+		
+	public static <T>TWMResponse<T> getResponse(T data, HttpServletRequest request)
 	{
 		TWMResponse<T> response = new TWMResponse<>();
 		response.setData(data);
-		response.setTransactionId(UtilityHelper.generateFullUUIDWithOutDashes());
+		response.setTransactionId(RequestHelper.getTransactionId());
 		response.setHostName(getHostname());
 		return response;
 	}
@@ -23,7 +25,7 @@ public class TWMResponseFactory {
 	{
 		TWMResponse<Type> response = new TWMResponse<>();
 		response.setData(data);
-		response.setTransactionId(UtilityHelper.generateFullUUIDWithOutDashes());
+		response.setTransactionId(RequestHelper.getTransactionId());
 		response.setHostName(getHostname());
 		response.setErrors(error);
 		return response;
@@ -40,4 +42,7 @@ public class TWMResponseFactory {
 		}
 		return hostname;
 	}
+	
+	
+
 }

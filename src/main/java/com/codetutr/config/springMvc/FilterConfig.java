@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 
 import com.codetutr.filter.LogFilter;
 import com.codetutr.filter.SwaggerResponseFilter;
+import com.codetutr.filter.TWMRequestContextInfoFilter;
 
 public class FilterConfig {
 
@@ -26,6 +27,20 @@ public class FilterConfig {
 	}
 	
 	@Bean
+	public FilterRegistrationBean<TWMRequestContextInfoFilter> TWMRequestContextInfoFilterBean() {
+		FilterRegistrationBean<TWMRequestContextInfoFilter> filterRegistrationBean = new FilterRegistrationBean<>();
+		TWMRequestContextInfoFilter twmRequestContextInfoFilter = new TWMRequestContextInfoFilter();
+		filterRegistrationBean.setFilter(twmRequestContextInfoFilter);
+		
+		List<String> urlPatterns = new ArrayList<String>();
+		urlPatterns.add("/*");
+		filterRegistrationBean.setUrlPatterns(urlPatterns);
+		
+		filterRegistrationBean.setOrder(2);
+		return filterRegistrationBean;
+	}
+	
+	@Bean
 	public FilterRegistrationBean<SwaggerResponseFilter> swaggerResponseFilterBean() {
 		FilterRegistrationBean<SwaggerResponseFilter> filterRegistrationBean = new FilterRegistrationBean<>();
 		SwaggerResponseFilter swaggerResponseFilter = new SwaggerResponseFilter();
@@ -35,7 +50,7 @@ public class FilterConfig {
 		urlPatterns.add("/forwardRequestViaFilter");
 		filterRegistrationBean.setUrlPatterns(urlPatterns);
 		
-		filterRegistrationBean.setOrder(2);
+		filterRegistrationBean.setOrder(3);
 		return filterRegistrationBean;
 	}
 }

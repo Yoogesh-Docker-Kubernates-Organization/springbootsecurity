@@ -2,6 +2,7 @@ package com.codetutr.restAPI;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import com.codetutr.restAPI.response.TWMResponse;
 import com.fasterxml.jackson.databind.JavaType;
@@ -34,8 +35,8 @@ public abstract class TransportAPI {
 	 * 
 	 * This method is used to marshal all the object that we know the types
 	 */
-	public <T> TWMResponse<ArrayList<T>> unmarshalList(String input, Class<T> objectClass) {
-		TWMResponse<ArrayList<T>> mcResponse = null;
+	public <T> TWMResponse<List<T>> unmarshalList(String input, Class<T> objectClass) {
+		TWMResponse<List<T>> mcResponse = null;
 
 		try {
 			// unmarshall TWMResponse only
@@ -50,7 +51,7 @@ public abstract class TransportAPI {
 			ArrayList<T> listResponse = mapper.readValue(dataJson, listType);
 
 			// map the full response
-			mcResponse = new TWMResponse<ArrayList<T>>();
+			mcResponse = new TWMResponse<List<T>>();
 			mcResponse.setTransactionId(response.getTransactionId());
 			mcResponse.setHostName(response.getHostName());
 			mcResponse.setErrors(response.getErrors());

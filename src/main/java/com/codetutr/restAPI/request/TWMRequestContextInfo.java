@@ -1,8 +1,12 @@
 package com.codetutr.restAPI.request;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
-public class TWMRequestContextInfo {
+public class TWMRequestContextInfo implements Serializable {
+	
+	private static final long serialVersionUID = -720689049778027848L;
 	
 	private String transactionId;
 	private String ipAddress;

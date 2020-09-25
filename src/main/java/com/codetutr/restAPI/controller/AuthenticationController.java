@@ -1,8 +1,10 @@
 package com.codetutr.restAPI.controller;
 
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -44,11 +46,11 @@ public class AuthenticationController {
 	
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value="Authenticate the user", notes="This url is used to get the JWT Token back which can be used for further call.", response=AuthenticationResponse.class )
-	public AuthenticationResponse login(HttpServletResponse response, @Valid @RequestBody SigninRequest request) throws Exception {
+	public AuthenticationResponse login(HttpServletRequest request, HttpServletResponse response, @Valid @RequestBody SigninRequest signInRequest) throws Exception {
 		
 		try {
 			authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+					new UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword()));
 		}
 		catch (BadCredentialsException e) {
 			throw new Exception("password invalid", e);
@@ -61,7 +63,7 @@ public class AuthenticationController {
 		Map<String, Object> claimMap = new HashMap<>();
 		claimMap.put("isApi", true);
 		
-		final String jwt = jwtService.generateToken("auth", request.getUsername(), claimMap);
+		final String jwt = jwtService.generateToken("auth", signInRequest.getUsername(), claimMap);
 
 		return new AuthenticationResponse(jwt);
 	}
@@ -71,5 +73,16 @@ public class AuthenticationController {
 	public AuthenticationResponse logout(HttpServletResponse response, @Valid @RequestBody SigninRequest request) throws Exception {
 		
 		return new AuthenticationResponse("");
+	}
+	
+	private Map<String, String> getReqeustHeaderInfo(HttpServletRequest request) {
+		Map<String, String> map = new HashMap<String, String>();
+		Enumeration<String> headerNames = request.getHeaderNames();
+		while (headerNames.hasMoreElements()) {
+			String key = headerNames.nextElement();
+			String value = request.getHeader(key);
+			map.put(key, value);
+		}
+		return map;
 	}
 }

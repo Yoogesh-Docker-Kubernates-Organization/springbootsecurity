@@ -16,5 +16,5 @@ public class LemonConstant {
 	public static final String WEB_SOCKET_NOTIFICATION = "/notification";
 	
 	//Rest call
-	public static final String TWM_REQUEST_CONTEXT_INFO_HEADER_NAME = "twm_request_context_info";
+	public static final String TWM_REQUEST_CONTEXT_INFO_HEADER_NAME = "request-Context-Info";
 }

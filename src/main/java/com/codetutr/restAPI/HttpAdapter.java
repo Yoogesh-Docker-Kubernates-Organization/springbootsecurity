@@ -49,14 +49,15 @@ public class HttpAdapter {
 		
 		String fullUrl = url;
 		TWMRequestContextInfo requestContextInfo = RequestHelper.getCurrentRequestBean();
-		for(Pair<String, String> nameValuePair : nameValuePairs){
+		logger.error("+++++++++============" + requestContextInfo);
+		//for(Pair<String, String> nameValuePair : nameValuePairs){
 			/**
 			 * Have to uri encode the values ( not urlencode) in case they have special uri/url chars urlencode will change spaces to + instead of %20. + works goeed in querystring values,
 			 * but since we are sending these up as part of the uri and not querystring need them to be %20 otherwise the jax-rs pathparam annotation will not decode them
 			 */
-			String value = nameValuePair.getRight();
-			fullUrl = StringUtils.replace(fullUrl, nameValuePair.getLeft(), value);
-		}
+			//String value = nameValuePair.getRight();
+			//fullUrl = StringUtils.replace(fullUrl, nameValuePair.getLeft(), value);
+		//}
 		
 		try {   
 			HttpHeaders headers = createHeaders(credentials, requestContextInfo);

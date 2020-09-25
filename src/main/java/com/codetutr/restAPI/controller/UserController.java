@@ -1,8 +1,12 @@
 package com.codetutr.restAPI.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codetutr.entity.User;
+import com.codetutr.restAPI.response.TWMResponse;
+import com.codetutr.restAPI.response.TWMResponseFactory;
 import com.codetutr.services.UserService;
 import com.codetutr.validationHelper.LemonConstant;
 
@@ -24,7 +30,9 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/api/user")
 @Api(tags = {LemonConstant.SWAGGER_USER_DESCRIPTION})
-public class UserController {
+public class UserController extends AbstractRestController{
+	
+	private final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
 	@Autowired
 	UserService userService;
@@ -55,10 +63,12 @@ public class UserController {
 		return userService.getUserByUserName(username + "@gmail.com");
 	}
 	
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	
+	@GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
 	@ApiOperation(value="Get all Users", notes="This url is used to get all the users", response=User.class )
-	public User getAllUsers(HttpServletRequest request, HttpServletResponse response, @PathVariable("username") String username){
-		return userService.getUserByUserName(username + "@gmail.com");
+	public TWMResponse<List<User>> getAllUsers(HttpServletRequest request) {
+		return TWMResponseFactory.getResponse(userService.getAllUsers(), request);
 	}
+
 
 }

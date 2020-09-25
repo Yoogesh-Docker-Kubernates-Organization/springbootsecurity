@@ -1,6 +1,6 @@
 package com.codetutr.restAPI;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.codetutr.entity.User;
 import com.codetutr.properties.MVCProperties;
@@ -22,13 +22,12 @@ public class CoreServiceClient extends TransportAPI {
 		serviceCredentials = new BasicAuthenticationCredentials(mvcProperties.getServiceUsername(), mvcProperties.getServicePassword());
 	}
 	
-	public ArrayList<User> getAllUsers()
-	{
+	public TWMResponse<List<User>> getAllUsers(){
+		
 		HttpAdapter httpAdapter = new HttpAdapter();
-		String response = httpAdapter.executeGet(serviceBaseUrl + "/api/user/.json", null, serviceReadTimeout, connectionTimeout, serviceCredentials);
-		TWMResponse<ArrayList<User>> twmResponse = unmarshalList(response, User.class);
-		ArrayList<User> users = twmResponse.getData();
-		return users;
-	  }
+		String response = httpAdapter.executeGet(serviceBaseUrl + "/api/user", null, serviceReadTimeout, connectionTimeout, serviceCredentials);
+		TWMResponse<List<User>> twmResponse = unmarshalList(response, User.class);
+		return twmResponse;
+	}
 
 }
