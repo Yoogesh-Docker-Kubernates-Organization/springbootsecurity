@@ -67,9 +67,10 @@ public class AuthenticationController {
 	@DeleteMapping(value = "/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Logout", notes = "This url is used to logging out from the application", response = AuthenticationResponse.class)
 	public TWMResponse<LogoutResponse> logout(HttpServletRequest request, HttpServletResponse response,
-			@Valid @NotNull(message = "Authorization header should not be null") @Pattern(regexp = "^[a-zA-z]*$", message = "header is not valid") @RequestHeader(value = "Authorization", required = true) String Authorization,
+			@Valid @NotNull(message = "Authorization header should not be null") @RequestHeader(value = "Authorization", required = true) String Authorization,
 			@Valid @Pattern(regexp = "^[a-zA-z]*$", message = "username is not Valid") @PathVariable String username)
 			throws Exception {
+		System.out.println("====" + username);
 		return TWMResponseFactory.getResponse(new LogoutResponse(true), request);
 	}
 }
