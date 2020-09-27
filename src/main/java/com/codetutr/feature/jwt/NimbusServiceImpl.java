@@ -99,6 +99,15 @@ public class NimbusServiceImpl implements JwtService {
 		
 		return expirationTime >= currentTime;
 	}
+	
+	public Boolean invalidateToken(String token) {
+		JWTClaimsSet claims = parseToken(token);
+		
+		long expirationTime = claims.getExpirationTime().getTime();
+		long currentTime = System.currentTimeMillis();
+		
+		return expirationTime >= currentTime;
+	}
 
 	@Override
 	public Boolean validateToken(String token, String audience, String subject) {

@@ -6,9 +6,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,14 +17,17 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codetutr.feature.jwt.JwtService;
 import com.codetutr.restAPI.request.SigninRequest;
 import com.codetutr.restAPI.response.AuthenticationResponse;
+import com.codetutr.restAPI.response.LogoutResponse;
 import com.codetutr.restAPI.response.TWMResponse;
 import com.codetutr.restAPI.response.TWMResponseFactory;
 import com.codetutr.validationHelper.LemonConstant;
@@ -38,8 +41,6 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags = {LemonConstant.SWAGGER_AUTHENTICATION_DESCRIPTION})
 public class AuthenticationController {
 	
-	private final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
-	
 	/**
 	 * This will get the bean of {@link ProviderManager}
 	 */
@@ -48,30 +49,6 @@ public class AuthenticationController {
 		
 	@Autowired
 	private JwtService jwtService;
-	/*
-	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(value="Authenticate the user", notes="This url is used to get the JWT Token back which can be used for further call.", response=AuthenticationResponse.class )
-	public AuthenticationResponse login(HttpServletRequest request, HttpServletResponse response, @Valid @RequestBody SigninRequest signInRequest) throws Exception {
-		
-		try {
-			authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword()));
-		}
-		catch (BadCredentialsException e) {
-			throw new Exception("password invalid", e);
-		}
-		catch (Exception ex) {
-			throw new Exception("username not found", ex);
-		}
-	
-		
-		Map<String, Object> claimMap = new HashMap<>();
-		claimMap.put("isApi", true);
-		
-		final String jwt = jwtService.generateToken("auth", signInRequest.getUsername(), claimMap);
-
-		return new AuthenticationResponse(jwt);
-	}*/
 	
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value="Authenticate the user", notes="This url is used to get the JWT Token back which can be used for further call.", response=AuthenticationResponse.class )
@@ -87,10 +64,12 @@ public class AuthenticationController {
 		return TWMResponseFactory.getResponse(new AuthenticationResponse(jwt), request);
 	}
 	
-	@DeleteMapping(value="/{username}", produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(value="Logout", notes="This url is used to logging out from the application", response=AuthenticationResponse.class )
-	public AuthenticationResponse logout(HttpServletResponse response, @Valid @RequestBody SigninRequest request) throws Exception {
-		
-		return new AuthenticationResponse("");
+	@DeleteMapping(value = "/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Logout", notes = "This url is used to logging out from the application", response = AuthenticationResponse.class)
+	public TWMResponse<LogoutResponse> logout(HttpServletRequest request, HttpServletResponse response,
+			@Valid @NotNull(message = "Authorization header should not be null") @Pattern(regexp = "^[a-zA-z]*$", message = "header is not valid") @RequestHeader(value = "Authorization", required = true) String Authorization,
+			@Valid @Pattern(regexp = "^[a-zA-z]*$", message = "username is not Valid") @PathVariable String username)
+			throws Exception {
+		return TWMResponseFactory.getResponse(new LogoutResponse(true), request);
 	}
 }
