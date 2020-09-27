@@ -37,14 +37,7 @@ public class UserController extends AbstractRestController{
 	@Autowired
 	UserService userService;
 	
-	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(value="Signup", notes="This url is used to create a user", response=User.class )
-	public User signUp(HttpServletResponse response, @RequestBody User user){
-		int i = 100/0;
-		System.out.println(i);
-		return new User(999L, "ysharma@gmail.com", "***", "Yoogesh", "Sharma", true, null);
-	}
-	
+
 	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value="Update user", notes="This url is used to update the user", response=User.class )
 	public User updateUser(HttpServletResponse response, @RequestBody User user){
