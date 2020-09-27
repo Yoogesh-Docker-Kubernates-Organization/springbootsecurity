@@ -81,7 +81,7 @@ public class AuthenticationController {
 	@ApiOperation(value = "Logout", notes = "This url is used to logging out from the application", response = AuthenticationResponse.class)
 	public TWMResponse<LogoutResponse> logout(HttpServletRequest request, HttpServletResponse response,
 			@Valid @NotNull(message = "Authorization header should not be null") @RequestHeader(value = "Authorization", required = true) String Authorization,
-			@Valid @Pattern(regexp = "^[0-9]*$", message = "Guid should a number.") @PathVariable Long guid,
+			@Valid @Pattern(regexp = "^[0-9]*$", message = "GUID should a number.") @PathVariable Long guid,
 			@Valid @Pattern(regexp = "^[a-zA-Z@.]*$", message = "username is not valid") @RequestParam (required = true) String username)
 			throws Exception {
 		return TWMResponseFactory.getResponse(new LogoutResponse(true), request);
