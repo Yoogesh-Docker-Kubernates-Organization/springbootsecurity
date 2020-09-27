@@ -20,7 +20,7 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.access.expression.WebExpressionVoter;
 
-import com.codetutr.security.handler.CustomPermissionEvaluator;
+import com.codetutr.config.userDetails.TWMPermissionEvaluator;
 
 public class AuthorizationConfig {
 
@@ -68,7 +68,7 @@ public class AuthorizationConfig {
 	 */
 	@Bean
 	public PermissionEvaluator getPermissionEvaluator() {
-		PermissionEvaluator permissionEvaluator = new CustomPermissionEvaluator();
+		PermissionEvaluator permissionEvaluator = new TWMPermissionEvaluator();
 		return permissionEvaluator;
 	}
 	

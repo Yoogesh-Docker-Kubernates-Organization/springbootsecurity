@@ -1,4 +1,4 @@
-package com.codetutr.services;
+package com.codetutr.config.userDetails;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +13,11 @@ import org.springframework.stereotype.Service;
 
 import com.codetutr.entity.Authority;
 import com.codetutr.entity.User;
+import com.codetutr.services.UserService;
 
 
 @Service
-public class LemonUserDetailsService implements UserDetailsService 
+public class TWMUserDetailsService implements UserDetailsService 
 {
 	@Autowired
 	UserService userService;
@@ -42,8 +43,10 @@ public class LemonUserDetailsService implements UserDetailsService
 		}
 		
 		UserDetails userDetails = new org.springframework.security.core.userdetails.User(dbUser.getUsername(), dbUser.getPassword(), true, true, true, true, authorities);
+		TWMUserDetails twmUserDetails = new TWMUserDetails(userDetails);
+		twmUserDetails.setUser(dbUser);
 		
-		return userDetails;
+		return twmUserDetails;
 	}
 
 }

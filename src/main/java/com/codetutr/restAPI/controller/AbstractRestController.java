@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import com.codetutr.restAPI.request.TWMRequestContextInfo;
 
-
 public abstract class AbstractRestController {
 	
 	private final Logger logger = LoggerFactory.getLogger(AbstractRestController.class);
@@ -24,7 +23,7 @@ public abstract class AbstractRestController {
 		logger.info("Request received:  [transactionId= " + transactionId + "][cientip = " + clientIp + "],[browserAgent = " + browserAgent + "]");
 	}
 	
-	private static Map<String, String> getAllRequestHeaders(HttpServletRequest request) {
+	protected static Map<String, String> getAllRequestHeaders(HttpServletRequest request) {
 		Map<String, String> map = new HashMap<String, String>();
 		Enumeration<String> headerNames = request.getHeaderNames();
 		while (headerNames.hasMoreElements()) {

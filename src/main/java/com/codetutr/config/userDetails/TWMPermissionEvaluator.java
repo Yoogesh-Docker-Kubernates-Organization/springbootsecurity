@@ -1,4 +1,4 @@
-package com.codetutr.security.handler;
+package com.codetutr.config.userDetails;
 
 import java.io.Serializable;
 import java.util.List;
@@ -9,7 +9,7 @@ import org.springframework.security.core.Authentication;
 import com.codetutr.entity.Authority;
 import com.codetutr.entity.User;
 
-public class CustomPermissionEvaluator implements PermissionEvaluator {
+public class TWMPermissionEvaluator implements PermissionEvaluator {
 
 	@Override
 	public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {

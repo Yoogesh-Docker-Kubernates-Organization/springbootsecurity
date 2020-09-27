@@ -15,15 +15,15 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.codetutr.config.userDetails.TWMUserDetailsService;
 import com.codetutr.feature.jwt.JwtService;
-import com.codetutr.services.LemonUserDetailsService;
 
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
-    private LemonUserDetailsService userDetailsService;
+    private TWMUserDetailsService userDetailsService;
 
     @Autowired
     private JwtService jwtService;
