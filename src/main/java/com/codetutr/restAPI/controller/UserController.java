@@ -65,27 +65,30 @@ public class UserController extends AbstractRestController {
 			@Valid @Pattern(regexp = "^[0-9]*$", message = "GUID should a number.") @PathVariable Long guid, 
 			@RequestBody UpdateRequest updateRequest){
 		
-		User user = userService.getUser(guid);
-		if(null == user) {
-			throw new RuntimeException("User with GUID " + guid + " Could not found.");
+		User user;
+		
+		try {
+			user = userService.getUser(guid);
+			if(null == user) {
+				throw new RuntimeException("User with GUID " + guid + " Could not found.");
+			} 
+
+			if(updateRequest.getUsername() != null)
+				user.setUsername(updateRequest.getUsername());
+			if(updateRequest.getPassword() != null)
+				user.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
+			if(updateRequest.getFirstName() != null)
+				user.setFirstName(updateRequest.getFirstName());
+			if(updateRequest.getLastName() != null)
+				user.setFirstName(updateRequest.getLastName());
+			
+			return TWMResponseFactory.getResponse(userService.updateUser(user), request);
+			
 		}
-		
-		if(updateRequest.getUsername() != null)
-			user.setUsername(updateRequest.getUsername());
-		if(updateRequest.getPassword() != null)
-			user.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
-		if(updateRequest.getFirstName() != null)
-			user.setFirstName(updateRequest.getFirstName());
-		if(updateRequest.getLastName() != null)
-			user.setFirstName(updateRequest.getLastName());
-		
-		return TWMResponseFactory.getResponse(userService.updateUser(user), request);
-	}
-	
-	@DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(value="Delete user", notes="This url is used to update the user", response=User.class )
-	public User deleteUser(HttpServletResponse response, @RequestBody User user){
-		return new User(999L, "ysharma@gmail.com", "***", "Yoogesh", "Sharma", true, null);
+		catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
+
 	}
 	
 	@DeleteMapping(value = "/{guid}", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -96,13 +99,19 @@ public class UserController extends AbstractRestController {
 			@Valid @Pattern(regexp = "^[a-zA-Z@.]*$", message = "username is not valid") @RequestParam (required = true) String username)
 			throws Exception {
 		
-		User user = userService.getUser(guid);
-		if(null == user) {
-			throw new RuntimeException("User with GUID " + guid + " Could not found.");
-		} else if(!user.getUsername().equals(username)) {
-			throw new RuntimeException("Username " + username + " did not match with the guid " + guid);
+		User user;
+		try {
+			user = userService.getUser(guid);
+			if(null == user) {
+				throw new RuntimeException("User with GUID " + guid + " Could not found.");
+			} else if(!user.getUsername().equals(username)) {
+				throw new RuntimeException("Username " + username + " did not match with the guid " + guid);
+			}
+			return TWMResponseFactory.getResponse(new DeleteUserResponse(userService.deleteUser(guid)), request);
 		}
-		return TWMResponseFactory.getResponse(new DeleteUserResponse(userService.deleteUser(guid)), request);
+		catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -119,7 +128,7 @@ public class UserController extends AbstractRestController {
 			}
 		}
 		catch (Exception ex) {
-			throw new RuntimeException("Could not able to find the user.");
+			throw new RuntimeException(ex);
 		}
 		return TWMResponseFactory.getResponse(user, request);
 	}

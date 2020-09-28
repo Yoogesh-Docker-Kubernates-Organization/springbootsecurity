@@ -80,12 +80,18 @@ public class AuthenticationController extends AbstractRestController {
 			@Valid @Pattern(regexp = "^[a-zA-Z@.]*$", message = "username is not valid") @RequestParam (required = true) String username)
 			throws Exception {
 		
-		User user = userService.getUser(guid);
-		if(null == user) {
-			throw new RuntimeException("User with GUID " + guid + " Could not found.");
-		} else if(!user.getUsername().equals(username)) {
-			throw new RuntimeException("Username " + username + " did not match with the guid " + guid);
+		User user;
+		try {
+			user = userService.getUser(guid);
+			if(null == user) {
+				throw new RuntimeException("User with GUID " + guid + " Could not found.");
+			} else if(!user.getUsername().equals(username)) {
+				throw new RuntimeException("Username " + username + " did not match with the guid " + guid);
+			}
+			return TWMResponseFactory.getResponse(null, request);
+		} catch(Exception ex) {
+			throw new RuntimeException(ex);
 		}
-		return TWMResponseFactory.getResponse(null, request);
+
 	}
 }

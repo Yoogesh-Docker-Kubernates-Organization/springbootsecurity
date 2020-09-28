@@ -81,7 +81,7 @@ public class TraditionalHibernateDaoImpl implements IUserDao{
 
 	@Override
 	public User updateUser(User user) {
-		User database = getUserByUserName(user.getUsername());
+		User database = getUser(user.getUid());
 		if(null != database) {
 			user.setUid(database.getUid());
 			hibernateTemplate.update(user);
