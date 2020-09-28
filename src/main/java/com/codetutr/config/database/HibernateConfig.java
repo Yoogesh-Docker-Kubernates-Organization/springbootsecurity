@@ -18,6 +18,9 @@ public class HibernateConfig {
 		this.sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
 	}
 	
+	/**
+	 * Hibernate template is deprecated. so it should not be used anymore especially for transaction. (use only for get)
+	 */
    	@Bean
     public HibernateTemplate getHibernateTemplate() throws IOException {
     	HibernateTemplate hibernateTemplate = new HibernateTemplate();

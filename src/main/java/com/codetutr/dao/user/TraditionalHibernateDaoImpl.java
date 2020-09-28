@@ -84,7 +84,11 @@ public class TraditionalHibernateDaoImpl implements IUserDao{
 		User database = getUser(user.getUid());
 		if(null != database) {
 			user.setUid(database.getUid());
-			hibernateTemplate.update(user);
+				Session s = sessionFactory.openSession();
+				Transaction t = s.beginTransaction();
+					s.saveOrUpdate(user);
+				t.commit();
+				s.close();
 			return getUser(user.getUid());
 		}
 		return database;
@@ -94,7 +98,7 @@ public class TraditionalHibernateDaoImpl implements IUserDao{
 	public boolean deleteUser(long guid) {
 		Session s = sessionFactory.openSession();
 		Transaction t = s.beginTransaction();
-			String hql = "delete User u Where u.uid = ?";
+			String hql = "delete User u Where u.uid = ?0";
 			Query<User> q = s.createQuery(hql);
 			q.setParameter(0, guid);
 			int rows = q.executeUpdate();
