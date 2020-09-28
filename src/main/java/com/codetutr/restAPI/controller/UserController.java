@@ -124,7 +124,7 @@ public class UserController extends AbstractRestController {
 		return TWMResponseFactory.getResponse(user, request);
 	}
 	
-	@GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+	@GetMapping(value="/all", produces = {MediaType.APPLICATION_JSON_VALUE})
 	@ApiOperation(value="Get all Users", notes="This url is used to get all the users", response=User.class )
 	public TWMResponse<List<User>> getAllUsers(HttpServletRequest request) {
 		return TWMResponseFactory.getResponse(userService.getAllUsers(), request);
