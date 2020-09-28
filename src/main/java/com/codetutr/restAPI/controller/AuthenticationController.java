@@ -31,7 +31,6 @@ import com.codetutr.entity.User;
 import com.codetutr.feature.jwt.JwtService;
 import com.codetutr.restAPI.request.SigninRequest;
 import com.codetutr.restAPI.response.AuthenticationResponse;
-import com.codetutr.restAPI.response.LogoutResponse;
 import com.codetutr.restAPI.response.TWMResponse;
 import com.codetutr.restAPI.response.TWMResponseFactory;
 import com.codetutr.validationHelper.LemonConstant;
@@ -43,7 +42,7 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/api/authentication")
 @CrossOrigin(origins = "*") // This is optional here since we have already set it on CorsConfig.java. Meanwhile this will also be added to the list of allowed origins now which means all the origins are allowed for all the methods of this class.
 @Api(tags = {LemonConstant.SWAGGER_AUTHENTICATION_DESCRIPTION})
-public class AuthenticationController {
+public class AuthenticationController extends AbstractRestController {
 	
 	/**
 	 * This will get the bean of {@link ProviderManager}
@@ -74,20 +73,19 @@ public class AuthenticationController {
 	}
 	
 	@DeleteMapping(value = "/{guid}", produces = {MediaType.APPLICATION_JSON_VALUE})
-	@ApiOperation(value = "Logout", notes = "This url is used to logging out from the application", response = AuthenticationResponse.class)
-	public TWMResponse<LogoutResponse> logout(HttpServletRequest request, HttpServletResponse response,
+	@ApiOperation(value = "Logout", notes = "This url is used to logging out from the application", response = Void.class)
+	public TWMResponse<Void> logout(HttpServletRequest request, HttpServletResponse response,
 			@Valid @NotNull(message = "Authorization header should not be null") @RequestHeader(value = "Authorization", required = true) String Authorization,
 			@Valid @Pattern(regexp = "^[0-9]*$", message = "GUID should a number.") @PathVariable Long guid,
 			@Valid @Pattern(regexp = "^[a-zA-Z@.]*$", message = "username is not valid") @RequestParam (required = true) String username)
 			throws Exception {
-		return TWMResponseFactory.getResponse(new LogoutResponse(true), request);
-	}
-	
-	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(value="Signup", notes="This url is used to create a user", response=User.class )
-	public User signUp(HttpServletResponse response, @RequestBody User user){
-		int i = 100/0;
-		System.out.println(i);
-		return new User(999L, "ysharma@gmail.com", "***", "Yoogesh", "Sharma", true, null);
+		
+		User user = userService.getUser(guid);
+		if(null == user) {
+			throw new RuntimeException("User with GUID " + guid + " Could not found.");
+		} else if(!user.getUsername().equals(username)) {
+			throw new RuntimeException("Username " + username + " did not match with the guid " + guid);
+		}
+		return TWMResponseFactory.getResponse(null, request);
 	}
 }

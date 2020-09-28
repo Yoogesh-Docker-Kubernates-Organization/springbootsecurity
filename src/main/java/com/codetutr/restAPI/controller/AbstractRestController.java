@@ -9,12 +9,21 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.codetutr.restAPI.request.TWMRequestContextInfo;
+import com.codetutr.services.UserService;
 
 public abstract class AbstractRestController {
 	
 	private final Logger logger = LoggerFactory.getLogger(AbstractRestController.class);
+	
+	@Autowired
+	protected UserService userService;
+	
+	@Autowired
+	protected PasswordEncoder passwordEncoder;
 	
 	protected void logAdditionalInfo(TWMRequestContextInfo requestContextInfo) {
 		String clientIp = StringUtils.isBlank(requestContextInfo.getIpAddress()) ? "Unknown" : requestContextInfo.getIpAddress();

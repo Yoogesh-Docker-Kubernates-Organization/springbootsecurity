@@ -4,24 +4,31 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codetutr.entity.User;
+import com.codetutr.restAPI.request.SignupRequest;
+import com.codetutr.restAPI.request.UpdateRequest;
+import com.codetutr.restAPI.response.DeleteUserResponse;
 import com.codetutr.restAPI.response.TWMResponse;
 import com.codetutr.restAPI.response.TWMResponseFactory;
-import com.codetutr.services.UserService;
+import com.codetutr.utility.UtilityHelper;
 import com.codetutr.validationHelper.LemonConstant;
 
 import io.swagger.annotations.Api;
@@ -30,18 +37,49 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/api/user")
 @Api(tags = {LemonConstant.SWAGGER_USER_DESCRIPTION})
-public class UserController extends AbstractRestController{
+public class UserController extends AbstractRestController {
 	
-	private final Logger logger = LoggerFactory.getLogger(UserController.class);
-	
-	@Autowired
-	UserService userService;
-	
+	@PostMapping( produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+	@ResponseStatus(HttpStatus.CREATED)
+	@ApiOperation(value="Signup", notes="This url is used to create a user", response=User.class )
+	public TWMResponse<User> signUp(HttpServletRequest request, HttpServletResponse response, @Valid @RequestBody SignupRequest signupRequest){
+		
+		if(userService.ismoreUsernameExists(signupRequest.getUsername())){
+			throw new RuntimeException("Username " + signupRequest.getUsername() + " already exists.");
+		}
+		else {
+			User user = new User();
+			user.setUsername(signupRequest.getUsername());
+			user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+			user.setFirstName(signupRequest.getFirstName());
+			user.setLastName(signupRequest.getLastName());
+			user.setEnabled(true);
+			user.setAuthorities(UtilityHelper.getUserAuthList(user));
+			return TWMResponseFactory.getResponse(userService.createUser(user), request);
+		}
+	}
 
-	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@PatchMapping(value = "/{guid}", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
 	@ApiOperation(value="Update user", notes="This url is used to update the user", response=User.class )
-	public User updateUser(HttpServletResponse response, @RequestBody User user){
-		return new User(999L, "ysharma@gmail.com", "***", "Yoogesh", "Sharma", true, null);
+	public TWMResponse<User> updateUser(HttpServletRequest request, HttpServletResponse response, 
+			@Valid @Pattern(regexp = "^[0-9]*$", message = "GUID should a number.") @PathVariable Long guid, 
+			@RequestBody UpdateRequest updateRequest){
+		
+		User user = userService.getUser(guid);
+		if(null == user) {
+			throw new RuntimeException("User with GUID " + guid + " Could not found.");
+		}
+		
+		if(updateRequest.getUsername() != null)
+			user.setUsername(updateRequest.getUsername());
+		if(updateRequest.getPassword() != null)
+			user.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
+		if(updateRequest.getFirstName() != null)
+			user.setFirstName(updateRequest.getFirstName());
+		if(updateRequest.getLastName() != null)
+			user.setFirstName(updateRequest.getLastName());
+		
+		return TWMResponseFactory.getResponse(userService.updateUser(user), request);
 	}
 	
 	@DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -50,12 +88,41 @@ public class UserController extends AbstractRestController{
 		return new User(999L, "ysharma@gmail.com", "***", "Yoogesh", "Sharma", true, null);
 	}
 	
-	@GetMapping(value="/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(value="Get user by username", notes="This url is used to get the user information using the username", response=User.class )
-	public User getUserByUsername(HttpServletRequest request, HttpServletResponse response, @PathVariable("username") String username){
-		return userService.getUserByUserName(username + "@gmail.com");
+	@DeleteMapping(value = "/{guid}", produces = {MediaType.APPLICATION_JSON_VALUE})
+	@ApiOperation(value="Delete user", notes="This url is used to delete the user", response=DeleteUserResponse.class )
+	public TWMResponse<DeleteUserResponse> logout(HttpServletRequest request, HttpServletResponse response,
+			@Valid @NotNull(message = "Authorization header should not be null") @RequestHeader(value = "Authorization", required = true) String Authorization,
+			@Valid @Pattern(regexp = "^[0-9]*$", message = "GUID should a number.") @PathVariable Long guid,
+			@Valid @Pattern(regexp = "^[a-zA-Z@.]*$", message = "username is not valid") @RequestParam (required = true) String username)
+			throws Exception {
+		
+		User user = userService.getUser(guid);
+		if(null == user) {
+			throw new RuntimeException("User with GUID " + guid + " Could not found.");
+		} else if(!user.getUsername().equals(username)) {
+			throw new RuntimeException("Username " + username + " did not match with the guid " + guid);
+		}
+		return TWMResponseFactory.getResponse(new DeleteUserResponse(userService.deleteUser(guid)), request);
 	}
 	
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.FOUND)
+	@ApiOperation(value="Get user by username", notes="This url is used to get the user information using the username", response=User.class )
+	public TWMResponse<User> getUserByUsername(HttpServletRequest request, HttpServletResponse response, 
+			@Valid @Pattern(regexp = "^[a-zA-Z@.]*$", message = "username is not valid") @RequestParam (required = true) String username){
+		
+		User user;
+		try {
+			user = userService.getUserByUserName(username);
+			if(user == null) {
+				throw new RuntimeException(username + " could not be found.");
+			}
+		}
+		catch (Exception ex) {
+			throw new RuntimeException("Could not able to find the user.");
+		}
+		return TWMResponseFactory.getResponse(user, request);
+	}
 	
 	@GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
 	@ApiOperation(value="Get all Users", notes="This url is used to get all the users", response=User.class )

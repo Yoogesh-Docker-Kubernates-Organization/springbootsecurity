@@ -1,10 +1,10 @@
 package com.codetutr.restAPI.response;
 
-public class LogoutResponse {
+public class DeleteUserResponse {
 	
 	private boolean success;
 	
-	public LogoutResponse(boolean success) {
+	public DeleteUserResponse(boolean success) {
 		this.success = success;
 	}
 
