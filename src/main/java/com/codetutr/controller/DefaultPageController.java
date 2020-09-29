@@ -27,7 +27,7 @@ public class DefaultPageController
 		return "forward:/v2/api-docs";
 	}
 	
-	@GetMapping(value="/restClient")
+	@GetMapping(value="/restclient")
 	public TWMResponse<List<User>> testForRestAPI() {
 		return new CoreServiceClient().getAllUsers();
 	}

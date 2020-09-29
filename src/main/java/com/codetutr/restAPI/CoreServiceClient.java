@@ -25,7 +25,7 @@ public class CoreServiceClient extends TransportAPI {
 	public TWMResponse<List<User>> getAllUsers(){
 		
 		HttpAdapter httpAdapter = new HttpAdapter();
-		String response = httpAdapter.executeGet(serviceBaseUrl + "/api/user", null, serviceReadTimeout, connectionTimeout, serviceCredentials);
+		String response = httpAdapter.executeGet(serviceBaseUrl + "/api/user/all", null, serviceReadTimeout, connectionTimeout, serviceCredentials);
 		TWMResponse<List<User>> twmResponse = unmarshalList(response, User.class);
 		return twmResponse;
 	}

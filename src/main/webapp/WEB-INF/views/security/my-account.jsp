@@ -81,6 +81,7 @@
 </tr>
 <tr>
 	<td><a href="${pageContext.request.contextPath}/forwardRequestViaFilter"><span style="color:white">FORWARD_REQUEST_VIA_FILTER</span></a></td>
+	<td><a href="${pageContext.request.contextPath}/restclient"><span style="color:white">GET_ALL_USERS_USING_REST_API</span></a></td>
 	<td><a href="${pageContext.request.contextPath}/actuator"><span style="color:white">ACTUATOR</span></a></td>
 	<td><a href="#socketModal" rel="modal:open"><span style="color:white">CHAT</span></a></td>
 </tr>

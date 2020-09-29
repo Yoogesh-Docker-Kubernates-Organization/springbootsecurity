@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -20,7 +21,6 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequ
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
-import org.springframework.security.web.csrf.CsrfFilter;
 
 import com.codetutr.filter.JwtRequestFilter;
 import com.codetutr.security.handler.CustomSuccessHandler;
@@ -174,6 +174,11 @@ public class AppConfig_Security extends WebSecurityConfigurerAdapter{
 		http
 			.sessionManagement()
 				.sessionAuthenticationErrorUrl("/user-already-loggedIn-somewhere");
+		
+		//For pure rest, use SessionCreationPolicy.STATELESS
+		http
+			.sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
 			
 	}
 	

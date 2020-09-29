@@ -64,7 +64,7 @@ public class HttpAdapter {
 			HttpEntity<String> httpEntity = new HttpEntity<>(headers);
 			
 			RestTemplate restTemplate = getRestTemplate(readTimeout, connectionTimeout);
-			ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
+			ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
 			
 			response = responseEntity.getBody(); 
 		} catch(Exception e) {
