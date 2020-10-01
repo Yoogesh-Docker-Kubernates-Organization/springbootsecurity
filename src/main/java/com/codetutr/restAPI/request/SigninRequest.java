@@ -1,13 +1,18 @@
 package com.codetutr.restAPI.request;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import com.codetutr.validation.annotation.ValidPassword;
 
 public class SigninRequest {
 	
 	@NotBlank(message = "username is mandatory")
+	@NotNull(message = "username is mandatory")
 	private String username;
 	
 	@NotBlank(message = "password is mandatory")
+	@ValidPassword(message = "Password length should not be greater than 4")
 	private String password;
 	
 	public SigninRequest() {
