@@ -55,7 +55,9 @@ public class UserController extends AbstractRestController {
 			user.setLastName(signupRequest.getLastName());
 			user.setEnabled(true);
 			user.setAuthorities(UtilityHelper.getUserAuthList(user));
-			return TWMResponseFactory.getResponse(userService.createUser(user), request);
+			User updatedUser = userService.createUser(user);
+			updatedUser.setPassword(signupRequest.getPassword());
+			return TWMResponseFactory.getResponse(updatedUser, request);
 		}
 	}
 
