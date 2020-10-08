@@ -80,8 +80,7 @@ public class UserController extends AbstractRestController {
 			if(updateRequest.getFirstName() != null)
 				user.setFirstName(updateRequest.getFirstName());
 			if(updateRequest.getLastName() != null)
-				user.setFirstName(updateRequest.getLastName());
-			
+				user.setLastName(updateRequest.getLastName());
 			return TWMResponseFactory.getResponse(userService.updateUser(user), request);
 			
 		}
