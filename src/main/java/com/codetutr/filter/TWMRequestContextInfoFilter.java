@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.codetutr.config.logging.TrackingLogger;
 import com.codetutr.config.wrapper.TWMRequestWrapper;
@@ -20,6 +22,8 @@ import com.codetutr.validationHelper.LemonConstant;
 import com.itextpdf.xmp.impl.Base64;
 
 public class TWMRequestContextInfoFilter extends AbstractBaseFilter implements Filter {
+	
+	 private final Logger logger = LoggerFactory.getLogger(TWMRequestContextInfoFilter.class);
 
 	public TWMRequestContextInfoFilter() {
 	}
@@ -36,13 +40,15 @@ public class TWMRequestContextInfoFilter extends AbstractBaseFilter implements F
 	}
 
 	private TWMRequestWrapper setHeader(HttpServletRequest request) {
-		
 		TWMRequestContextInfo requestContextInfo = new TWMRequestContextInfo();
 		String requestContextInfoHeader = request.getHeader(LemonConstant.TWM_REQUEST_CONTEXT_INFO_HEADER_NAME);
 		
 		if (StringUtils.isNotBlank(requestContextInfoHeader)) {
 			try {
 				requestContextInfo = TransportAPI.decode(Base64.decode(requestContextInfoHeader), TWMRequestContextInfo.class);
+				if(StringUtils.isNotBlank(requestContextInfo.getTransactionId())) {
+					logger.info("Request From: {} || TransactionId: {}", requestContextInfo.getTriggeredById(), requestContextInfo.getTransactionId());
+				}
 			} catch (Exception e) {
 				throw new RuntimeException("Could not parse the requestContext header: ", e);
 			}

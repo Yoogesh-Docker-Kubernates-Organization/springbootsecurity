@@ -116,7 +116,6 @@ public class UserController extends AbstractRestController {
 	}
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseStatus(HttpStatus.FOUND)
 	@ApiOperation(value="Get user by username", notes="This url is used to get the user information using the username", response=User.class )
 	public TWMResponse<User> getUserByUsername(HttpServletRequest request, HttpServletResponse response, 
 			@Valid @Pattern(regexp = "^[a-zA-Z@.]*$", message = "username is not valid") @RequestParam (required = true) String username){
