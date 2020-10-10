@@ -3,18 +3,18 @@ package com.codetutr.restAPI.response;
 public class AuthenticationResponse {
 	
 	private final String jwt;
-	private final Long guid;
+	private final Long uid;
 	
-	public AuthenticationResponse(String jwt, Long guid) {
+	public AuthenticationResponse(String jwt, Long uid) {
 		this.jwt = jwt;
-		this.guid = guid;
+		this.uid = uid;
 	}
 	
 	public String getJwt() {
 		return jwt;
 	}
 
-	public Long getGuid() {
-		return guid;
+	public Long getUid() {
+		return uid;
 	}
 }

@@ -30,6 +30,7 @@ import com.codetutr.restAPI.response.TWMResponse;
 import com.codetutr.restAPI.response.TWMResponseFactory;
 import com.codetutr.utility.UtilityHelper;
 import com.codetutr.validationHelper.LemonConstant;
+import com.nimbusds.oauth2.sdk.util.StringUtils;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -75,13 +76,13 @@ public class UserController extends AbstractRestController {
 				throw new RuntimeException("User with GUID " + guid + " Could not found.");
 			} 
 
-			if(updateRequest.getUsername() != null)
+			if(StringUtils.isNotBlank(updateRequest.getUsername()))
 				user.setUsername(updateRequest.getUsername());
-			if(updateRequest.getPassword() != null)
+			if(StringUtils.isNotBlank(updateRequest.getPassword()))
 				user.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
-			if(updateRequest.getFirstName() != null)
+			if(StringUtils.isNotBlank(updateRequest.getFirstName()))
 				user.setFirstName(updateRequest.getFirstName());
-			if(updateRequest.getLastName() != null)
+			if(StringUtils.isNotBlank(updateRequest.getLastName()))
 				user.setLastName(updateRequest.getLastName());
 			return TWMResponseFactory.getResponse(userService.updateUser(user), request);
 			
@@ -118,13 +119,25 @@ public class UserController extends AbstractRestController {
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value="Get user by username", notes="This url is used to get the user information using the username", response=User.class )
 	public TWMResponse<User> getUserByUsername(HttpServletRequest request, HttpServletResponse response, 
-			@Valid @Pattern(regexp = "^[a-zA-Z@.]*$", message = "username is not valid") @RequestParam (required = true) String username){
+			@Valid @Pattern(regexp = "^[0-9]*$", message = "Guid is not valid") @RequestParam (required = false) Long guid,
+			@Valid @Pattern(regexp = "^[a-zA-Z@.]*$", message = "username is not valid") @RequestParam (required = false) String username){
 		
 		User user;
 		try {
-			user = userService.getUserByUserName(username);
-			if(user == null) {
+			if(null != guid) {
+				user = userService.getUser(guid);
+			}
+			else if(StringUtils.isNotBlank(username)) {
+				user = userService.getUserByUserName(username);
+			}
+			else {
+				throw new RuntimeException("Eithere guid or username must be provided.");
+			}
+
+			if(StringUtils.isNotBlank(username) && user == null) {
 				throw new RuntimeException("Username is invalid.");
+			} else if(null != guid && user == null) {
+				throw new RuntimeException("guid is invalid.");
 			}
 		}
 		catch (NullPointerException ex) {
@@ -135,6 +148,7 @@ public class UserController extends AbstractRestController {
 		}
 		return TWMResponseFactory.getResponse(user, request);
 	}
+	
 	
 	@GetMapping(value="/all", produces = {MediaType.APPLICATION_JSON_VALUE})
 	@ApiOperation(value="Get all Users", notes="This url is used to get all the users", response=User.class )
