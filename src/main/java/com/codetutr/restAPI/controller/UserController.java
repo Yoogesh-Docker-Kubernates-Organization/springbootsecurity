@@ -124,11 +124,11 @@ public class UserController extends AbstractRestController {
 		try {
 			user = userService.getUserByUserName(username);
 			if(user == null) {
-				throw new RuntimeException(username + " could not be found.");
+				throw new RuntimeException("Username is invalid.");
 			}
 		}
 		catch (NullPointerException ex) {
-			throw new RuntimeException(username + " could not be found." + ex);
+			throw new RuntimeException(username + " is not found in the Database." + ex);
 		}
 		catch (Exception ex) {
 			throw new RuntimeException(ex);
