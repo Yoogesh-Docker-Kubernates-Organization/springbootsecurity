@@ -127,6 +127,9 @@ public class UserController extends AbstractRestController {
 				throw new RuntimeException(username + " could not be found.");
 			}
 		}
+		catch (NullPointerException ex) {
+			throw new RuntimeException(username + " could not be found." + ex);
+		}
 		catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
