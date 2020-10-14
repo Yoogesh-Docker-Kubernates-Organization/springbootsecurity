@@ -1,10 +1,12 @@
 package com.codetutr.restAPI.request;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 public class SignupRequest {
 	
 	@NotBlank(message = "username is mandatory")
+	@Pattern(regexp = "^[a-zA-Z@.]*$", message = "username is not valid")
 	private String username;
 	
 	@NotBlank(message = "password is mandatory")
