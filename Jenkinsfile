@@ -154,16 +154,14 @@ pipeline {
 
 		stage('Trigger Api Gateway') {
 			steps {
-				build job: '../../API-Gateway/master', wait: true
+				build job: '../../API-Gateway/master', 
+				[
+					[$class: 'StringParameterValue', name: 'param1', value: param1],
+					[$class: 'ListSubversionTagsParameterValue', name: 'release', tag: release],
+					[$class: 'BooleanParameterValue', name: 'param2', value: Boolean.valueOf(param2)]
+				],  
+				wait: true
 			}
 		}
 	}
-}
-						
-					
-						
-			
-		
-		
-	
-
+}					
