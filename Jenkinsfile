@@ -115,7 +115,7 @@ pipeline {
 
 					/* Database configuration */
 					script {
-					   if (params.ignoreDatabase != 'true') {
+					   if (params.ignoreDatabase == 'false') {
 						   sh "kubectl apply -f ${YAML_PATH}/pvc/storage.yaml"
 						   sh "kubectl apply -f ${YAML_PATH}/mysql/mysql.yaml"
 
@@ -133,7 +133,7 @@ pipeline {
 
 					/* Kibana configuration */
 					script {
-					   if (params.ignoreKibana != 'true') {
+					   if (params.ignoreKibana == 'false') {
 						   sh "kubectl apply -f ${YAML_PATH}/kibana/fluentd-config.yaml"
 						   sh "kubectl apply -f ${YAML_PATH}/kibana/elastic-stack.yaml"
 					   }
@@ -172,11 +172,11 @@ pipeline {
 						}
 						else 
 						{
-							if (params.ignoreIstio != 'true') {
+							if (params.ignoreIstio == 'false') {
 								sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-route-webapp.yaml"
 							}
 						}
-						if (params.ignoreIstio != 'true') {
+						if (params.ignoreIstio == 'false') {
 							sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-route-monitoring.yaml"
 						}
 
