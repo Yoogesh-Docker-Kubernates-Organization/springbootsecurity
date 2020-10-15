@@ -106,6 +106,7 @@ pipeline {
 					
 					/* Istio Configuration */
 					script {
+						echo"YYYYYYY....${params.ignoreIstio}"
 					   if (params.ignoreIstio == 'false') {
 						   sh "istioctl manifest apply --set profile=demo"
 						   sh "kubectl label namespace default istio-injection=enabled --overwrite"
