@@ -14,7 +14,6 @@ pipeline {
 					cleanWs()
 					script {
 					    properties([parameters([booleanParam(defaultValue: true, description: '', name: 'yms')])])
-					    REPOSITORY_TAG = ${params.yms}
         			}
 					git credentialsId: 'GitHub', url: "https://github.com/${ORGANIZATION_NAME}/${SERVICE_NAME}"
 				}
