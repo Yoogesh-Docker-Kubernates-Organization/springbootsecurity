@@ -8,7 +8,7 @@ pipeline {
 
 	}
 	
-		options([parameters([booleanParam(defaultValue: true, description: '', name: 'yms')])])
+		properties([parameters([booleanParam(defaultValue: true, description: '', name: 'yms')])])
 
 	
 	stages {
