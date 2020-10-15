@@ -6,12 +6,7 @@ pipeline {
 		YAML_PATH = "src/main/resources/devops/k8s_aws"
 		REPOSITORY_TAG="${DOCKERHUB_USERNAME}/${SERVICE_NAME}:latest"
 	}
-
-	stages {
-	
-		stage('Git Clone') {
-			steps {
-					script {
+						script {
 					    properties([
 					    	parameters([
 					    		booleanParam(defaultValue: true, description: 'Build Spring Boot Security', name: 'enableSpringBootSecurity'), 
@@ -20,6 +15,11 @@ pipeline {
 					    	])
 					    ])
         			}
+
+	stages {
+	
+		stage('Git Clone') {
+			steps {
 					cleanWs()
 					git credentialsId: 'GitHub', url: "https://github.com/${ORGANIZATION_NAME}/${SERVICE_NAME}"
 				}
