@@ -8,13 +8,7 @@ pipeline {
 
 	}
 	
-		options([
-			parameters([
-				booleanParam(defaultValue: true, description: 'SpringBootSecurity', name: 'buildSpringBootSecurity'), 
-				booleanParam(defaultValue: true, description: 'Go-API', name: 'buildApiGateway'), 
-				booleanParam(defaultValue: true, description: 'React-MFE', name: 'buildReactMfe')
-			]) 
-		])
+		options([parameters([booleanParam(defaultValue: true, description: '', name: 'yms')])])
 
 	
 	stages {
@@ -22,9 +16,7 @@ pipeline {
 		stage('Git Clone') {
 			steps {
 					cleanWs()
-					echo 'Sleeping for 60 second before starting webApp....${buildSpringBootSecurity}'
-					echo 'Sleeping for 60 second before starting webApp....${buildApiGateway}'
-					echo 'Sleeping for 60 second before starting webApp....${buildReactMfe}'
+					echo 'Sleeping for 60 second before starting webApp....${yms}'
 					git credentialsId: 'GitHub', url: "https://github.com/${ORGANIZATION_NAME}/${SERVICE_NAME}"
 				}
 		}
