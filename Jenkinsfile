@@ -14,7 +14,7 @@ pipeline {
 					cleanWs()
 					script {
 					    properties([parameters([booleanParam(defaultValue: true, description: '', name: 'yms')])])
-					    echo'hello...${params.yms}'
+					    echo "hello ${params.yms}"
         			}
 					git credentialsId: 'GitHub', url: "https://github.com/${ORGANIZATION_NAME}/${SERVICE_NAME}"
 				}
@@ -22,6 +22,9 @@ pipeline {
 		
 		stage('Maven Clean Install') {
 			steps {
+				script{
+			 		echo "helloooo ${params.yms}"
+				}
 					sh "mvn clean install"
 				}
 		}
