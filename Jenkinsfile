@@ -109,7 +109,6 @@ pipeline {
 						
 						echo"YYYYYYY....${params.ignoreIstio != 'true'}"
 					   if (params.ignoreIstio != 'true') {
-						   echo"YYYYYYYuuuu"
 						   sh "istioctl manifest apply --set profile=demo"
 						   sh "kubectl label namespace default istio-injection=enabled --overwrite"
 						   sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-firewall.yaml"
@@ -118,7 +117,7 @@ pipeline {
 
 					/* Database configuration */
 					script {
-					   if (params.ignoreDatabase == 'false') {
+					   if (params.ignoreDatabase != 'true') {
 						   sh "kubectl apply -f ${YAML_PATH}/pvc/storage.yaml"
 						   sh "kubectl apply -f ${YAML_PATH}/mysql/mysql.yaml"
 
@@ -136,7 +135,7 @@ pipeline {
 
 					/* Kibana configuration */
 					script {
-					   if (params.ignoreKibana == 'false') {
+					   if (params.ignoreKibana != 'true') {
 						   sh "kubectl apply -f ${YAML_PATH}/kibana/fluentd-config.yaml"
 						   sh "kubectl apply -f ${YAML_PATH}/kibana/elastic-stack.yaml"
 					   }
