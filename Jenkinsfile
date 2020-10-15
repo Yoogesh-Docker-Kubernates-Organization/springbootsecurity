@@ -5,12 +5,7 @@ pipeline {
 		SERVICE_NAME = "springbootsecurity"
 		YAML_PATH = "src/main/resources/devops/k8s_aws"
 		REPOSITORY_TAG="${DOCKERHUB_USERNAME}/${SERVICE_NAME}:latest"
-		
-				script {
-					    properties([parameters([booleanParam(defaultValue: true, description: '', name: 'yms')])])
-        			    REPOSITORY_TAGGG="${params.yms}"
-        			}
-
+		REPOSITORY_TAGGG=""
 	}
 
 	stages {
@@ -18,6 +13,10 @@ pipeline {
 		stage('Git Clone') {
 			steps {
 					cleanWs()
+					script {
+					    properties([parameters([booleanParam(defaultValue: true, description: '', name: 'yms')])])
+					    REPOSITORY_TAG = ${params.yms}
+        			}
 					echo'.hi....${REPOSITORY_TAGGG}'
 					git credentialsId: 'GitHub', url: "https://github.com/${ORGANIZATION_NAME}/${SERVICE_NAME}"
 				}
