@@ -6,7 +6,12 @@ pipeline {
 		YAML_PATH = "src/main/resources/devops/k8s_aws"
 		REPOSITORY_TAG="${DOCKERHUB_USERNAME}/${SERVICE_NAME}:latest"
 	}
-						script {
+
+	stages {
+	
+		stage('Git Clone') {
+			steps {
+					script {
 					    properties([
 					    	parameters([
 					    		booleanParam(defaultValue: true, description: 'Build Spring Boot Security', name: 'enableSpringBootSecurity'), 
@@ -14,40 +19,48 @@ pipeline {
 					    		booleanParam(defaultValue: true, description: 'Build MFE', name: 'enableReactMFE')
 					    	])
 					    ])
+					   	echo "Build Springbootsecurity: ${params.enableSpringBootSecurity}"
+			 			echo "Build API Gatway: ${params.enableAPIGateway}"
+			 			echo "Build MFE: ${params.enableReactMFE}"
+						cleanWs()
+						if (params.enableSpringBootSecurity == 'true') {
+							git credentialsId: 'GitHub', url: "https://github.com/${ORGANIZATION_NAME}/${SERVICE_NAME}"
+						}
         			}
-
-	stages {
-	
-		stage('Git Clone') {
-			steps {
-					cleanWs()
-					git credentialsId: 'GitHub', url: "https://github.com/${ORGANIZATION_NAME}/${SERVICE_NAME}"
 				}
 		}
 		
 		stage('Maven Clean Install') {
 			steps {
 				script{
-					echo "Build Springbootsecurity: ${params.enableSpringBootSecurity}"
-			 		echo "Build API Gatway: ${params.enableAPIGateway}"
-			 		echo "Build MFE: ${params.enableReactMFE}"
+				    if (params.enableSpringBootSecurity == 'true') {
+						sh "mvn clean install"
+				    }
 				}
-					sh "mvn clean install"
-				}
+			}
 		}
 			
 		stage('Create Docker Image') {
 			steps {
-					sh 'docker image build -t ${REPOSITORY_TAG} .'
+				script{
+				    if (params.enableSpringBootSecurity == 'true') {
+						sh 'docker image build -t ${REPOSITORY_TAG} .'
+				    }
 				}
+			}
 		}
 			
 		stage('Publish Docker Image') {
 			steps {
-					withCredentials([string(credentialsId: 'DOCKER_PASSEWORD', variable: 'DOCKER_HUB_CREDENTIALS')]) {
-						sh "docker login -u yoogesh1983 -p ${DOCKER_HUB_CREDENTIALS}"
+					script {
+				    	if (params.enableSpringBootSecurity == 'true') {
+				    		withCredentials([string(credentialsId: 'DOCKER_PASSEWORD', variable: 'DOCKER_HUB_CREDENTIALS')]) {
+								sh "docker login -u yoogesh1983 -p ${DOCKER_HUB_CREDENTIALS}"
+							}
+            				sh 'docker push ${REPOSITORY_TAG}'
+				    	}
 					}
-            		sh 'docker push ${REPOSITORY_TAG}'
+
             	}
 		}
 		
