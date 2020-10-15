@@ -13,6 +13,8 @@ pipeline {
 		stage('Git Clone') {
 			steps {
 					cleanWs()
+					 properties([parameters([booleanParam(defaultValue: true, description: '', name: 'yms')])])
+        			echo "hello ${params.yms}"
 					git credentialsId: 'GitHub', url: "https://github.com/${ORGANIZATION_NAME}/${SERVICE_NAME}"
 				}
 		}
