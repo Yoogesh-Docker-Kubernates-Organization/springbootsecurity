@@ -12,9 +12,13 @@ pipeline {
 		stage('Git Clone') {
 			steps {
 					script {
-					    // properties([parameters([booleanParam(defaultValue: true, description: 'Build Spring Boot Security', name: 'enableSpringBootSecurity'), booleanParam(defaultValue: true, description: 'Build API Gateway', name: 'enableAPIGateway'), booleanParam(defaultValue: true, description: 'Build MFE', name: 'enableReactMFE')])])
-					    properties([parameters([booleanParam(defaultValue: true, description: 'Build Spring Boot Security', name: 'enableSpringBootSecurity')])])
-					    echo "Build Springbootsecurity: ${params.enableSpringBootSecurity}"
+					    properties([
+					    	parameters([
+					    		booleanParam(defaultValue: true, description: 'Build Spring Boot Security', name: 'enableSpringBootSecurity'), 
+					    		booleanParam(defaultValue: true, description: 'Build API Gateway', name: 'enableAPIGateway'), 
+					    		booleanParam(defaultValue: true, description: 'Build MFE', name: 'enableReactMFE')
+					    	])
+					    ])
         			}
 					cleanWs()
 					git credentialsId: 'GitHub', url: "https://github.com/${ORGANIZATION_NAME}/${SERVICE_NAME}"
@@ -24,6 +28,7 @@ pipeline {
 		stage('Maven Clean Install') {
 			steps {
 				script{
+					echo "Build Springbootsecurity: ${params.enableSpringBootSecurity}"
 			 		echo "Build API Gatway: ${params.enableAPIGateway}"
 			 		echo "Build MFE: ${params.enableReactMFE}"
 				}
