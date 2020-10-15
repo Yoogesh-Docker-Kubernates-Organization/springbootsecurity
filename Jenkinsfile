@@ -5,7 +5,6 @@ pipeline {
 		SERVICE_NAME = "springbootsecurity"
 		YAML_PATH = "src/main/resources/devops/k8s_aws"
 		REPOSITORY_TAG="${DOCKERHUB_USERNAME}/${SERVICE_NAME}:latest"
-		REPOSITORY_TAGGG=""
 	}
 
 	stages {
@@ -17,13 +16,15 @@ pipeline {
 					    properties([parameters([booleanParam(defaultValue: true, description: '', name: 'yms')])])
 					    REPOSITORY_TAG = ${params.yms}
         			}
-					echo'.hi....${REPOSITORY_TAGGG}'
 					git credentialsId: 'GitHub', url: "https://github.com/${ORGANIZATION_NAME}/${SERVICE_NAME}"
 				}
 		}
 		
 		stage('Maven Clean Install') {
 			steps {
+					script{
+					  echo'hello...${params.yms}'
+					}
 					sh "mvn clean install"
 				}
 		}
