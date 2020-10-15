@@ -11,7 +11,7 @@ pipeline {
 	
 		stage('Git Clone') {
 			steps {
-					script {
+				 	script {
 					    properties([
 					    	parameters([
 					    		booleanParam(defaultValue: true, description: 'Build Spring Boot Security', name: 'enableSpringBootSecurity'), 
@@ -19,15 +19,16 @@ pipeline {
 					    		booleanParam(defaultValue: true, description: 'Build MFE', name: 'enableReactMFE')
 					    	])
 					    ])
-					   	echo "Build Springbootsecurity: ${params.enableSpringBootSecurity}"
-			 			echo "Build API Gatway: ${params.enableAPIGateway}"
-			 			echo "Build MFE: ${params.enableReactMFE}"
-						cleanWs()
-						if (params.enableSpringBootSecurity == 'true') {
+					 }
+					 
+					 script {
+					 	cleanWs()
+					 	if (params.enableSpringBootSecurity == 'true') {
 							git credentialsId: 'GitHub', url: "https://github.com/${ORGANIZATION_NAME}/${SERVICE_NAME}"
 						}
-        			}
+					}
 				}
+			}
 		}
 		
 		stage('Maven Clean Install') {
@@ -58,11 +59,10 @@ pipeline {
 								sh "docker login -u yoogesh1983 -p ${DOCKER_HUB_CREDENTIALS}"
 							}
             				sh 'docker push ${REPOSITORY_TAG}'
-				    	}
-					}
-
+            			}
+            		}
             	}
-		}
+            }
 		
 		
 		stage('Deploy to Cluster') {
@@ -180,8 +180,21 @@ pipeline {
 
 		stage('Trigger Api Gateway') {
 			steps {
-				build job: '../../API-Gateway/master', wait: true
+				script{
+				    if (params.enableAPIGateway == 'true') {
+						build job: '../../API-Gateway/master', wait: true
+				    }
+				}
 			}
 		}
-	}
+		
+		stage('Trigger MFE') {
+			steps {
+				script{
+				    if (params.enableReactMFE == 'true') {
+						build job: '../../API-Gateway/master', wait: true
+				    }
+				}
+			}
+		}
 }					
