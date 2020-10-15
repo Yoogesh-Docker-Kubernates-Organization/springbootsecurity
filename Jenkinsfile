@@ -8,11 +8,23 @@ pipeline {
 
 	}
 	
+		properties([
+			parameters([
+				booleanParam(defaultValue: true, description: 'SpringBootSecurity', name: 'buildSpringBootSecurity'), 
+				booleanParam(defaultValue: true, description: 'Go-API', name: 'buildApiGateway'), 
+				booleanParam(defaultValue: true, description: 'React-MFE', name: 'buildReactMfe')
+			]) 
+		])
+
+	
 	stages {
 	
 		stage('Git Clone') {
 			steps {
 					cleanWs()
+					echo 'Sleeping for 60 second before starting webApp....${buildSpringBootSecurity}'
+					echo 'Sleeping for 60 second before starting webApp....${buildApiGateway}'
+					echo 'Sleeping for 60 second before starting webApp....${buildReactMfe}'
 					git credentialsId: 'GitHub', url: "https://github.com/${ORGANIZATION_NAME}/${SERVICE_NAME}"
 				}
 		}
@@ -154,13 +166,7 @@ pipeline {
 
 		stage('Trigger Api Gateway') {
 			steps {
-				build job: '../../API-Gateway/master', 
-				[
-					[$class: 'StringParameterValue', name: 'param1', value: param1],
-					[$class: 'ListSubversionTagsParameterValue', name: 'release', tag: release],
-					[$class: 'BooleanParameterValue', name: 'param2', value: Boolean.valueOf(param2)]
-				],  
-				wait: true
+				build job: '../../API-Gateway/master', wait: true
 			}
 		}
 	}
