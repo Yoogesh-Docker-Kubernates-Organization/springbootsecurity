@@ -8,7 +8,7 @@ pipeline {
 
 	}
 	
-		properties([
+		options([
 			parameters([
 				booleanParam(defaultValue: true, description: 'SpringBootSecurity', name: 'buildSpringBootSecurity'), 
 				booleanParam(defaultValue: true, description: 'Go-API', name: 'buildApiGateway'), 
