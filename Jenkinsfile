@@ -33,7 +33,7 @@ pipeline {
 		
 		stage('Maven Clean Install') {
 			steps {
-				script{
+				script {
 				    if (params.enableSpringBootSecurity == 'true') {
 						sh "mvn clean install"
 				    }
@@ -43,7 +43,7 @@ pipeline {
 			
 		stage('Create Docker Image') {
 			steps {
-				script{
+				script {
 				    if (params.enableSpringBootSecurity == 'true') {
 						sh 'docker image build -t ${REPOSITORY_TAG} .'
 				    }
@@ -180,7 +180,7 @@ pipeline {
 
 		stage('Trigger Api Gateway') {
 			steps {
-				script{
+				script {
 				    if (params.enableAPIGateway == 'true') {
 						build job: '../../API-Gateway/master', wait: true
 				    }
@@ -190,7 +190,7 @@ pipeline {
 		
 		stage('Trigger MFE') {
 			steps {
-				script{
+				script {
 				    if (params.enableReactMFE == 'true') {
 						build job: '../../API-Gateway/master', wait: true
 				    }
