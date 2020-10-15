@@ -97,8 +97,12 @@ pipeline {
 				   }
 
 					/* ConfigMap configuration */
-					sh "kubectl apply -f ${YAML_PATH}/configmap/configMap.yaml"
-					sh "kubectl apply -f ${YAML_PATH}/rbac/service-account-for-fabric8-access.yaml"
+					script {
+					   if (params.enableSpringBootSecurity == 'true') {
+						   sh "kubectl apply -f ${YAML_PATH}/configmap/configMap.yaml"
+						   sh "kubectl apply -f ${YAML_PATH}/rbac/service-account-for-fabric8-access.yaml"
+					   }
+					}
 					
 					/* Istio Configuration */
 					script {
