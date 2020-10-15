@@ -15,6 +15,10 @@ pipeline {
 					    properties([
 					    	parameters([
 					    		booleanParam(defaultValue: true, description: 'Build Spring Boot Security', name: 'enableSpringBootSecurity'), 
+					    		booleanParam(defaultValue: false, description: 'Ignore Istio build', name: 'ignoreIstio'), 
+					    		booleanParam(defaultValue: false, description: 'Ignore Database build', name: 'ignoreDatabase'), 
+					    		booleanParam(defaultValue: false, description: 'Ignore Kibana', name: 'ignoreKibana'), 
+
 					    		booleanParam(defaultValue: true, description: 'Build API Gateway', name: 'enableAPIGateway'), 
 					    		booleanParam(defaultValue: true, description: 'Build MFE', name: 'enableReactMFE')
 					    	])
@@ -97,25 +101,41 @@ pipeline {
 					sh "kubectl apply -f ${YAML_PATH}/rbac/service-account-for-fabric8-access.yaml"
 					
 					/* Istio Configuration */
-					sh "istioctl manifest apply --set profile=demo"
-					sh "kubectl label namespace default istio-injection=enabled --overwrite"
-					sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-firewall.yaml"			
+					script {
+					   if (params.ignoreIstio != 'true') {
+						   sh "istioctl manifest apply --set profile=demo"
+						   sh "kubectl label namespace default istio-injection=enabled --overwrite"
+						   sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-firewall.yaml"
+					   }
+					}			
 
 					/* Database configuration */
-					sh "kubectl apply -f ${YAML_PATH}/pvc/storage.yaml"
-					sh "kubectl apply -f ${YAML_PATH}/mysql/mysql.yaml"
+					script {
+					   if (params.ignoreDatabase != 'true') {
+						   sh "kubectl apply -f ${YAML_PATH}/pvc/storage.yaml"
+						   sh "kubectl apply -f ${YAML_PATH}/mysql/mysql.yaml"
 
-					echo 'Sleeping for 60 second before starting webApp....'
-					sleep(time:60,unit:"SECONDS")
-					
+						   echo 'Sleeping for 60 second before starting webApp....'
+						   sleep(time:60,unit:"SECONDS")
+					   }
+					}
+
 					/* Webapp configuration */
-					sh "kubectl apply -f ${YAML_PATH}/webapp/webApp.yaml"
+					script {
+					   if (params.enableSpringBootSecurity == 'true') {
+						   sh "kubectl apply -f ${YAML_PATH}/webapp/webApp.yaml"
+					   }
+					}
 
 					/* Kibana configuration */
-					sh "kubectl apply -f ${YAML_PATH}/kibana/fluentd-config.yaml"
-					sh "kubectl apply -f ${YAML_PATH}/kibana/elastic-stack.yaml"
+					script {
+					   if (params.ignoreKibana != 'true') {
+						   sh "kubectl apply -f ${YAML_PATH}/kibana/fluentd-config.yaml"
+						   sh "kubectl apply -f ${YAML_PATH}/kibana/elastic-stack.yaml"
+					   }
+					}
 
-					/* Istio Ingress-Gateway configuration*/
+					/* Istio Ingress-Gateway configuration */
 					script {
 						if(env.enableIstioCanery == 'true')
 						{
@@ -148,9 +168,13 @@ pipeline {
 						}
 						else 
 						{
-							sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-route-webapp.yaml"
+							if (params.ignoreIstio != 'true') {
+								sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-route-webapp.yaml"
+							}
 						}
-						sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-route-monitoring.yaml"
+						if (params.ignoreIstio != 'true') {
+							sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-route-monitoring.yaml"
+						}
 
 						/* If you want to enable Circuit breaker feature on twm-webapp */
 						if(env.enableCircuitBreaker == 'true'){
@@ -180,8 +204,13 @@ pipeline {
 
 		stage('Trigger Api Gateway') {
 			steps {
-				build job: '../../API-Gateway/master', wait: true
+				script {
+					if(env.enableAPIGateway == 'true'){
+						build job: '../../API-Gateway/master', wait: true
+					}
+				}
 			}
 		}
+
 	}
 }					
