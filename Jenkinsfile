@@ -106,7 +106,7 @@ pipeline {
 					
 					/* Istio Configuration */
 					script {
-					   if (params.ignoreIstio != 'true') {
+					   if (params.ignoreIstio == 'false') {
 						   sh "istioctl manifest apply --set profile=demo"
 						   sh "kubectl label namespace default istio-injection=enabled --overwrite"
 						   sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-firewall.yaml"
