@@ -8,13 +8,7 @@ pipeline {
 
 	}
 	
-properties([
-  parameters([
-    string(name: 'submodule', defaultValue: ''),
-    string(name: 'submodule_branch', defaultValue: ''),
-    string(name: 'commit_sha', defaultValue: ''),
-  ])
-])
+
 
 	
 	stages {
@@ -22,6 +16,13 @@ properties([
 		stage('Git Clone') {
 			steps {
 					cleanWs()
+					properties([
+  parameters([
+    string(name: 'submodule', defaultValue: ''),
+    string(name: 'submodule_branch', defaultValue: ''),
+    string(name: 'commit_sha', defaultValue: ''),
+  ])
+])
 					echo 'Sleeping for 60 second before starting webApp....${params.submodule}'
 					git credentialsId: 'GitHub', url: "https://github.com/${ORGANIZATION_NAME}/${SERVICE_NAME}"
 				}
