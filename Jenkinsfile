@@ -12,7 +12,8 @@ pipeline {
 		stage('Git Clone') {
 			steps {
 					script {
-					    properties([parameters([booleanParam(defaultValue: true, description: 'Build Spring Boot Security', name: 'enableSpringBootSecurity'), booleanParam(defaultValue: true, description: 'Build API Gateway', name: 'enableAPIGateway'), booleanParam(defaultValue: true, description: 'Build MFE', name: 'enableReactMFE')])])
+					    // properties([parameters([booleanParam(defaultValue: true, description: 'Build Spring Boot Security', name: 'enableSpringBootSecurity'), booleanParam(defaultValue: true, description: 'Build API Gateway', name: 'enableAPIGateway'), booleanParam(defaultValue: true, description: 'Build MFE', name: 'enableReactMFE')])])
+					    properties([parameters([booleanParam(defaultValue: true, description: 'Build Spring Boot Security', name: 'enableSpringBootSecurity')])])
 					    echo "Build Springbootsecurity: ${params.enableSpringBootSecurity}"
         			}
 					cleanWs()
