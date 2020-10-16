@@ -15,9 +15,9 @@ pipeline {
 					    properties([
 					    	parameters([
 					    		booleanParam(defaultValue: true, description: 'Build Spring Boot Security', name: 'enableSpringBootSecurity'), 
-					    		booleanParam(defaultValue: false, description: 'Ignore Istio build', name: 'ignoreIstio'), 
-					    		booleanParam(defaultValue: false, description: 'Ignore Database build', name: 'ignoreDatabase'), 
-					    		booleanParam(defaultValue: false, description: 'Ignore Kibana', name: 'ignoreKibana'), 
+					    		booleanParam(defaultValue: true, description: 'Initiate Database', name: 'enableDatabase'), 
+					    		booleanParam(defaultValue: true, description: 'Deploy Istio feature', name: 'enableIstio'), 
+					    		booleanParam(defaultValue: true, description: 'Deploy kibana feature', name: 'enableKibana'), 
 
 					    		booleanParam(defaultValue: true, description: 'Build API Gateway', name: 'enableAPIGateway'), 
 					    		booleanParam(defaultValue: true, description: 'Build MFE', name: 'enableReactMFE')
@@ -106,9 +106,7 @@ pipeline {
 					
 					/* Istio Configuration */
 					script {
-						echo".....istio is ${params.ignoreIstio}"
-					   if (params.ignoreIstio != 'true') {
-						   echo".....isEnerfintio is ${params.ignoreIstio}"
+					   if (params.enableIstio == 'true') {
 						   sh "istioctl manifest apply --set profile=demo"
 						   sh "kubectl label namespace default istio-injection=enabled --overwrite"
 						   sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-firewall.yaml"
@@ -117,7 +115,7 @@ pipeline {
 
 					/* Database configuration */
 					script {
-					   if (params.ignoreDatabase != 'true') {
+					   if (params.enableDatabase == 'true') {
 						   sh "kubectl apply -f ${YAML_PATH}/pvc/storage.yaml"
 						   sh "kubectl apply -f ${YAML_PATH}/mysql/mysql.yaml"
 
@@ -135,7 +133,7 @@ pipeline {
 
 					/* Kibana configuration */
 					script {
-					   if (params.ignoreKibana != 'true') {
+					   if (params.enableKibana == 'true') {
 						   sh "kubectl apply -f ${YAML_PATH}/kibana/fluentd-config.yaml"
 						   sh "kubectl apply -f ${YAML_PATH}/kibana/elastic-stack.yaml"
 					   }
@@ -174,11 +172,11 @@ pipeline {
 						}
 						else 
 						{
-							if (params.ignoreIstio == 'false') {
+							if (params.enableIstio == 'true') {
 								sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-route-webapp.yaml"
 							}
 						}
-						if (params.ignoreIstio == 'false') {
+						if (params.enableIstio == 'true') {
 							sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-route-monitoring.yaml"
 						}
 
