@@ -209,8 +209,18 @@ pipeline {
 		stage('Trigger Api Gateway') {
 			steps {
 				script {
-					if(env.enableAPIGateway == 'true'){
+					if(params.enableAPIGateway == 'true'){
 						build job: '../../API-Gateway/master', wait: true
+					}
+				}
+			}
+		}
+
+		stage('Trigger React MFE') {
+			steps {
+				script {
+					if(params.enableReactMFE == 'true'){
+						build job: '../reactmfe/master', wait: true
 					}
 				}
 			}
