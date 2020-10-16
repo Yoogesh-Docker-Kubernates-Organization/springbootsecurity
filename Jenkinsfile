@@ -210,7 +210,7 @@ pipeline {
 			steps {
 				script {
 					echo "Trigerring API entering Gateway....${params.enableAPIGateway}"
-					if(params.enableAPIGateway == 'true'){
+					if(${params.enableAPIGateway} == 'true'){
 						echo 'Trigerring API Gateway....'
 						build job: '../../API-Gateway/master', wait: true
 					}
