@@ -47,7 +47,7 @@ pipeline {
 		stage('Create Docker Image') {
 			steps {
 				script{
-				    if (params.enableSpringBootSecurity == 'true') {
+				    if (params.enableSpringBootSecurity) {
 						sh 'docker image build -t ${REPOSITORY_TAG} .'
 				    }
 				}
@@ -57,7 +57,7 @@ pipeline {
 		stage('Publish Docker Image') {
 			steps {
 					script {
-				    	if (params.enableSpringBootSecurity == 'true') {
+				    	if (params.enableSpringBootSecurity) {
 				    		withCredentials([string(credentialsId: 'DOCKER_PASSEWORD', variable: 'DOCKER_HUB_CREDENTIALS')]) {
 								sh "docker login -u yoogesh1983 -p ${DOCKER_HUB_CREDENTIALS}"
 							}
@@ -98,7 +98,7 @@ pipeline {
 
 					/* ConfigMap configuration */
 					script {
-					   if (params.enableSpringBootSecurity == 'true') {
+					   if (params.enableSpringBootSecurity) {
 						   sh "kubectl apply -f ${YAML_PATH}/configmap/configMap.yaml"
 						   sh "kubectl apply -f ${YAML_PATH}/rbac/service-account-for-fabric8-access.yaml"
 					   }
@@ -106,7 +106,7 @@ pipeline {
 					
 					/* Istio Configuration */
 					script {
-					   if (params.enableIstio == 'true') {
+					   if (params.enableIstio) {
 						   sh "istioctl manifest apply --set profile=demo"
 						   sh "kubectl label namespace default istio-injection=enabled --overwrite"
 						   sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-firewall.yaml"
@@ -115,7 +115,7 @@ pipeline {
 
 					/* Database configuration */
 					script {
-					   if (params.enableDatabase == 'true') {
+					   if (params.enableDatabase) {
 						   sh "kubectl apply -f ${YAML_PATH}/pvc/storage.yaml"
 						   sh "kubectl apply -f ${YAML_PATH}/mysql/mysql.yaml"
 
@@ -126,14 +126,14 @@ pipeline {
 
 					/* Webapp configuration */
 					script {
-					   if (params.enableSpringBootSecurity == 'true') {
+					   if (params.enableSpringBootSecurity) {
 						   sh "kubectl apply -f ${YAML_PATH}/webapp/webApp.yaml"
 					   }
 					}
 
 					/* Kibana configuration */
 					script {
-					   if (params.enableKibana == 'true') {
+					   if (params.enableKibana) {
 						   sh "kubectl apply -f ${YAML_PATH}/kibana/fluentd-config.yaml"
 						   sh "kubectl apply -f ${YAML_PATH}/kibana/elastic-stack.yaml"
 					   }
@@ -172,11 +172,11 @@ pipeline {
 						}
 						else 
 						{
-							if (params.enableIstio == 'true') {
+							if (params.enableIstio) {
 								sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-route-webapp.yaml"
 							}
 						}
-						if (params.enableIstio == 'true') {
+						if (params.enableIstio) {
 							sh "kubectl apply -f ${YAML_PATH}/istio/gateway/istio-route-monitoring.yaml"
 						}
 
@@ -209,9 +209,7 @@ pipeline {
 		stage('Trigger Api Gateway') {
 			steps {
 				script {
-					echo "Trigerring API entering Gateway....${params.enableAPIGateway}"
 					if(params.enableAPIGateway){
-						echo 'Trigerring API Gateway....'
 						build job: '../../API-Gateway/master', wait: true
 					}
 				}
@@ -221,7 +219,7 @@ pipeline {
 		stage('Trigger React MFE') {
 			steps {
 				script {
-					if(params.enableReactMFE == 'true'){
+					if(params.enableReactMFE){
 						build job: '../reactmfe/master', wait: true
 					}
 				}
