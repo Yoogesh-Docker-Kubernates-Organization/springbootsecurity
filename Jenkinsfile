@@ -27,7 +27,7 @@ pipeline {
 			 			echo "Build API Gatway: ${params.enableAPIGateway}"
 			 			echo "Build MFE: ${params.enableReactMFE}"
 						cleanWs()
-						if (params.enableSpringBootSecurity == 'true') {
+						if (params.enableSpringBootSecurity) {
 							git credentialsId: 'GitHub', url: "https://github.com/${ORGANIZATION_NAME}/${SERVICE_NAME}"
 						}
         			}
@@ -37,7 +37,7 @@ pipeline {
 		stage('Maven Clean Install') {
 			steps {
 				script{
-				    if (params.enableSpringBootSecurity == 'true') {
+				    if (params.enableSpringBootSecurity) {
 						sh "mvn clean install"
 				    }
 				}
