@@ -47,7 +47,7 @@ public class FilterConfig {
 		filterRegistrationBean.setFilter(swaggerResponseFilter);
 		
 		List<String> urlPatterns = new ArrayList<String>();
-		urlPatterns.add("/forwardRequestViaFilter");
+		urlPatterns.add("/*");
 		filterRegistrationBean.setUrlPatterns(urlPatterns);
 		
 		filterRegistrationBean.setOrder(3);

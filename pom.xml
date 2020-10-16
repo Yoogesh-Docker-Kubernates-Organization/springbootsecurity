@@ -284,7 +284,7 @@
 			<version>${html2pdf.version}</version>
 		</dependency>
 		
-		<!-- For Swagger -->
+		<!-- For Swagger 2.0-->
 		<dependency>
 		    <groupId>io.springfox</groupId>
 		    <artifactId>springfox-swagger2</artifactId>
@@ -294,6 +294,13 @@
 		    <groupId>io.springfox</groupId>
 		    <artifactId>springfox-swagger-ui</artifactId>
 			<version>${swagger.version}</version>
+		</dependency>
+		
+		<!-- For Swagger 3.0 -->
+		<dependency>
+    		<groupId>org.springdoc</groupId>
+    		<artifactId>springdoc-openapi-ui</artifactId>
+    		<version>1.4.8</version>
 		</dependency>
 		
 		<!-- For Spring cloud config 

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.springdoc.core.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -81,6 +82,25 @@ public class AppConfig_Swagger implements WebMvcConfigurer {
 	private List<Parameter> showContentTypeParamater() {
 		return Arrays.asList(new ParameterBuilder().name("Content-Type").modelRef(new ModelRef("string"))
 				.parameterType("header").required(true).defaultValue("application/json").build());
+	}
+	
+	
+	/**
+	 * 
+	 * Swagger API 3.0 implementation
+	 */
+	@Bean
+	public GroupedOpenApi goApiSchema() {
+		String paths[] = {"/api/authentication/**", "/api/user/**"};
+		return GroupedOpenApi.builder().group("Go-API").pathsToMatch(paths)
+				.build();
+	}
+	
+	@Bean
+	public GroupedOpenApi otherSchema() {
+		String paths[] = {"/api/common/**", "/api/websocket/**"};
+		return GroupedOpenApi.builder().group("Other").pathsToMatch(paths)
+				.build();
 	}
 
 }
