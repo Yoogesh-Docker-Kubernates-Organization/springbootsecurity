@@ -13,8 +13,6 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import io.swagger.annotations.ApiModelProperty;
-
 @Entity
 @Table(name="USERS")
 public class User {
@@ -25,11 +23,9 @@ public class User {
 	private Long uid;
 	
 	@Column(name="username", nullable=false, length=50)
-	@ApiModelProperty(notes="Username of the user. This will be printed in a swagger html in a model section.")
 	private String username;
 	
 	@Column(name="password", nullable=false, length=256)
-	@ApiModelProperty(notes="password of the user. This will be printed in a swagger html in a model section.")
 	private String password;
 	
 	@Column(name="firstName")

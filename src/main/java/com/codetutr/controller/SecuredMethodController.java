@@ -17,14 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codetutr.entity.Authority;
 import com.codetutr.entity.User;
 import com.codetutr.services.SecuredMethodService;
-import com.codetutr.utility.UtilityHelper;
 import com.codetutr.utility.Event;
-
-import springfox.documentation.annotations.ApiIgnore;
+import com.codetutr.utility.UtilityHelper;
 
 @RestController
 @RequestMapping(value = "/secure")
-@ApiIgnore
 public class SecuredMethodController {
 
 	@Autowired

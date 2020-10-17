@@ -29,20 +29,24 @@ import com.codetutr.restAPI.response.DeleteUserResponse;
 import com.codetutr.restAPI.response.TWMResponse;
 import com.codetutr.restAPI.response.TWMResponseFactory;
 import com.codetutr.utility.UtilityHelper;
-import com.codetutr.validationHelper.LemonConstant;
 import com.nimbusds.oauth2.sdk.util.StringUtils;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping("/api/user")
-@Api(tags = {LemonConstant.SWAGGER_USER_DESCRIPTION})
 public class UserController extends AbstractRestController {
 	
 	@PostMapping( produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
 	@ResponseStatus(HttpStatus.CREATED)
-	@ApiOperation(value="Signup", notes="This url is used to create a user", response=User.class )
+	@Operation(summary = "Signup", responses = {
+			@ApiResponse(description = "This url is used to create a user", responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = User.class))),
+			@ApiResponse(responseCode = "404", description = "Not found", content = @Content),
+			@ApiResponse(responseCode = "401", description = "Authentication Failure", content = @Content(schema = @Schema(hidden = true)))
+	})
 	public TWMResponse<User> signUp(HttpServletRequest request, HttpServletResponse response, @Valid @RequestBody SignupRequest signupRequest){
 		
 		if(userService.ismoreUsernameExists(signupRequest.getUsername())){
@@ -63,7 +67,11 @@ public class UserController extends AbstractRestController {
 	}
 
 	@PatchMapping(value = "/{guid}", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
-	@ApiOperation(value="Update user", notes="This url is used to update the user", response=User.class )
+	@Operation(summary = "Update user", responses = {
+			@ApiResponse(description = "This url is used to update the user", responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = User.class))),
+			@ApiResponse(responseCode = "404", description = "Not found", content = @Content),
+			@ApiResponse(responseCode = "401", description = "Authentication Failure", content = @Content(schema = @Schema(hidden = true)))
+	})
 	public TWMResponse<User> updateUser(HttpServletRequest request, HttpServletResponse response, 
 			@Valid @Pattern(regexp = "^[0-9]*$", message = "GUID should a number.") @PathVariable Long guid, 
 			@RequestBody UpdateRequest updateRequest){
@@ -94,7 +102,11 @@ public class UserController extends AbstractRestController {
 	}
 	
 	@DeleteMapping(value = "/{guid}", produces = {MediaType.APPLICATION_JSON_VALUE})
-	@ApiOperation(value="Delete user", notes="This url is used to delete the user", response=DeleteUserResponse.class )
+	@Operation(summary = "Delete user", responses = {
+			@ApiResponse(description = "This url is used to delete the user", responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = DeleteUserResponse.class))),
+			@ApiResponse(responseCode = "404", description = "Not found", content = @Content),
+			@ApiResponse(responseCode = "401", description = "Authentication Failure", content = @Content(schema = @Schema(hidden = true)))
+	})
 	public TWMResponse<DeleteUserResponse> logout(HttpServletRequest request, HttpServletResponse response,
 			@Valid @NotNull(message = "Authorization header should not be null") @RequestHeader(value = "Authorization", required = true) String Authorization,
 			@Valid @Pattern(regexp = "^[0-9]*$", message = "GUID should a number.") @PathVariable Long guid,
@@ -117,7 +129,11 @@ public class UserController extends AbstractRestController {
 	}
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(value="Get user by username", notes="This url is used to get the user information using the username", response=User.class )
+	@Operation(summary = "Get user by username", responses = {
+			@ApiResponse(description = "This url is used to get the user information using the username", responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = User.class))),
+			@ApiResponse(responseCode = "404", description = "Not found", content = @Content),
+			@ApiResponse(responseCode = "401", description = "Authentication Failure", content = @Content(schema = @Schema(hidden = true)))
+	})
 	public TWMResponse<User> getUserByUsername(HttpServletRequest request, HttpServletResponse response, 
 			@Valid @Pattern(regexp = "^[0-9]*$", message = "Guid is not valid") @RequestParam (required = false) Long guid,
 			@Valid @Pattern(regexp = "^[a-zA-Z@.]*$", message = "username is not valid") @RequestParam (required = false) String username){
@@ -151,7 +167,11 @@ public class UserController extends AbstractRestController {
 	
 	
 	@GetMapping(value="/all", produces = {MediaType.APPLICATION_JSON_VALUE})
-	@ApiOperation(value="Get all Users", notes="This url is used to get all the users", response=User.class )
+	@Operation(summary = "Get all Users", responses = {
+			@ApiResponse(description = "This url is used to get all the users", responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = User.class))),
+			@ApiResponse(responseCode = "404", description = "Not found", content = @Content),
+			@ApiResponse(responseCode = "401", description = "Authentication Failure", content = @Content(schema = @Schema(hidden = true)))
+	})
 	public TWMResponse<List<User>> getAllUsers(HttpServletRequest request) {
 		return TWMResponseFactory.getResponse(userService.getAllUsers(), request);
 	}

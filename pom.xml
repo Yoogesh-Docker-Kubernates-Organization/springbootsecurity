@@ -43,9 +43,6 @@
 		<!-- HtmlToPDF version -->
 		<html2pdf.version>[2.1.6,)</html2pdf.version>
 		
-		<!-- Swagger version -->
-		<swagger.version>2.9.2</swagger.version>
-		
 		<!-- JsonWebToken version -->
 		<jsonwebtoken.version>0.9.1</jsonwebtoken.version>
 		
@@ -282,18 +279,6 @@
 			<groupId>com.itextpdf</groupId>
 			<artifactId>html2pdf</artifactId>
 			<version>${html2pdf.version}</version>
-		</dependency>
-		
-		<!-- For Swagger 2.0-->
-		<dependency>
-		    <groupId>io.springfox</groupId>
-		    <artifactId>springfox-swagger2</artifactId>
-			<version>${swagger.version}</version>
-		</dependency>
-		<dependency>
-		    <groupId>io.springfox</groupId>
-		    <artifactId>springfox-swagger-ui</artifactId>
-			<version>${swagger.version}</version>
 		</dependency>
 		
 		<!-- For Swagger 3.0 -->

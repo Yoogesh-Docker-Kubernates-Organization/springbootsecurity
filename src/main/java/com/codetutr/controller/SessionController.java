@@ -13,11 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import springfox.documentation.annotations.ApiIgnore;
-
 @RestController
 @RequestMapping(value = "/sessions")
-@ApiIgnore
 public class SessionController {
 
 	private final SessionRegistry sessionRegistry;

@@ -33,15 +33,15 @@ import com.codetutr.restAPI.request.SigninRequest;
 import com.codetutr.restAPI.response.AuthenticationResponse;
 import com.codetutr.restAPI.response.TWMResponse;
 import com.codetutr.restAPI.response.TWMResponseFactory;
-import com.codetutr.validationHelper.LemonConstant;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping("/api/authentication")
 @CrossOrigin(origins = "*") // This is optional here since we have already set it on CorsConfig.java. Meanwhile this will also be added to the list of allowed origins now which means all the origins are allowed for all the methods of this class.
-@Api(tags = {LemonConstant.SWAGGER_AUTHENTICATION_DESCRIPTION})
 public class AuthenticationController extends AbstractRestController {
 	
 	/**
@@ -53,8 +53,12 @@ public class AuthenticationController extends AbstractRestController {
 	@Autowired
 	private JwtService jwtService;
 	
+	@Operation(summary = "Signin", responses = {
+			@ApiResponse(description = "This is used to login into an application", responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AuthenticationResponse.class))),
+			@ApiResponse(responseCode = "404", description = "Not found", content = @Content),
+			@ApiResponse(responseCode = "401", description = "Authentication Failure", content = @Content(schema = @Schema(hidden = true)))
+	})
 	@PostMapping( produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
-	@ApiOperation(value="Authenticate the user", notes="This url is used to get the JWT Token back which can be used for further call.", response=AuthenticationResponse.class )
 	public TWMResponse<AuthenticationResponse> login(HttpServletRequest request, HttpServletResponse response, 
 			@Valid @RequestBody SigninRequest signInRequest) throws Exception {
 		
@@ -72,8 +76,12 @@ public class AuthenticationController extends AbstractRestController {
 		return TWMResponseFactory.getResponse(new AuthenticationResponse(jwt, guid), request);
 	}
 	
+	@Operation(summary = "Signout", responses = {
+			@ApiResponse(description = "This is used to signout from the application", responseCode = "200", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = Void.class))),
+			@ApiResponse(responseCode = "404", description = "Not found", content = @Content),
+			@ApiResponse(responseCode = "401", description = "Authentication Failure", content = @Content(schema = @Schema(hidden = true)))
+	})
 	@DeleteMapping(value = "/{guid}", produces = {MediaType.APPLICATION_JSON_VALUE})
-	@ApiOperation(value = "Logout", notes = "This url is used to logging out from the application", response = Void.class)
 	public TWMResponse<Void> logout(HttpServletRequest request, HttpServletResponse response,
 			@Valid @NotNull(message = "Authorization header should not be null") @RequestHeader(value = "Authorization", required = true) String Authorization,
 			@Valid @Pattern(regexp = "^[0-9]*$", message = "GUID should a number.") @PathVariable Long guid,

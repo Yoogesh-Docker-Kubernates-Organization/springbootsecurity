@@ -14,10 +14,7 @@ import com.codetutr.entity.Payment;
 import com.codetutr.stateMahine.PaymentEvent;
 import com.codetutr.stateMahine.PaymentState;
 
-import springfox.documentation.annotations.ApiIgnore;
-
 @RestController
-@ApiIgnore
 public class StateMachineController {
 
 	@Autowired
