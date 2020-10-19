@@ -8,7 +8,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -31,12 +30,20 @@ public class TWMRequestContextInfoFilter extends AbstractBaseFilter implements F
 	@Override
 	public void doFilter(ServletRequest baseRequest, ServletResponse baseResponse, FilterChain chain)
 			throws IOException, ServletException {
-		HttpServletRequest request = (HttpServletRequest) baseRequest;
-		HttpServletResponse response = (HttpServletResponse) baseResponse;
 
-		TWMRequestWrapper wrapper = setHeader(request);
-		chain.doFilter(wrapper, response);
-
+		HttpServletRequest httpServletRequest = (HttpServletRequest) baseRequest;
+		
+		 if(StringUtils.contains(httpServletRequest.getRequestURL().toString(),"/websocket")) {
+			 /**
+			  * You cannot use proxy for websocket
+			  */
+			 logger.info("By-passing TWMRequestContextInfoFilter for websocket URL: {}", httpServletRequest.getRequestURL().toString());
+			 chain.doFilter(baseRequest, baseResponse);
+		 }
+		 else {
+			 TWMRequestWrapper wrapper = setHeader(httpServletRequest);
+			 chain.doFilter(wrapper, baseResponse);
+		 }
 	}
 
 	private TWMRequestWrapper setHeader(HttpServletRequest request) {

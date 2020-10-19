@@ -27,9 +27,9 @@ public class SwaggerResponseFilter extends AbstractBaseFilter {
 		
 		   HttpServletRequest servletRequest = (HttpServletRequest) request;
 		   TWMResponseWrapper responseWrapper;
-		   logger.info("Forwarded Request via {}", servletRequest.getRequestURL().toString()); 
 		   
 		   if(StringUtils.contains(servletRequest.getRequestURL().toString(), "/forwardRequestViaFilter")) {
+			   logger.info("Forwarded Request via {}", servletRequest.getRequestURL().toString()); 
 			   responseWrapper = new TWMResponseWrapper((HttpServletResponse) response);
 			   
 			   filterChain.doFilter(request, responseWrapper); 

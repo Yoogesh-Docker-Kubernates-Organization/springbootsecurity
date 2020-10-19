@@ -13,7 +13,8 @@ const openChatWindow = () => {
 	xhr.addEventListener("readystatechange", function() {
 	  if(this.readyState === 4 && this.status === 200) 
 	  {
-		  response = JSON.parse(this.responseText);
+		  responseData = JSON.parse(this.responseText);
+		  response = responseData.data;
 		  document.getElementById('firststep_receiverUsername').value = '';
 		  document.getElementById('secondstep_headline').innerHTML = "<b>" + response.username + "</b>";
 		  document.getElementById('secondstep_receiverUsername').value = response.username;
@@ -36,11 +37,11 @@ const openChatWindow = () => {
 	
 	if(baseUrl.includes("localhost")){
 		console.log("BaseUrl is local.....");
-		xhr.open("GET", "http://localhost:8888/springbootsecurity/dispatcher/api/user/" + username.split("@")[0]);
+		xhr.open("GET", "http://localhost:8888/springbootsecurity/dispatcher/api/user?username=" + username);
 	}
 	else{
 		console.log("BaseUrl is AWS Cloud.....");
-		xhr.open("GET", baseUrl + "/springbootsecurity/api/user/" + username.split("@")[0]);
+		xhr.open("GET", baseUrl + "/springbootsecurity/api/user?username=" + username);
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.send();		
