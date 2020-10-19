@@ -13,7 +13,8 @@ const openChatWindow = () => {
 	xhr.addEventListener("readystatechange", function() {
 	  if(this.readyState === 4 && this.status === 200) 
 	  {
-		  response = JSON.parse(this.responseText);
+		  responseData = JSON.parse(this.responseText);
+		  response = responseData.data;
 		  document.getElementById('firststep_receiverUsername').value = '';
 		  document.getElementById('secondstep_headline').innerHTML = "<b>" + response.username + "</b>";
 		  document.getElementById('secondstep_receiverUsername').value = response.username;
