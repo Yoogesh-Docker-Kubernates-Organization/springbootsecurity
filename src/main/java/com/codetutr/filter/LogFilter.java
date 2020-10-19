@@ -8,6 +8,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.codetutr.config.wrapper.TWMRequestWrapper;
 
 //@WebFilter("/*")
@@ -16,7 +18,14 @@ public class LogFilter extends AbstractBaseFilter  {
 	@Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException 
 	{
-		filterChain.doFilter(setCustomHeaders((HttpServletRequest) servletRequest), servletResponse);
+		HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+		 if(!StringUtils.contains(httpServletRequest.getRequestURL().toString(),"/websocket")) {
+			 filterChain.doFilter(setCustomHeaders((HttpServletRequest) servletRequest), servletResponse);
+		 }
+		 else {
+			 filterChain.doFilter(servletRequest, servletResponse);
+		 }
+		
 	}
 
 	private TWMRequestWrapper setCustomHeaders(HttpServletRequest request) {

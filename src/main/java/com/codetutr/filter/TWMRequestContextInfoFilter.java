@@ -31,11 +31,20 @@ public class TWMRequestContextInfoFilter extends AbstractBaseFilter implements F
 	@Override
 	public void doFilter(ServletRequest baseRequest, ServletResponse baseResponse, FilterChain chain)
 			throws IOException, ServletException {
-		HttpServletRequest request = (HttpServletRequest) baseRequest;
-		HttpServletResponse response = (HttpServletResponse) baseResponse;
 
-		TWMRequestWrapper wrapper = setHeader(request);
-		chain.doFilter(wrapper, response);
+		
+		HttpServletRequest httpServletRequest = (HttpServletRequest) baseRequest;
+		 if(!StringUtils.contains(httpServletRequest.getRequestURL().toString(),"/websocket")) {
+				HttpServletRequest request = (HttpServletRequest) baseRequest;
+				HttpServletResponse response = (HttpServletResponse) baseResponse;
+				TWMRequestWrapper wrapper = setHeader(request);
+				chain.doFilter(wrapper, response);
+		 }
+		 else {
+			 chain.doFilter(baseRequest, baseResponse);
+		 }
+
+
 
 	}
 
