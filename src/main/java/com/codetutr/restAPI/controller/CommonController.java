@@ -18,7 +18,6 @@ public class CommonController {
 	
 	@GetMapping(value="/getPDF", produces = MediaType.APPLICATION_PDF_VALUE)
     public byte[] convertToPDF(HttpServletResponse response) throws IOException, DocumentException {
-		
 		return new HTMLToPDFConverter().convertHtmlToPDF();
     }
 }
