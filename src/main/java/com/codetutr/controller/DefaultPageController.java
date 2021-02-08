@@ -22,11 +22,6 @@ public class DefaultPageController
 		return "security/sign-in";
 	}
 	
-	@GetMapping(value="/forwardRequestViaFilter")
-	public String forwardRequest() {
-		return "forward:/v2/api-docs";
-	}
-	
 	@GetMapping(value="/restclient")
 	public TWMResponse<List<User>> testForRestAPI() {
 		return new CoreServiceClient().getAllUsers();

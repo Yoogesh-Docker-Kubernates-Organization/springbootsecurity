@@ -95,7 +95,7 @@ class MyDispatcher
 	}
 	
 	@Bean
-	public ServletRegistrationBean<DispatcherServlet> dispatcherServletRegistration() {
+	public ServletRegistrationBean<DispatcherServlet> disServlet() {
 		final ServletRegistrationBean<DispatcherServlet> registration = new ServletRegistrationBean<DispatcherServlet>(dispatcherServlet(), "/");
 		
 		final Map<String, String> params = new HashMap<String, String>();

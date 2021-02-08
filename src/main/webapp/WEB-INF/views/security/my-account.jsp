@@ -76,13 +76,11 @@
 	<td><a href="${pageContext.request.contextPath}/secure/events-postFilter"><span style="color:white">POST_FILTER_EVENTS</span></a></td>
 	<td><a href="${pageContext.request.contextPath}/sessions"><span style="color:white">ACTIVE_SESSIONS</span></a></td>
 	<td><a href="${pageContext.request.contextPath}/stateMachine"><span style="color:white">STATE_MACHINE</span></a></td>
-	<td><a href="${pageContext.request.contextPath}/v2/api-docs"><span style="color:white">SWAGGER_API_DOCUMENT</span></a></td>
+	<td><a href="${pageContext.request.contextPath}/actuator"><span style="color:white">ACTUATOR</span></a></td>
 	<td><a href="${pageContext.request.contextPath}/swagger-ui.html"><span style="color:white">SWAGGER_HTML</span></a></td>
 </tr>
 <tr>
-	<td><a href="${pageContext.request.contextPath}/forwardRequestViaFilter"><span style="color:white">FORWARD_REQUEST_VIA_FILTER</span></a></td>
 	<td><a href="${pageContext.request.contextPath}/restclient"><span style="color:white">GET_ALL_USERS_USING_REST_API</span></a></td>
-	<td><a href="${pageContext.request.contextPath}/actuator"><span style="color:white">ACTUATOR</span></a></td>
 	<td><a href="#socketModal" rel="modal:open"><span style="color:white">CHAT</span></a></td>
 </tr>
 </table>
