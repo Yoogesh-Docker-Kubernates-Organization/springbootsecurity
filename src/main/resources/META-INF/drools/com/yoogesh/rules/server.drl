@@ -1,4 +1,4 @@
-package rules
+package drools.com.yoogesh.rules
 
 import com.codetutr.entity.User;
 
