@@ -1,5 +1,6 @@
 package com.codetutr.restAPI.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -172,9 +173,19 @@ public class UserController extends AbstractRestController {
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content),
 			@ApiResponse(responseCode = "401", description = "Authentication Failure", content = @Content(schema = @Schema(hidden = true)))
 	})
-	public TWMResponse<List<User>> getAllUsers(HttpServletRequest request) {
-		return TWMResponseFactory.getResponse(userService.getAllUsers(), request);
+	public TWMResponse<List<User>> getAllUsers(HttpServletRequest request, @RequestParam (required = false, defaultValue = "false") Boolean fireDroolsRule) {
+		
+		List<User> allUsers = userService.getAllUsers();
+		if(!fireDroolsRule) {
+			return TWMResponseFactory.getResponse(allUsers, request);
+		}
+		List<User> responseAfterRuleApplied = new ArrayList<>();
+		for (User user : allUsers) {
+			responseAfterRuleApplied.add(ruleEngineService.fireUserRule(user));
+		}
+		TWMResponse<List<User>> response = TWMResponseFactory.getResponse(responseAfterRuleApplied, request);
+		response.setDroolsRuleApplied(true);
+		return response;
 	}
-
 
 }

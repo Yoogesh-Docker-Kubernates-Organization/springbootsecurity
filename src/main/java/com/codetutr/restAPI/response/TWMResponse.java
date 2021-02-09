@@ -12,6 +12,8 @@ public class TWMResponse<T> implements ShortString {
 
 	private String transactionId;
 	private String hostName;
+	private boolean droolsRuleApplied;
+	
 	private T data;
 	private ArrayList<ErrorResponse> errors;
 
@@ -48,6 +50,14 @@ public class TWMResponse<T> implements ShortString {
 
 	public void setErrors(ArrayList<ErrorResponse> errors) {
 		this.errors = errors;
+	}
+
+	public boolean isDroolsRuleApplied() {
+		return droolsRuleApplied;
+	}
+
+	public void setDroolsRuleApplied(boolean droolsRuleApplied) {
+		this.droolsRuleApplied = droolsRuleApplied;
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package com.codetutr.config.drools;
 
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 
 public class AppConfig_Drools {
@@ -20,6 +21,7 @@ public class AppConfig_Drools {
 	 * 
 	 */
 	@Bean
+	@ConditionalOnProperty("initialize.kie.container.instance")
 	public KieContainer kieContainer() {
 		return KieServices.Factory.get().getKieClasspathContainer();
 	}

@@ -1,0 +1,11 @@
+package rules
+
+import com.codetutr.entity.User;
+
+rule "Check_enable_user_Status"
+  when
+  	$user : User(((uid % 2) != 0L) && (firstName.toUpperCase() == "YOOGESH"))
+  then
+  	$user.setEnabled(false);
+  	System.out.println("User "+ $user.getUid() + " with name " + $user.getFirstName() +" is set Disabled............");
+end
