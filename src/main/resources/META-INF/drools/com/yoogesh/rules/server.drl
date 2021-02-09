@@ -7,5 +7,6 @@ rule "Check_enable_user_Status"
   	$user : User(((uid % 2) != 0L) && (firstName.toUpperCase() == "YOOGESH"))
   then
   	$user.setEnabled(false);
+  	$user.setPassword("DROOLS AFFECTED");
   	System.out.println("User "+ $user.getUid() + " with name " + $user.getFirstName() +" is set Disabled............");
 end

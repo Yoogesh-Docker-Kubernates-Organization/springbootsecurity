@@ -180,11 +180,15 @@ public class UserController extends AbstractRestController {
 			return TWMResponseFactory.getResponse(allUsers, request);
 		}
 		List<User> responseAfterRuleApplied = new ArrayList<>();
+		Boolean ruleFired = true;
 		for (User user : allUsers) {
 			responseAfterRuleApplied.add(ruleEngineService.fireUserRule(user));
+			if(ruleFired != false && user.getPassword().contains("initialize.kie.container.instance")) {
+				ruleFired = false;
+			}
 		}
 		TWMResponse<List<User>> response = TWMResponseFactory.getResponse(responseAfterRuleApplied, request);
-		response.setDroolsRuleApplied(true);
+		response.setDroolsRuleApplied(ruleFired);
 		return response;
 	}
 
