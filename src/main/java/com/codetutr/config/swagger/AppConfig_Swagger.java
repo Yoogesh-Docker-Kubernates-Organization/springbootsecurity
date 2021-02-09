@@ -26,7 +26,7 @@ public class AppConfig_Swagger implements WebMvcConfigurer {
 	
 	@Bean
 	public GroupedOpenApi otherSchema() {
-		String paths[] = {"/api/common/**"};
+		String paths[] = {"/api/common/**", "/api/rule/**"};
 		return GroupedOpenApi.builder().group("Other").pathsToMatch(paths)
 				.build();
 	}

@@ -17,6 +17,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 
 import com.codetutr.config.cronJob.AppConfig_CronJob;
 import com.codetutr.config.database.AppConfig_Persistance;
+import com.codetutr.config.drools.AppConfig_Drools;
 import com.codetutr.config.event.ContextEvent;
 import com.codetutr.config.exception.AppConfig_Exception;
 import com.codetutr.config.springMvc.AppConfig_Mvc;
@@ -72,7 +73,13 @@ public class DispatcherServletInitializer extends SpringBootServletInitializer
 		/**
 		 * Initializes the exception
 		 */
-		AppConfig_Exception.class
+		AppConfig_Exception.class,
+		
+		/**
+		 * Initializes the drools container
+		 */
+		AppConfig_Drools.class
+		
 	};
 
 	public static void main(String... args) {

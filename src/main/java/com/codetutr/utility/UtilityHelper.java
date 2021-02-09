@@ -1,9 +1,13 @@
 package com.codetutr.utility;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.codetutr.entity.Authority;
 import com.codetutr.entity.User;
@@ -67,4 +71,11 @@ public class UtilityHelper {
 	public static String generateUUID() {
 		return UUID.randomUUID().toString(); //return UUID.randomUUID().toString().replace("-", "");
 	}
+	
+    public static Set<String> listAllFilesInsideDirectory(String dir) {
+        return Stream.of(new File(dir).listFiles())
+          .filter(file -> !file.isDirectory())
+          .map(File::getName)
+          .collect(Collectors.toSet());
+    }
 }

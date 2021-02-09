@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.codetutr.restAPI.request.TWMRequestContextInfo;
+import com.codetutr.services.RuleEngineService;
 import com.codetutr.services.UserService;
 
 public abstract class AbstractRestController {
@@ -21,6 +22,9 @@ public abstract class AbstractRestController {
 	
 	@Autowired
 	protected UserService userService;
+	
+	@Autowired
+	protected RuleEngineService ruleEngineService;
 	
 	@Autowired
 	protected PasswordEncoder passwordEncoder;
