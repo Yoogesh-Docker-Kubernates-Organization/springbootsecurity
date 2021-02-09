@@ -11,13 +11,14 @@ public class AppConfig_Drools {
 	/**
 	 * You must comment out below dependency from pom.xml for this to work.otherwise, the rule will not get fired
 	 * 
-	 *	<!-- Development tools related -->
+	 *	<!-- Development tools related 
 	    <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
-		</dependency>	
+		</dependency>
+		-->	
 	 * 
 	 */
 	@Bean
