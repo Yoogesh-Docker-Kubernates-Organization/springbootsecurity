@@ -1,5 +1,12 @@
-{"properties": [{
-  "name": "initialize.kie.container.instance",
-  "type": "java.lang.Boolean",
-  "description": "A description for 'initialize.kie.container.instance'"
-}]}
+{"properties": [
+  {
+    "name": "initialize.kie.container.standard.way",
+    "type": "java.lang.Boolean",
+    "description": "A description for 'initialize.kie.container.standard.way'"
+  },
+  {
+    "name": "initialize.kie.container.spring.boot.way",
+    "type": "java.lang.Boolean",
+    "description": "A description for 'initialize.kie.container.spring.boot.way'"
+  }
+]}

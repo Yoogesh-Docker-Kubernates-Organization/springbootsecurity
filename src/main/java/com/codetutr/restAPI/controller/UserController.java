@@ -183,7 +183,7 @@ public class UserController extends AbstractRestController {
 		Boolean ruleFired = true;
 		for (User user : allUsers) {
 			responseAfterRuleApplied.add(ruleEngineService.fireUserRule(user));
-			if(ruleFired != false && user.getPassword().contains("initialize.kie.container.instance")) {
+			if(ruleFired != false && user.getPassword().contains("initialize.kie.container")) {
 				ruleFired = false;
 			}
 		}

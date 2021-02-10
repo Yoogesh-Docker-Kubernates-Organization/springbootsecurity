@@ -1,38 +1,32 @@
 
 package com.codetutr.config.drools;
 
+import java.util.ArrayList;
+
 import org.kie.api.KieServices;
+import org.kie.api.builder.KieBuilder;
+import org.kie.api.builder.KieFileSystem;
+import org.kie.api.builder.KieModule;
 import org.kie.api.runtime.KieContainer;
+import org.kie.internal.io.ResourceFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 
+import com.codetutr.utility.UtilityHelper;
+
 public class AppConfig_Drools {
 	
-	/**
-	 * You must comment out below dependency from pom.xml for this to work.otherwise, the rule will not get fired
-	 * 
-	 *	<!-- Development tools related 
-	    <dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
-		</dependency>
-		-->	
-	 * 
-	 */
+	private static final String RESOURCE_PATH = "src/main/resources/";
+	private static final String DROOLS_FOLDER = "META-INF/drools/com/yoogesh/rules/";
+	
 	@Bean
-	@ConditionalOnProperty("initialize.kie.container.instance")
+	@ConditionalOnProperty("initialize.kie.container.standard.way")
 	public KieContainer kieContainer() {
 		return KieServices.Factory.get().getKieClasspathContainer();
 	}
 	
-	
-	/*
-	private static final String RESOURCE_PATH = "src/main/resources/";
-	private static final String DROOLS_FOLDER = "drools/";
-	
 	 @Bean
+	 @ConditionalOnProperty("initialize.kie.container.spring.boot.way")
      public KieContainer kieContainer11() {
         KieServices kieServices = KieServices.Factory.get();
         KieFileSystem kieFileSystem = kieServices.newKieFileSystem();
@@ -44,8 +38,7 @@ public class AppConfig_Drools {
         KieBuilder kieBuilder = kieServices.newKieBuilder(kieFileSystem);
         kieBuilder.buildAll();
         KieModule kieModule = kieBuilder.getKieModule();
-
         return kieServices.newKieContainer(kieModule.getReleaseId());
     }
-    */
+    
 }
