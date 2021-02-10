@@ -27,7 +27,7 @@ public class AppConfig_Drools {
 	
 	 @Bean
 	 @ConditionalOnProperty("initialize.kie.container.spring.boot.way")
-     public KieContainer kieContainer11() {
+     public KieContainer kieContainerBootWay() {
         KieServices kieServices = KieServices.Factory.get();
         KieFileSystem kieFileSystem = kieServices.newKieFileSystem();
         for(String file:new ArrayList<String>(UtilityHelper.listAllFilesInsideDirectory(RESOURCE_PATH + DROOLS_FOLDER))){

@@ -8,5 +8,10 @@
     "name": "initialize.kie.container.spring.boot.way",
     "type": "java.lang.Boolean",
     "description": "A description for 'initialize.kie.container.spring.boot.way'"
+  },
+  {
+    "name": "initialize.kie.container.standard.way",
+    "type": "java.lang.String",
+    "description": "A description for 'initialize.kie.container.standard.way'"
   }
 ]}

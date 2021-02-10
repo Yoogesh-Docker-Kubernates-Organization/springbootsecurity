@@ -4,7 +4,7 @@ import com.codetutr.entity.User;
 
 rule "Check_enable_user_Status"
   when
-  	$user : User(((uid % 2) != 0L) && (firstName.toUpperCase() == "YOOGESH"))
+  	$user : User(((uid % 2) != 0L) && (lastName.toUpperCase() == "SHARMA"))
   then
   	$user.setEnabled(false);
   	$user.setPassword("DROOLS AFFECTED");
