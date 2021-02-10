@@ -112,3 +112,25 @@ Similarly, the docker image can be run using below command by going up to the <b
 > ubuntu@ip-172-31-35-23:~$ sudo docker container run -p 80:8080 -it yoogesh1983/springbootsecurity </br>
 
 The application can now be available at http://10.15.0.15/springbootsecurity/ assuming ip of the container is 10.15.0.15</br>
+
+# How to enable the drools feature? </br>
+Do the following changes to the pom.xml:
+
+> You first need to disable the dev-tool feature from pom.xml:
+
+	<!-- Development tools related. This must be commented out while firing the drools rule 
+	    <dependency>
+		 <groupId>org.springframework.boot</groupId>
+		 <artifactId>spring-boot-devtools</artifactId>
+		 <scope>runtime</scope>
+		 <optional>true</optional>
+	    </dependency>	
+	-->
+> Now enable any one of below feature from application.properties file. Make sure both cannot be true at the same time:
+
+	initialize.kie.container.standard.way = false
+	initialize.kie.container.spring.boot.way = true
+	
+Drools feature is now in effect in the application.
+	
+	
