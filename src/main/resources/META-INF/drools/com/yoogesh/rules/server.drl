@@ -2,11 +2,20 @@ package drools.com.yoogesh.rules
 
 import com.codetutr.entity.User;
 
-rule "Check_enable_user_Status"
-  when
-  	$user : User(((uid % 2) != 0L) && (lastName.toUpperCase() == "SHARMA"))
-  then
-  	$user.setEnabled(false);
-  	$user.setPassword("DROOLS AFFECTED");
-  	System.out.println("User "+ $user.getUid() + " with name " + $user.getFirstName() +" is set Disabled............");
+rule "RULE001"
+@ruleCode("Check-enable-user-Status")
+@moduleName("promotions-module")
+@maxRuleExecutions("1")
+dialect "mvel"
+salience 99999
+
+no-loop
+when
+  $user : User(((uid % 2) != 0L) && (lastName.toUpperCase() == "SHARMA"))
+then
+  modify($user){
+  	setEnabled(false),
+    setPassword("DROOLS AFFECTED")
+  }
+  System.out.println("****** Fired Rule: " + drools.getRule().getName() + " *********");
 end
