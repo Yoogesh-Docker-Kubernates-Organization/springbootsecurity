@@ -114,8 +114,6 @@ Similarly, the docker image can be run using below command by going up to the <b
 The application can now be available at http://10.15.0.15/springbootsecurity/ assuming ip of the container is 10.15.0.15</br>
 
 # How to enable the drools feature? </br>
-Do the following changes to the pom.xml:
-
 > You first need to disable the dev-tool feature from pom.xml:
 
 	<!-- Development tools related. This must be commented out while firing the drools rule 
