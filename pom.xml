@@ -161,14 +161,13 @@
     		<artifactId>hibernate-validator</artifactId>
     	</dependency>
 		
-		<!-- Development tools related. This must be commented out while firing the drools rule 
+		<!-- Development tools related. This must be commented out while firing the drools rule -->
 	    <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>	
-		-->
 
         <!-- Testing related -->
 		<dependency>
