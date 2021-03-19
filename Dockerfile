@@ -1,4 +1,4 @@
-FROM tomcat:9-jdk11-openjdk-slim 
+FROM tomcat:jdk13-openjdk-slim-buster
 
 MAINTAINER Yoogesh Sharma "yoogesh1983@gmail.com"
 
