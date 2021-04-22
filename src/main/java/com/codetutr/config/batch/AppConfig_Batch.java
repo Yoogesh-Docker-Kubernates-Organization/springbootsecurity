@@ -19,44 +19,85 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 
+import com.codetutr.entity.User;
+
 @Configuration
 @EnableBatchProcessing
 public class AppConfig_Batch {
-	 private final String[] FIELD_NAMES = new String[] { "id", "city", "date", "player_of_match", "venue",
-	            "neutral_venue", "team1", "team2", "toss_winner", "toss_decision", "winner", "result", "result_margin",
-	            "eliminator", "method", "umpire1", "umpire2" };
+	 private final String[] FIELD_NAMES = new String[] { "id", "username", "password", "firstName", "lastName" };
 
 	    @Autowired
 	    public JobBuilderFactory jobBuilderFactory;
 
 	    @Autowired
 	    public StepBuilderFactory stepBuilderFactory;
+	    
+	    
 
+	    /**
+	     * 
+	     * Step 1: Define a Reader
+	     */
 	    @Bean
-	    public FlatFileItemReader<MatchInput> reader() {
-	        return new FlatFileItemReaderBuilder<MatchInput>().name("MatchItemReader")
-	                .resource(new ClassPathResource("match-data.csv")).delimited().names(FIELD_NAMES)
-	                .fieldSetMapper(new BeanWrapperFieldSetMapper<MatchInput>() {
+	    public FlatFileItemReader<UserInput> reader() {
+	        return new FlatFileItemReaderBuilder<UserInput>().name("MatchItemReader")
+	                .resource(new ClassPathResource("batch/profile.csv")).delimited().names(FIELD_NAMES)
+	                .fieldSetMapper(new BeanWrapperFieldSetMapper<UserInput>() {
 	                    {
-	                        setTargetType(MatchInput.class);
+	                        setTargetType(UserInput.class);
 	                    }
 	                }).build();
 	    }
 
+	 
+	    /**
+	     * 
+	     * Step 2: Define a Processor
+	     */
 	    @Bean
-	    public MatchDataProcessor processor() {
-	        return new MatchDataProcessor();
+	    public UserDataProcessor processor() {
+	        return new UserDataProcessor();
 	    }
-
+	    
+	    
+	    /**
+	     * 
+	     * Step 3: Writer
+	     */
 	    @Bean
-	    public JdbcBatchItemWriter<Match> writer(DataSource dataSource) {
-	        return new JdbcBatchItemWriterBuilder<Match>()
+	    public JdbcBatchItemWriter<User> writer(DataSource dataSource) {
+	        return new JdbcBatchItemWriterBuilder<User>()
 	                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
-	                .sql("INSERT INTO match (id, city, date, player_of_match, venue, team1, team2, toss_winner, toss_decision, match_winner, result, result_margin, umpire1, umpire2) "
-	                        + " VALUES (:id, :city, :date, :playerOfMatch, :venue, :team1, :team2, :tossWinner, :tossDecision, :matchWinner, :result, :resultMargin, :umpire1, :umpire2)")
+	                .sql("INSERT INTO USERS (uid, username, password, firstName, lastName, enabled)"
+	                        + " VALUES (:uid, :username, :password, :firstName, :lastName)")
 	                .dataSource(dataSource).build();
 	    }
 
+	    
+	    /**
+	     *  Step 4: Define steps: 
+	     *  
+	     *  :- You can define multiple steps depending upon your requirement
+	     *  :- Here we have defined only one step(Just one is sufficient for us for our requirement)
+	     *  :- Make sure Every steps should contains three parts i.e. input, process and writer
+	     *  
+	     */
+	    @Bean
+	    public Step step1(JdbcBatchItemWriter<User> writer) {
+	        return stepBuilderFactory
+	            .get("step1")
+	            .<UserInput, User>chunk(10) // process 10 items at a time
+	            .reader(reader())
+	            .processor(processor())
+	            .writer(writer)
+	            .build();
+	    }
+	    
+	    
+	    /**
+	     * 
+	     * Entry point: Where you combine multiple steps together and send notification once the job finished!!
+	     */
 	    @Bean
 	    public Job importUserJob(JobCompletionNotificationListener listener, Step step1) {
 	        return jobBuilderFactory
@@ -68,14 +109,4 @@ public class AppConfig_Batch {
 	            .build();
 	    }
 
-	    @Bean
-	    public Step step1(JdbcBatchItemWriter<Match> writer) {
-	        return stepBuilderFactory
-	            .get("step1")
-	            .<MatchInput, Match>chunk(10)
-	            .reader(reader())
-	            .processor(processor())
-	            .writer(writer)
-	            .build();
-	    }
 }
