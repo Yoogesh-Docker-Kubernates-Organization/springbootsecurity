@@ -15,6 +15,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import com.codetutr.config.batch.AppConfig_Batch;
 import com.codetutr.config.cronJob.AppConfig_CronJob;
 import com.codetutr.config.database.AppConfig_Persistance;
 import com.codetutr.config.drools.AppConfig_Drools;
@@ -78,7 +79,12 @@ public class DispatcherServletInitializer extends SpringBootServletInitializer
 		/**
 		 * Initializes the drools container
 		 */
-		AppConfig_Drools.class
+		AppConfig_Drools.class,
+		
+		/**
+		 * Initializes the spring batch
+		 */
+		AppConfig_Batch.class
 		
 	};
 
