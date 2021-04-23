@@ -33,7 +33,6 @@ import org.springframework.util.StringUtils;
 
 import com.codetutr.entity.User;
 import com.codetutr.services.UserService;
-import com.codetutr.utility.UtilityHelper;
 
 @Profile({"Mock", "SpringDataJPA", "SpringEmJPA"})
 @EnableBatchProcessing  // This is by default providing its own transactionManager which we are overriding by our. So that "SpringJdbc" and "Hibernate" profile only works.otherwise its transactionManager comes.
@@ -124,7 +123,7 @@ public class AppConfig_Batch {
      */
     @Bean
     public UserDataProcessor processor() {
-        return new UserDataProcessor();
+        return new UserDataProcessor(passwordEncoder);
     }
     
     
@@ -136,8 +135,6 @@ public class AppConfig_Batch {
 		@Override
 		public void write(List<? extends User> items) throws Exception {
 			for (User user : items) {
-				user.setPassword(passwordEncoder.encode(user.getPassword()));
-				UtilityHelper.getUserAuthList(user);
 				service.createUser(user);
 			}
 			
