@@ -11,4 +11,8 @@ public class LemonConstant {
 	
 	//Rest call
 	public static final String TWM_REQUEST_CONTEXT_INFO_HEADER_NAME = "request-Context-Info";
+	
+	//Other
+	public static final String SPRING_PROFILES_ACTIVE = "spring.profiles.active";
+	public static final String ENABLE_DEFAULT_TRANSACTION_MANAGER = "enable.default.transaction.manager";
 }
