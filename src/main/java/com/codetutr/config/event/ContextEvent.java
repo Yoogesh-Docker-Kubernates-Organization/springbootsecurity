@@ -2,6 +2,7 @@ package com.codetutr.config.event;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.io.support.ResourcePropertySource;
 
 import com.codetutr.properties.LogProperties;
+import com.codetutr.validationHelper.LemonConstant;
 import com.codetutr.properties.EnvTargetProperties;
 
 public class ContextEvent implements ApplicationContextInitializer<ConfigurableApplicationContext> 
@@ -62,7 +64,18 @@ public class ContextEvent implements ApplicationContextInitializer<ConfigurableA
     	final String activeProfiles = environment.getProperty("spring.profiles.active");
     	String[] profiles = activeProfiles.split(",");
     	environment.setActiveProfiles(profiles);
-    	logger.info("Current active profiles are: {}", Arrays.asList(profiles));
+    	
+    	List<String> asList = Arrays.asList(profiles);
+    	
+    	for (String next : asList) {
+			if(next.equalsIgnoreCase("SpringDataJPA") || next.equalsIgnoreCase("SpringEmJPA")){
+				System.setProperty(LemonConstant.ENABLE_DEFAULT_TRANSACTION_MANAGER, "true");
+			}
+		}
+    	
+    	logger.info("Current active profiles are: {}", asList);
+    	
+    	
 	}
     
 	private void setSystemPropertiesforLogging(String currentEnvTarget) 

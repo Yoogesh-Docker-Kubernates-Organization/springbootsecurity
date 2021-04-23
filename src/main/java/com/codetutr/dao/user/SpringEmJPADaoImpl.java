@@ -58,6 +58,9 @@ public class SpringEmJPADaoImpl implements IUserDao {
 	
 	@Override
 	public User createUser(User user) {
+		if (null != user.getUid()) {
+			user.setUid(null);
+		}
 		entityManager.persist(user);
 		return user;
 	}

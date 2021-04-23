@@ -37,19 +37,23 @@ public class MockUserDaoImpl implements IUserDao {
 		
 		logger.debug("Initialization of database started");
 		
-		userTable.put(1L, new User(1L, "user@gmail.com",passwordEncoder.encode("1234"), "Yoogesh", "Sharma", true, UtilityHelper.getUserAuthList(null)));
-		userTable.put(2L, new User(2L, "admin@gmail.com",passwordEncoder.encode("1234"), "Kristy", "Sharma", true, UtilityHelper.getAdminAuthList(null)));
-		userTable.put(3L, new User(3L, "dba@gmail.com",passwordEncoder.encode("1234"), "Sushila", "Sapkota", true, UtilityHelper.getDbaAuthList(null)));
+		userTable.put(generateUID(), new User(generateUID(), "user@gmail.com",passwordEncoder.encode("1234"), "Yoogesh", "Sharma", true, UtilityHelper.getUserAuthList(null)));
+		userTable.put(generateUID(), new User(generateUID(), "admin@gmail.com",passwordEncoder.encode("1234"), "Kristy", "Sharma", true, UtilityHelper.getAdminAuthList(null)));
+		userTable.put(generateUID(), new User(generateUID(), "dba@gmail.com",passwordEncoder.encode("1234"), "Sushila", "Sapkota", true, UtilityHelper.getDbaAuthList(null)));
 		
-		logger.debug("Initialization of database completed");
+		logger.debug("Initialization of database completed"); 
 	}
 
 	@Override
 	public User createUser(User user) {
-		user.setUid((long) userTable.size() + 1);
+		if(ismoreUsernameExists(user.getUsername())) {
+			throw new  org.hibernate.exception.ConstraintViolationException("Username " + user.getUsername() + " already exists into the database", null, "INSERT INTO USER(username)");
+		}
+		user.setUid(generateUID());
 		userTable.put(user.getUid(), user);
 		return user;
 	}
+
 
 	@Override
 	public User updateUser(User user) {
@@ -162,5 +166,9 @@ public class MockUserDaoImpl implements IUserDao {
 			}
 		}
 		return al;
+	}
+	
+	private long generateUID() {
+		return (long) userTable.size() + 1;
 	}
 }
