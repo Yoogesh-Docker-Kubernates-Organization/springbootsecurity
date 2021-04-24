@@ -1,34 +1,22 @@
 package com.codetutr.config.batch;
 
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.codetutr.entity.User;
-import com.codetutr.utility.UtilityHelper;
+import com.codetutr.populatorHelper.Converter;
 
 public class UserDataProcessor implements ItemProcessor<UserInput, User> {
 
-	private PasswordEncoder passwordEncoder;
+	private Converter<UserInput, User> userConverter;
 	
-	
-	public UserDataProcessor(PasswordEncoder encoder) {
-		this.passwordEncoder = encoder;
+	public UserDataProcessor(Converter<UserInput, User> userConverter) {
+		this.userConverter = userConverter;
 	}
 
 
 	@Override
 	public User process(UserInput line) throws Exception {
-
-		User user = new User();
-		user.setUid(Long.parseLong(line.getId()));
-		user.setUsername(line.getUsername());
-		user.setPassword(passwordEncoder.encode(line.getPassword()));
-		user.setFirstName(line.getFirstName());
-		user.setLastName(line.getLastName());
-		user.setEnabled(true);
-		user.setAuthorities(UtilityHelper.getUserAuthList(user));
-		
-		return user;
+		return userConverter.convert(line);
 	}
 
 }

@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import com.codetutr.config.batch.AppConfig_Batch;
+import com.codetutr.config.converter.AppConfig_Converter;
 import com.codetutr.config.cronJob.AppConfig_CronJob;
 import com.codetutr.config.database.AppConfig_Persistance;
 import com.codetutr.config.drools.AppConfig_Drools;
@@ -84,7 +85,12 @@ public class DispatcherServletInitializer extends SpringBootServletInitializer
 		/**
 		 * Initializes the spring batch
 		 */
-		AppConfig_Batch.class
+		AppConfig_Batch.class,
+		
+		/**
+		 * Initializes the Converter/Populators
+		 */
+		AppConfig_Converter.class
 		
 	};
 

@@ -2,6 +2,7 @@ package com.codetutr.config.batch;
 
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 import org.springframework.batch.core.Job;
@@ -32,6 +33,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.util.StringUtils;
 
 import com.codetutr.entity.User;
+import com.codetutr.populatorHelper.Converter;
 import com.codetutr.services.UserService;
 
 @Profile({"Mock", "SpringDataJPA", "SpringEmJPA"})
@@ -52,6 +54,9 @@ public class AppConfig_Batch {
 	
 	@Autowired
 	UserService service;
+	
+	@Autowired
+	Converter<UserInput, User> userConverter;
 	
     
     private JobRepository getJobRepository() throws Exception {
@@ -123,7 +128,7 @@ public class AppConfig_Batch {
      */
     @Bean
     public UserDataProcessor processor() {
-        return new UserDataProcessor(passwordEncoder);
+        return new UserDataProcessor(userConverter);
     }
     
     
