@@ -1,4 +1,4 @@
-package com.codetutr.config.converter;
+package com.codetutr.populatorHelper;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

@@ -1,6 +1,7 @@
 package com.codetutr.dao.user;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -16,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.codetutr.entity.User;
+import com.codetutr.populatorHelper.Converter;
+import com.codetutr.populatorHelper.Converters;
 import com.codetutr.utility.UtilityHelper;
 
 @Profile("Mock")
@@ -26,6 +29,9 @@ public class MockUserDaoImpl implements IUserDao {
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private Converter<User, User> userConverter;
 	
 	private static Map<Long, User> userTable = new HashMap<Long, User>();
 
@@ -95,7 +101,8 @@ public class MockUserDaoImpl implements IUserDao {
 
 	@Override
 	public List<User> getAllUsers() {
-		return new ArrayList<User>(userTable.values());
+		Collection<User> values = userTable.values();
+		return Converters.convertAll(values, userConverter);
 
 	}
 

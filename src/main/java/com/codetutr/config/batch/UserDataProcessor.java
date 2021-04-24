@@ -7,16 +7,16 @@ import com.codetutr.populatorHelper.Converter;
 
 public class UserDataProcessor implements ItemProcessor<UserInput, User> {
 
-	private Converter<UserInput, User> userConverter;
+	private Converter<UserInput, User> batchUserConverter;
 	
 	public UserDataProcessor(Converter<UserInput, User> userConverter) {
-		this.userConverter = userConverter;
+		this.batchUserConverter = userConverter;
 	}
 
 
 	@Override
 	public User process(UserInput line) throws Exception {
-		return userConverter.convert(line);
+		return batchUserConverter.convert(line);
 	}
 
 }

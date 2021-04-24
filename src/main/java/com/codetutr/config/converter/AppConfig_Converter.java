@@ -18,6 +18,7 @@ import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.beans.factory.support.ManagedList;
 
 import com.codetutr.populatorHelper.AbstractPopulatingConverter;
+import com.codetutr.populatorHelper.ConverterName;
 import com.codetutr.populatorHelper.Populator;
 
 public class AppConfig_Converter implements BeanDefinitionRegistryPostProcessor{

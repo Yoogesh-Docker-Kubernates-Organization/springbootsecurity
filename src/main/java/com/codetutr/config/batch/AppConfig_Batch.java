@@ -56,7 +56,7 @@ public class AppConfig_Batch {
 	UserService service;
 	
 	@Autowired
-	Converter<UserInput, User> userConverter;
+	Converter<UserInput, User> batchUserConverter;
 	
     
     private JobRepository getJobRepository() throws Exception {
@@ -128,7 +128,7 @@ public class AppConfig_Batch {
      */
     @Bean
     public UserDataProcessor processor() {
-        return new UserDataProcessor(userConverter);
+        return new UserDataProcessor(batchUserConverter);
     }
     
     
@@ -160,7 +160,7 @@ public class AppConfig_Batch {
     public Step step1() throws Exception {
         return stepBuilderFactory()
             .get("step1")
-            .<UserInput, User>chunk(10) // process 10 items at a time
+            .<UserInput, User>chunk(10) // process 10 items at a time and this is the benefit of using batch. you are not loading all in memory. you are loading chunk by chunk.
             .reader(reader())
             .processor(processor())
             .writer(new DatabaseWriter())

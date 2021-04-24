@@ -1,30 +1,31 @@
 package com.codetutr.config.converter;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.codetutr.config.batch.UserInput;
 import com.codetutr.entity.User;
+import com.codetutr.populatorHelper.ConversionException;
+import com.codetutr.populatorHelper.ConverterName;
 import com.codetutr.populatorHelper.Populator;
-import com.codetutr.utility.UtilityHelper;
 
 @ConverterName("userConverter")
 @Component
-public class UserPopulator implements Populator<UserInput, User> {
-	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+public class UserPopulator implements Populator<User, User> {
+
+	private final Logger logger = LoggerFactory.getLogger(UserPopulator.class);
 	
 	@Override
-	public void populate(UserInput source, User target) {
-		target.setUid(Long.parseLong(source.getId()));
+	public void populate(User source, User target) throws ConversionException {
+		logger.info("UserPopulator is being executed.......");
+		target.setUid(source.getUid());
 		target.setUsername(source.getUsername());
-		target.setPassword(passwordEncoder.encode(source.getPassword()));
+		target.setPassword(source.getPassword());
 		target.setFirstName(source.getFirstName());
 		target.setLastName(source.getLastName());
-		target.setEnabled(true);
-		target.setAuthorities(UtilityHelper.getUserAuthList(target));
+		target.setEnabled(source.isEnabled());
+		target.setAuthorities(source.getAuthorities());
+		
 	}
- 
+
 }
