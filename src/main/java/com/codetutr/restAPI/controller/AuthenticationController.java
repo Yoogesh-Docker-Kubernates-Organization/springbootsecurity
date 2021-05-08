@@ -68,7 +68,7 @@ public class AuthenticationController extends AbstractRestController {
 			guid = ((TWMUserDetails)authenticate.getPrincipal()).getUser().getUid();
 			}
 		catch (BadCredentialsException e) {throw new Exception("password invalid", e);}
-		catch (Exception ex) {throw new Exception("username not found", ex);}
+		catch (Exception ex) {throw new Exception("username " + signInRequest.getUsername() + " not found", ex);}
 		
 		Map<String, Object> claimMap = new HashMap<>();
 		claimMap.put("isApi", true);
