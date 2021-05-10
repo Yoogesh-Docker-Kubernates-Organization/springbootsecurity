@@ -10,6 +10,7 @@ public class MyJob {
 	
 	private static final String defaultMessage = "ConfigMap is currently disabled in this application. Don't forget to include \'spring-cloud-starter-kubernetes-config\' in a Pom.xml file to enable ConfigMap settings if you are running on Kubernetes Cluster.";
 	private static final String configMap_Message = "kubernetes.message.on.the.fly";
+	private static int count = 0;
 	
 	@Autowired
 	private Environment env;
@@ -21,6 +22,10 @@ public class MyJob {
 	@Scheduled(fixedRate=100000)
 	public void sendMessage() {
 		String message = StringUtils.isBlank(env.getProperty(configMap_Message)) ? defaultMessage : env.getProperty(configMap_Message);
-		System.err.println("Sending Messages in every 100 second............." + message);
+		
+		if(count < 30) {
+			System.err.println("Sending Messages in every 100 second............." + message);
+			count++;
+		}
 	}
 }
