@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 public class AuthenticationConfig {
 
@@ -49,10 +51,10 @@ public class AuthenticationConfig {
 	 */
 	@Bean
 	public SwitchUserFilter switchUserFilter() {
-	    SwitchUserFilter filter = new SwitchUserFilter();
+		SwitchUserFilter filter = new SwitchUserFilter();
 	    filter.setUserDetailsService(lemonUserDetailsService);
-	    filter.setSwitchUserUrl("/impersonate_As_USER");
-	    filter.setExitUserUrl("/switch_back_To_DBA");
+	    filter.setSwitchUserMatcher(new AntPathRequestMatcher("/impersonate_As_USER"));
+	    filter.setExitUserMatcher(new AntPathRequestMatcher("/switch_back_To_DBA"));
 	    filter.setTargetUrl("/my-account-user");
 	    return filter;
 	}
