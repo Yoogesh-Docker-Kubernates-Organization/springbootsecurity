@@ -152,7 +152,7 @@ public class UserController extends AbstractRestController {
 			}
 
 			if(StringUtils.isNotBlank(username) && user == null) {
-				throw new RuntimeException("Username is invalid.");
+				throw new RuntimeException("Username " + username + " is invalid.");
 			} else if(null != guid && user == null) {
 				throw new RuntimeException("guid is invalid.");
 			}
